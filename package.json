@@ -7,9 +7,10 @@
   "scripts": {
     "clean": "rimraf lib/",
     "build": "cross-env NODE_ENV=production tsc -p ./src/tsconfig-cjs.json && cross-env NODE_ENV=production tsc -p ./src/tsconfig-esm.json",
-    "build:watch": "cross-env NODE_ENV=development tsc -w -p ./src",
+    "build:watch": "cross-env NODE_ENV=development tsc -w -p ./src/tsconfig-esm.json",
     "eslint:check": "eslint --ignore-pattern \"!.eslintrc.js\" .eslintrc.js karma.conf.js src/**/*.ts src/**/*.tsx test/**/*.js test/**/*.tsx",
     "eslint:fix": "eslint --ignore-pattern \"!.eslintrc.js\" --fix .eslintrc.js karma.conf.js src/**/*.ts src/**/*.tsx test/**/*.js test/**/*.tsx",
+    "eslint:watch": "esw --color --watch --ext .js --ext .jsx --ext .ts --ext .tsx --ignore-pattern \"!.eslintrc.js\" --fix .eslintrc.js karma.conf.js src/**/*.ts* test/**/*.ts*",
     "test": "cross-env NODE_ENV=development karma start karma.conf.js --single-run",
     "test:watch": "cross-env NODE_ENV=development karma start karma.conf.js --no-single-run",
     "test:watch:chrome": "cross-env NODE_ENV=development karma start karma.conf.js --no-single-run --browsers Chrome",
@@ -36,8 +37,12 @@
     "email": "vlsergey@gmail.com"
   },
   "license": "MIT",
+  "dependencies": {
+    "memoize-one": "^5.1.1"
+  },
   "devDependencies": {
     "@vlsergey/js-config": "^1.0.0",
+    "eslint-watch": "^7.0.0",
     "react-bootstrap": "^1.0.0"
   },
   "peerDependencies": {
