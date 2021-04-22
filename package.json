@@ -1,0 +1,49 @@
+{
+  "name": "@vlsergey/react-bootstrap-pagetable",
+  "version": "0.0.1",
+  "description": "Complex solution to work with pageable data, including sorting, filtering, actions, changing displayed columns, etc.",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "cross-env NODE_ENV=production tsc -p ./src/tsconfig-cjs.json && cross-env NODE_ENV=production tsc -p ./src/tsconfig-esm.json",
+    "build:watch": "cross-env NODE_ENV=development tsc -w -p ./src",
+    "eslint:check": "eslint --ignore-pattern \"!.eslintrc.js\" .eslintrc.js karma.conf.js src/**/*.ts src/**/*.tsx test/**/*.js test/**/*.tsx",
+    "eslint:fix": "eslint --ignore-pattern \"!.eslintrc.js\" --fix .eslintrc.js karma.conf.js src/**/*.ts src/**/*.tsx test/**/*.js test/**/*.tsx",
+    "test": "cross-env NODE_ENV=development karma start karma.conf.js --single-run",
+    "test:watch": "cross-env NODE_ENV=development karma start karma.conf.js --no-single-run",
+    "test:watch:chrome": "cross-env NODE_ENV=development karma start karma.conf.js --no-single-run --browsers Chrome",
+    "preversion": "npm run eslint:fix && npm test && npm run clean && npm run build",
+    "version": "npm publish --access=public",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vlsergey/react-bootstrap-pagetable.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vlsergey/react-bootstrap-pagetable/issues"
+  },
+  "homepage": "https://github.com/vlsergey/react-bootstrap-pagetable#readme",
+  "keywords": [
+    "react",
+    "promise",
+    "promises",
+    "vlsergey"
+  ],
+  "author": {
+    "name": "Sergey Vladimirov",
+    "email": "vlsergey@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@vlsergey/js-config": "^1.0.0",
+    "react-bootstrap": "^1.0.0"
+  },
+  "peerDependencies": {
+    "prop-types": ">=15.7",
+    "react": ">=16",
+    "react-bootstrap": ">=1",
+    "react-dom": ">=16"
+  }
+}
