@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 const mode = process.env.NODE_ENV || 'development';
-const packageJson = require( './package.json' );
+const mainPackageJson = require( '../package.json' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 
@@ -91,13 +91,13 @@ module.exports = {
       filename: '[name].[chunkhash:8].css',
     } ),
     new webpack.DefinePlugin( {
-      VERSION: JSON.stringify( packageJson.version ),
+      VERSION: JSON.stringify( mainPackageJson.version ),
       ASSET_PATH: JSON.stringify( ASSET_PATH ),
     } ),
     new HtmlWebpackPlugin( {
       filename: 'index.html',
       template: 'src/index.html',
-      version: packageJson.version,
+      version: mainPackageJson.version,
     } ),
   ],
 
