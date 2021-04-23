@@ -9,6 +9,7 @@ export interface PropsType<T> extends WithSelectablePageTableSpace.PropsType<T> 
   buttonProps?: ( action : Action<T>, selectedItems : T[] ) => Record<string, unknown>;
   toolbarProps?: Record<string, unknown>;
   onAfterAction? : ( action : Action<T>, items : T[] ) => unknown;
+  onRefreshRequired : () => unknown;
 }
 
 export type StateType = {
@@ -28,6 +29,12 @@ export default class WithActionsPageTable<T> extends PureComponent<PropsType<T>,
 
   state = {
     selectedIds: [] as string[],
+  }
+
+  private handleAfterAction = async( action : Action<T> ) => {
+    if ( action.refreshAfterAction ) {
+      await this.props.onRefreshRequired();
+    }
   }
 
   private handleSelectedIdsChange = ( selectedIds: string[] ) => {

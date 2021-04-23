@@ -26,6 +26,10 @@ export default class ContolledPageTable<T>
     void this.refresh();
   }
 
+  handleRefreshRequired = async() : Promise<void> => {
+    await this.refresh();
+  }
+
   refresh = async() : Promise<void> => {
     const { fetch } = this.props;
     const { fetchArgs } = this.state;
@@ -43,7 +47,10 @@ export default class ContolledPageTable<T>
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch" }] */
     const { fetch, ...etcProps } = this.props;
 
-    return <WithActionsPageTable {...etcProps} {...this.state} />;
+    return <WithActionsPageTable
+      onRefreshRequired={this.handleRefreshRequired}
+      {...etcProps}
+      {...this.state} />;
   }
 
 }
