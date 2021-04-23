@@ -1,56 +1,140 @@
-import Page, { emptyPage } from './Page';
+import FieldModel, { defaultGetter } from './FieldModel';
 import React, { PureComponent, ReactNode } from 'react';
-import WithActionsPageTable, * as WithActionsPageTableSpace from './actions/WithActionsPageTable';
+import Alert from 'react-bootstrap/Alert';
 import FetchArgs from './FetchArgs';
+import Form from 'react-bootstrap/Form';
+import ItemModel from './ItemModel';
+import Page from './Page';
+import Pagination from '@vlsergey/react-bootstrap-pagination';
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import Table from 'react-bootstrap/Table';
 
-export type PropsType<T> = Omit<WithActionsPageTableSpace.PropsType<T>,
-  'error' | 'fetchArgs' | 'hasError' | 'loading' | 'page' | 'ref' > & {
-  fetch: ( fetchArgs: FetchArgs ) => Promise<Page<T>>;
+type IdFunction<T> = ( item : T ) => string;
+
+export interface PropsType<T> {
+  error? : unknown & {message? : string};
+  fetchArgs: FetchArgs;
+  footer? : ( tableColumnsCount: number ) => ReactNode;
+  itemModel: ItemModel<T>;
+  onFetchArgsChange: ( fetchArgs : FetchArgs ) => unknown;
+  tableProps?: React.ComponentProps<Table>;
+  rowProps?: ( item : T ) => React.ComponentProps<'tr'>;
+  hasError: boolean;
+  loading : boolean;
+  page : Page<T>;
+  size?: 'sm';
 }
 
-type StateType<T> = Pick<WithActionsPageTableSpace.PropsType<T>,
-  'error' | 'fetchArgs' | 'hasError' | 'loading' | 'page' >;
+export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>> {
 
-export default class ContolledPageTable<T>
-  extends PureComponent<PropsType<T>, StateType<T>> {
-
-  state: StateType<T> = {
-    error: null,
-    fetchArgs: { page: 0, size: 0 },
+  static defaultProps = {
+    fetchArgs: {
+      page: 0,
+      size: 0,
+    },
     hasError: false,
     loading: true,
-    page: emptyPage<T>(),
+    tableProps: {
+      bordered: true,
+      hover: true,
+      striped: true,
+      style: {
+        width: 'auto !important'
+      }
+    },
   }
 
-  componentDidMount() : void {
-    void this.refresh();
+  private handlePageChange = ( { target: { value } } : {target: {value: number}} ) => {
+    const { fetchArgs, onFetchArgsChange } = this.props;
+    onFetchArgsChange( { ...fetchArgs, page: value } );
   }
 
-  handleRefreshRequired = async() : Promise<void> => {
-    await this.refresh();
+  private handleSizeChange = ( { target: { value } } : React.ChangeEvent<HTMLSelectElement> ) => {
+    const { fetchArgs, onFetchArgsChange } = this.props;
+    onFetchArgsChange( { ...fetchArgs, size: Number( value ) } );
   }
-
-  refresh = async() : Promise<void> => {
-    const { fetch } = this.props;
-    const { fetchArgs } = this.state;
-
-    try {
-      this.setState( { loading: true } );
-      const page : Page<T> = await fetch( fetchArgs );
-      this.setState( { error: null, loading: false, hasError: false, page } );
-    } catch ( error : unknown ) {
-      this.setState( { error, loading: false, hasError: true } );
-    }
-  } ;
 
   render() : ReactNode {
-    /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch" }] */
-    const { fetch, ...etcProps } = this.props;
+    const { footer, itemModel, hasError, error, loading, page, rowProps, size,
+      tableProps } = this.props;
 
-    return <WithActionsPageTable
-      onRefreshRequired={this.handleRefreshRequired}
-      {...etcProps}
-      {...this.state} />;
+    const item2id : IdFunction<T> = itemModel.idF;
+    const fieldsCount : number = itemModel.fields.length;
+
+    // memoize?
+    const actualTableProps : Record<string, unknown> = {
+      size,
+      ...tableProps
+    };
+
+    return <Table {...actualTableProps}>
+      <thead>
+        {this.renderPageSizeControlRow( fieldsCount )}
+        <tr>
+          { itemModel.fields.map( ( field:FieldModel<unknown> ) =>
+            <th key={field.key}>
+              {field.title}
+            </th>
+          ) }
+        </tr>
+        { loading && <tr>
+          <td colSpan={fieldsCount}>
+            <ProgressBar animated max={100} min={0} now={100} />
+          </td>
+        </tr> }
+        { hasError && <tr>
+          <td colSpan={fieldsCount}>
+            <Alert style={{ margin: 0 }} variant="danger">
+              {'Error occured while loading'}
+              { !!error && `: ${error.message || JSON.stringify( error )}`}
+            </Alert>
+          </td>
+        </tr> }
+      </thead>
+      <tbody>
+        { page.content.map( ( item : T ) =>
+          <tr key={item2id( item )} {...( rowProps ? rowProps( item ) : {} )}>
+            { itemModel.fields.map( ( field:FieldModel<unknown> ) =>
+              <td key={field.key}>
+                {field.render( ( field.getter || defaultGetter() )( item, field ), item )}
+              </td>
+            ) }
+          </tr>
+        ) }
+      </tbody>
+      <tfoot>
+        {this.renderPageSizeControlRow( fieldsCount )}
+        {footer && footer( fieldsCount )}
+      </tfoot>
+    </Table>;
   }
 
+  private renderPageSizeControlRow( tableColumnsCount: number ) : ReactNode {
+    const { fetchArgs, page, size } = this.props;
+    return <tr>
+      <td colSpan={tableColumnsCount}>
+        <div style={{ float: 'right' }}>
+          <Form.Control
+            as="select"
+            name="size"
+            onChange={this.handleSizeChange}
+            size={size}
+            value={fetchArgs.size}>
+            <option>5</option>
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+            <option>100</option>
+          </Form.Control>
+        </div>
+        <Pagination
+          name="page"
+          onChange={this.handlePageChange}
+          size={size}
+          style={{ margin: 0 }}
+          totalPages={page.totalPages}
+          value={fetchArgs.page} />
+      </td>
+    </tr>;
+  }
 }

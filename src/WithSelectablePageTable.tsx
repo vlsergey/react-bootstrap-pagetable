@@ -1,11 +1,11 @@
 import React, { PureComponent, ReactNode } from 'react';
-import UncontolledPageTable, * as UncontrolledPageTableSpace from './UncontolledPageTable';
+import ContolledPageTable, * as ContolledPageTableSpace from './ContolledPageTable';
 import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
 import memoizeOne from 'memoize-one';
 
-export type PropsType<T> = UncontrolledPageTableSpace.PropsType<T> & {
-  selectable : boolean;
+export type PropsType<T> = ContolledPageTableSpace.PropsType<T> & {
+  selectable? : boolean;
   onSelectedIdsChange: ( selectedIds: string[] ) => unknown,
   selectedIds: string[],
 }
@@ -52,7 +52,7 @@ export default class WithSelectablePageTable<T>
     const { itemModel, selectable, ...etcProps } = this.props;
 
     if ( !selectable ) {
-      return <UncontolledPageTable itemModel={itemModel} {...etcProps} />;
+      return <ContolledPageTable itemModel={itemModel} {...etcProps} />;
     }
 
     const newItemModel : ItemModel<T> = {
@@ -68,7 +68,7 @@ export default class WithSelectablePageTable<T>
       ]
     };
 
-    return <UncontolledPageTable
+    return <ContolledPageTable
       {...etcProps}
       itemModel={newItemModel}
       rowProps={this.rowProps} />;

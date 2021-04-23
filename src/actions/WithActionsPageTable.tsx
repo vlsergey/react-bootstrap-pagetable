@@ -4,7 +4,8 @@ import Action from './Action';
 import ItemModel from '../ItemModel';
 import Toolbar from './Toolbar';
 
-export interface PropsType<T> extends WithSelectablePageTableSpace.PropsType<T> {
+export interface PropsType<T>
+  extends Omit<WithSelectablePageTableSpace.PropsType<T>, 'selectedIds' | 'onSelectedIdsChange'> {
   actions?: Action<T>[];
   buttonProps?: ( action : Action<T>, selectedItems : T[] ) => Record<string, unknown>;
   toolbarProps?: Record<string, unknown>;
@@ -42,30 +43,38 @@ export default class WithActionsPageTable<T> extends PureComponent<PropsType<T>,
   }
 
   render() : ReactNode {
-    const { actions, itemModel, page, selectable, ...etcProps } = this.props;
+    const { actions, selectable, ...etcProps } = this.props;
     const { selectedIds } = this.state;
 
     if ( !actions || actions.length === 0 ) {
       return <WithSelectablePageTable
         {...etcProps}
-        itemModel={itemModel}
         onSelectedIdsChange={this.handleSelectedIdsChange}
-        page={page}
         selectable={selectable}
         selectedIds={selectedIds} />;
     }
 
+    return <WithSelectablePageTable
+      {...etcProps}
+      footer={this.renderFooter}
+      onSelectedIdsChange={this.handleSelectedIdsChange}
+      selectable
+      selectedIds={selectedIds} />;
+  }
+
+  renderFooter = ( tableColumnsCount: number ) : ReactNode => {
+    const { actions, footer, itemModel, page } = this.props;
+    const { selectedIds } = this.state;
+
     return <>
-      <WithSelectablePageTable
-        {...etcProps}
-        itemModel={itemModel}
-        onSelectedIdsChange={this.handleSelectedIdsChange}
-        page={page}
-        selectable
-        selectedIds={selectedIds} />
-      <Toolbar
-        actions={actions}
-        selectedItems={filterItemsByIdsImpl( itemModel, page.content, selectedIds )} />
+      <tr>
+        <td colSpan={tableColumnsCount}>
+          <Toolbar
+            actions={actions}
+            selectedItems={filterItemsByIdsImpl( itemModel, page.content, selectedIds )} />
+        </td>
+      </tr>
+      {footer && footer( tableColumnsCount )}
     </>;
   }
 

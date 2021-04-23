@@ -5,8 +5,6 @@ const mainPackageJson = require( '../package.json' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 
-const ASSET_PATH = process.env.ASSET_PATH || '/';
-
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 
@@ -91,8 +89,7 @@ module.exports = {
       filename: '[name].[chunkhash:8].css',
     } ),
     new webpack.DefinePlugin( {
-      VERSION: JSON.stringify( mainPackageJson.version ),
-      ASSET_PATH: JSON.stringify( ASSET_PATH ),
+      VERSION: JSON.stringify( mainPackageJson.version )
     } ),
     new HtmlWebpackPlugin( {
       filename: 'index.html',
@@ -102,9 +99,8 @@ module.exports = {
   ],
 
   output: {
-    publicPath: ASSET_PATH,
     // use subfolder because it is convinient to copy / link whole "dist" folder
     // as java source folder to IDE (or build)
-    path: path.join( __dirname, 'dist' ),
+    path: path.join( __dirname, '..', 'docs' ),
   },
 };

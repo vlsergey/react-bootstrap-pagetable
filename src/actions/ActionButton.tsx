@@ -7,6 +7,7 @@ interface PropsType<T> {
   disabled : boolean;
   onAction : ( action : Action<T> ) => unknown;
   onClick? : ( event : React.MouseEvent<HTMLElement> ) => unknown;
+  size? : 'sm';
 }
 
 export default class ActionButton<T> extends PureComponent<PropsType<T>> {
@@ -21,12 +22,13 @@ export default class ActionButton<T> extends PureComponent<PropsType<T>> {
 
   render() : ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "onAction|onClick" }] */
-    const { action, onAction, disabled, onClick, ...etcProps } = this.props;
+    const { action, onAction, disabled, onClick, size, ...etcProps } = this.props;
 
     return <Button
       className={'mr-2'}
       disabled={disabled}
       onClick={this.handleClick}
+      size={size}
       variant={action.variant}
       {...etcProps}>
       {action.title}

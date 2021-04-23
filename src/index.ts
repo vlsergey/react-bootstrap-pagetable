@@ -4,12 +4,12 @@ import ContolledPageTable from './ContolledPageTable';
 import FetchArgs from './FetchArgs';
 import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
-import UncontolledPageTable from './UncontolledPageTable';
+import UncontrolledPageTable from './UncontrolledPageTable';
 import WithActionsPageTable from './actions/WithActionsPageTable';
 import WithSelectablePageTable from './WithSelectablePageTable';
 
 export { Action, emptyPage, ContolledPageTable, FetchArgs, FieldModel,
-  ItemModel, Page, UncontolledPageTable, singlePage, WithActionsPageTable,
+  ItemModel, Page, UncontrolledPageTable, singlePage, WithActionsPageTable,
   WithSelectablePageTable };
 
-export default ContolledPageTable;
+export default UncontrolledPageTable;

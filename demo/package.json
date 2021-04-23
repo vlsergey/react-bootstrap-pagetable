@@ -4,6 +4,7 @@
   "description": "Demo subproject for @vlsergey/react-bootstrap-pagetable",
   "main": "src/index.js",
   "scripts": {
+    "build": "rimraf ../docs/ && cross-env NODE_ENV=production webpack",
     "serve": "cross-env NODE_ENV=development webpack serve --progress --port 9080 --open"
   },
   "author": {
@@ -43,6 +44,7 @@
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
+    "react-element-to-jsx-string": "^14.3.2",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.18",
     "typescript": "^4.2.4",
