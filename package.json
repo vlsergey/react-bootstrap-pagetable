@@ -38,6 +38,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@vlsergey/react-bootstrap-button-with-spinner": "^1.2.0",
     "memoize-one": "^5.1.1"
   },
   "devDependencies": {

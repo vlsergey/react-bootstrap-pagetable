@@ -1,4 +1,4 @@
-import PageTable, { FieldModel, ItemModel, singlePage } from '../../lib/esm';
+import PageTable, { Action, FieldModel, ItemModel, singlePage } from '../../lib/esm';
 import React, { PureComponent, ReactNode } from 'react';
 
 export default class Application extends PureComponent<unknown> {
@@ -23,9 +23,16 @@ export default class Application extends PureComponent<unknown> {
       { id: 'C' }
     ] ) );
 
+    const actions : Action[] = [ {
+      key: 'alert',
+      onAction: ( items: TestType[] ) => alert( items[ 0 ].id ),
+      enabled: ( items: TestType[] ) => items.length == 1,
+      title: 'Alert'
+    } ];
+
     return <>
       <h1>Simple table with static content</h1>
-      <PageTable fetch={fetch} itemModel={itemModel} />
+      <PageTable actions={actions} fetch={fetch} itemModel={itemModel} />
     </>;
   }
 
