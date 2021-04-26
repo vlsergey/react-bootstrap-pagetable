@@ -87,7 +87,8 @@ module.exports = {
 
   plugins: [
     new MiniCssExtractPlugin( {
-      filename: '[name].[chunkhash:8].css',
+      filename: mode == 'development' ? '[name].css' : '[name].[contenthash:8].css',
+      chunkFilename: mode == 'development' ? '[id].css' : '[id].[contenthash:8].css',
     } ),
     new webpack.DefinePlugin( {
       VERSION: JSON.stringify( mainPackageJson.version )
