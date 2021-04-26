@@ -26,13 +26,13 @@ export default class ControlledPageTable<T>
     void this.refresh();
   }
 
-  handleFetchArgsChange = async( fetchArgs: FetchArgs ) => {
+  handleFetchArgsChange = ( fetchArgs: FetchArgs ) : void => {
     this.setState( { fetchArgs } );
-    // bounce?
+    // add bounce?
     this.scheduleRefreshNow();
   }
 
-  handleRefreshRequired = async() : Promise<void> => {
+  handleRefreshRequired = () : void => {
     this.scheduleRefreshNow();
   }
 
@@ -49,7 +49,8 @@ export default class ControlledPageTable<T>
     }
   } ;
 
-  scheduleRefreshNow = () => setTimeout( this.refresh, 0 );
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  scheduleRefreshNow = () : void => setTimeout( this.refresh, 0 );
 
   render() : ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch" }] */

@@ -14,6 +14,8 @@ Features:
 * Display and navigate over pages of data
 * Change size of page
 * Allow actions to be executed with elements (with or without autorefresh after action completed).
+* Allow selecting multiple elements and execute single action over them
+* (TODO) "Select all" checkbox
 * (TODO) server-side sorting (i.e. passing `sort` argument to server)
 * (TODO) server-side filtering
 * (TODO) support standard renderers for date, time and other OpenAPI types

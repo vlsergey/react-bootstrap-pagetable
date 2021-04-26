@@ -1,5 +1,5 @@
-import React, { PureComponent, ReactNode } from 'react';
 import ContolledPageTable, * as ContolledPageTableSpace from './ContolledPageTable';
+import React, { PureComponent, ReactNode } from 'react';
 import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
 import memoizeOne from 'memoize-one';
@@ -12,8 +12,6 @@ export type PropsType<T> = ContolledPageTableSpace.PropsType<T> & {
 
 const renderCheckboxField = ( selected : boolean ) : ReactNode =>
   <input checked={selected} readOnly type="checkbox" />;
-
-// const CHECKBOX_CELL_PROPS = { style: { textAlign: 'center' } };
 
 export default class WithSelectablePageTable<T>
   extends PureComponent<PropsType<T>> {
@@ -62,6 +60,7 @@ export default class WithSelectablePageTable<T>
           key: '$selectable',
           getter: this.selectableFieldGetter,
           render: renderCheckboxField,
+          // TODO: add check-all checkbox
           title: <div />,
         } as FieldModel<boolean>,
         ...itemModel.fields,

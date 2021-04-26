@@ -1,7 +1,4 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["./src/**/*.ts","./src/**/*.tsx"],
-  "compilerOptions": {
-    "target": "es3"
-  }
+  "include": ["webpack.config.js"],
 }
