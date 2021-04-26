@@ -52,6 +52,12 @@ module.exports = {
         exclude: /node_modules/,
         include: /src/,
         loader: 'ts-loader',
+        options: {
+          compilerOptions: {
+            "declaration": mode == 'development',
+            "declarationMap": mode == 'development',
+          },
+        },
       },
       {
         enforce: 'pre',
