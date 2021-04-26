@@ -1,6 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import Action from './Action';
 import ActionButton from './ActionButton';
+import { ButtonProps } from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 
 interface PropsType<T> {
@@ -9,6 +10,7 @@ interface PropsType<T> {
   toolbarProps: Record<string, unknown>;
   onAfterAction : ( action : Action<T>, items : T[] ) => unknown;
   selectedItems : T[];
+  size?: ButtonProps['size'];
 }
 
 const EMPTY_ACTIONS = [] as Action<unknown>[];
@@ -35,7 +37,7 @@ export default class Toolbar<T> extends PureComponent<PropsType<T>> {
   }
 
   render() : ReactNode {
-    const { actions, buttonProps, selectedItems, toolbarProps } = this.props;
+    const { actions, buttonProps, selectedItems, size, toolbarProps } = this.props;
 
     const buttons : ReactNode[] = actions
       .filter( ( { visible } : Action<T> ) => !visible || visible( selectedItems ) )
@@ -44,6 +46,7 @@ export default class Toolbar<T> extends PureComponent<PropsType<T>> {
         disabled={action.enabled && !action.enabled( selectedItems )}
         key={action.key}
         onAction={this.handleAction}
+        size={size}
         {...( buttonProps ? buttonProps( action, selectedItems ) : {} )} /> );
     if ( !buttons.length ) {
       return null;

@@ -63,7 +63,7 @@ export default class WithActionsPageTable<T> extends PureComponent<PropsType<T>,
   }
 
   renderFooter = ( tableColumnsCount: number ) : ReactNode => {
-    const { actions, footer, itemModel, page } = this.props;
+    const { actions, footer, itemModel, page, size } = this.props;
     const { selectedIds } = this.state;
 
     return <>
@@ -71,7 +71,8 @@ export default class WithActionsPageTable<T> extends PureComponent<PropsType<T>,
         <td colSpan={tableColumnsCount}>
           <Toolbar
             actions={actions}
-            selectedItems={filterItemsByIdsImpl( itemModel, page.content, selectedIds )} />
+            selectedItems={filterItemsByIdsImpl( itemModel, page.content, selectedIds )}
+            size={size} />
         </td>
       </tr>
       {footer && footer( tableColumnsCount )}
