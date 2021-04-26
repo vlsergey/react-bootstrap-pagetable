@@ -50,7 +50,7 @@ export default class ControlledPageTable<T>
   } ;
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  scheduleRefreshNow = () : void => setTimeout( this.refresh, 0 );
+  scheduleRefreshNow = () : unknown => setTimeout( this.refresh, 0 );
 
   render() : ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch" }] */
