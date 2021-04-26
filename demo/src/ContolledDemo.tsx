@@ -72,14 +72,23 @@ export default class ContolledDemo extends PureComponent<unknown, StateType> {
       selectable={selectable}
       size={smallSize ? 'sm' : undefined} />;
 
+    const renderCheckbox = ( checked : boolean, key : string, label : ReactNode ) =>
+      <Form.Check
+        checked={checked}
+        id={'ctrld_chk_' + key}
+        label={label}
+        name={key}
+        onChange={this.handleCheckboxChange}
+        type="checkbox" />;
+
     return <Container>
       <h2>Options</h2>
       <Form>
-        <Form.Check checked={addAction} label="Include simple action ('alert the ID')" name="addAction" onChange={this.handleCheckboxChange} type="checkbox" />
-        <Form.Check checked={hasError} label="Set hasError flag" name="hasError" onChange={this.handleCheckboxChange} type="checkbox" />
-        <Form.Check checked={loading} label="Set loading flag" name="loading" onChange={this.handleCheckboxChange} type="checkbox" />
-        <Form.Check checked={selectable} label="Set selectable flag" name="selectable" onChange={this.handleCheckboxChange} type="checkbox" />
-        <Form.Check checked={smallSize} label="Set 'size=&quot;sm&quot'" name="smallSize" onChange={this.handleCheckboxChange} type="checkbox" />
+        {renderCheckbox( addAction, 'addAction', 'Include simple action (\'alert the ID\')' )}
+        {renderCheckbox( hasError, 'hasError', <>Set <code>hasError</code> flag</> )}
+        {renderCheckbox( loading, 'loading', <>Set <code>loading</code> flag</> )}
+        {renderCheckbox( selectable, 'selectable', <>Set <code>selectable</code> flag</> )}
+        {renderCheckbox( smallSize, 'smallSize', <>Set <code>{'size="sm"'}</code></> )}
       </Form>
       <h2>Result</h2>
       {pageTable}

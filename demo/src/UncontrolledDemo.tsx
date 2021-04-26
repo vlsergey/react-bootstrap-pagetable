@@ -82,6 +82,7 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
       };
     };
 
+    /* eslint-disable react/jsx-no-bind */
     const pageTable = <PageTable
       actions={actions}
       fetch={fetch}
@@ -89,14 +90,23 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
       selectable={selectable}
       size={smallSize ? 'sm' : undefined} />;
 
+    const renderCheckbox = ( checked : boolean, key : string, label : ReactNode ) =>
+      <Form.Check
+        checked={checked}
+        id={'unctrld_chk_' + key}
+        label={label}
+        name={key}
+        onChange={this.handleCheckboxChange}
+        type="checkbox" />;
+
     return <Container>
       <h2>Options</h2>
       <Form>
-        <Form.Check checked={addAction} label="Include simple action ('alert the ID')" name="addAction" onChange={this.handleCheckboxChange} type="checkbox" />
-        <Form.Check checked={emulateError} label="Emulate error on loading" name="emulateError" onChange={this.handleCheckboxChange} type="checkbox" />
-        <Form.Check checked={emulateLongLoading} label="Emulate long loading (add 1 second pause to fetch function)" name="emulateLongLoading" onChange={this.handleCheckboxChange} type="checkbox" />
-        <Form.Check checked={selectable} label="Set selectable flag" name="selectable" onChange={this.handleCheckboxChange} type="checkbox" />
-        <Form.Check checked={smallSize} label="Set 'size=&quot;sm&quot'" name="smallSize" onChange={this.handleCheckboxChange} type="checkbox" />
+        {renderCheckbox( addAction, 'addAction', 'Include simple action (\'alert the ID\')' )}
+        {renderCheckbox( emulateError, 'emulateError', 'Emulate error on loading' )}
+        {renderCheckbox( emulateLongLoading, 'emulateLongLoading', 'Emulate long loading (add 1 second pause to fetch function)' )}
+        {renderCheckbox( selectable, 'selectable', <>Set <code>selectable</code> flag</> )}
+        {renderCheckbox( smallSize, 'smallSize', <>Set <code>{'size="sm"'}</code></> )}
       </Form>
       <h2>Result</h2>
       {pageTable}
