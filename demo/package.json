@@ -4,7 +4,8 @@
   "description": "Demo subproject for @vlsergey/react-bootstrap-pagetable",
   "main": "src/index.js",
   "scripts": {
-    "build": "rimraf ../docs/ && cross-env NODE_ENV=production webpack",
+    "clean": "rimraf ../docs/",
+    "build": "cross-env NODE_ENV=production webpack",
     "serve": "cross-env NODE_ENV=development webpack serve --progress --port 9080 --open"
   },
   "author": {

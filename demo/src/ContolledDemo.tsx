@@ -1,5 +1,5 @@
 import { Action, FieldModel, ItemModel, Page, WithActionsPageTable as PageTable,
-  singlePage } from '../../lib/esm';
+  singlePage } from '@vlsergey/react-bootstrap-pagetable';
 import React, { PureComponent, ReactNode } from 'react';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';

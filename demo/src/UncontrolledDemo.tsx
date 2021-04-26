@@ -1,5 +1,5 @@
 import { Action, FetchArgs, FieldModel, ItemModel, Page,
-  UncontrolledPageTable as PageTable } from '../../lib/esm';
+  UncontrolledPageTable as PageTable } from '@vlsergey/react-bootstrap-pagetable';
 import React, { PureComponent, ReactNode } from 'react';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';

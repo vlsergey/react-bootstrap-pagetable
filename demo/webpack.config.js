@@ -10,6 +10,7 @@ const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 
 module.exports = {
   mode: mode,
+  target: ["web", "es5"],
 
   entry: './src/index.tsx',
 
@@ -51,12 +52,6 @@ module.exports = {
         exclude: /node_modules/,
         include: /src/,
         loader: 'ts-loader',
-        options: {
-          compilerOptions: {
-            "declaration": mode == 'development',
-            "declarationMap": mode == 'development',
-          },
-        }
       },
       {
         enforce: 'pre',
