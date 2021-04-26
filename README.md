@@ -24,7 +24,7 @@ Features:
 
 [npm-image]: https://img.shields.io/npm/v/@vlsergey/react-bootstrap-pagetable.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@vlsergey/react-bootstrap-pagetable
-[travis-image]: https://travis-ci.org/vlsergey/react-bootstrap-pagetable.svg?branch=master
-[travis-url]: https://travis-ci.org/vlsergey/react-bootstrap-pagetable
+[travis-image]: https://travis-ci.com/vlsergey/react-bootstrap-pagetable.svg?branch=master
+[travis-url]: https://travis-ci.com/vlsergey/react-bootstrap-pagetable
 [downloads-image]: http://img.shields.io/npm/dm/@vlsergey/react-bootstrap-pagetable.svg?style=flat-square
 [downloads-url]: https://npmjs.org/package/@vlsergey/react-bootstrap-pagetable
