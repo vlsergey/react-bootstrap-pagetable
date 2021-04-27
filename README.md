@@ -1,4 +1,4 @@
-### @vlsergey/react-bootstrap-pagetable
+# @vlsergey/react-bootstrap-pagetable
 
 Ready-to-use-in-SPA table component
 
@@ -22,7 +22,7 @@ Features:
 * (TODO) examples of custom field types with custom renderers (color)  
 * (TODO) Allow to change visibility and order of columns to be displayed
 
-#### API
+## API
 
 Installation:
 ```
@@ -34,7 +34,7 @@ There are 2 main properties to define. First is `itemModel` -- defines the data
 structure, how to display data. Second is `fetch` -- provides implementation
 of method to query data from server (or memory).
 
-##### Item model
+### Item model
 So far itemModel (`itemModel : ItemModel`) defines 2 properties:
 
 * `idF` (`idF: (item : T) => string`). Defines a way to get unique
@@ -74,7 +74,7 @@ have following properties:
   * `valueCellProps` (`valueCellProps?: ( value : V, item : unknown, fieldModel : FieldModel<V> ) => Record<string, unknown>`).
   _Optional_. Provides additional value cell react element (`<td>`) properties.
 
-###### Example
+#### Example
 
 Data example:
 ```json
@@ -107,7 +107,7 @@ const itemModel = {
 
 ![](docs-images/readme-example.png)
 
-##### fetch()
+### fetch()
 
 ```javascript
 fetch: ( fetchArgs: FetchArgs ) => Promise<Page<T>>
