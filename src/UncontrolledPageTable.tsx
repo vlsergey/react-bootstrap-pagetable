@@ -16,7 +16,7 @@ export default class ControlledPageTable<T>
 
   state: StateType<T> = {
     error: null,
-    fetchArgs: { page: 0, size: 0 },
+    fetchArgs: { page: 0, size: 10 },
     hasError: false,
     loading: true,
     page: emptyPage<T>(),

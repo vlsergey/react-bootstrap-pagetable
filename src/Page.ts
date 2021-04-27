@@ -10,8 +10,11 @@ interface Page<T> {
   hasNext : boolean;
   hasPrevious : boolean;
   last : boolean;
+  /* The number of the current page. Is always non-negative. */
   number : number;
+  /* The number of elements currently on this page. */
   numberOfElements : number;
+  /* The size of the page. */
   size : number;
   totalElements : number;
   totalPages : number;

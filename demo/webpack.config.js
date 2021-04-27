@@ -5,6 +5,7 @@ const mainPackageJson = require( '../package.json' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 
+const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 
@@ -59,17 +60,6 @@ module.exports = {
           },
         },
       },
-      {
-        enforce: 'pre',
-        test: /\.(ts|tsx)$/,
-        exclude: /node_modules/,
-        include: /src/,
-        loader: 'eslint-loader',
-        options: {
-          fix: true,
-          emitWarning: mode == 'development',
-        },
-      },
     ],
   },
 
@@ -86,6 +76,10 @@ module.exports = {
   },
 
   plugins: [
+    new ESLintPlugin( {
+      fix: true,
+      emitWarning: mode == 'development',
+    } ),
     new MiniCssExtractPlugin( {
       filename: mode == 'development' ? '[name].css' : '[name].[contenthash:8].css',
       chunkFilename: mode == 'development' ? '[id].css' : '[id].[contenthash:8].css',

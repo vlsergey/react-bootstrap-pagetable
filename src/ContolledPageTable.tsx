@@ -1,4 +1,4 @@
-import FieldModel, { defaultGetter } from './FieldModel';
+import FieldModel, { defaultGetter, defaultRender } from './FieldModel';
 import React, { PureComponent, ReactNode } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import FetchArgs from './FetchArgs';
@@ -28,10 +28,6 @@ export interface PropsType<T> {
 export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>> {
 
   static defaultProps = {
-    fetchArgs: {
-      page: 0,
-      size: 0,
-    },
     hasError: false,
     loading: true,
     tableProps: {
@@ -96,7 +92,7 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
           <tr key={item2id( item )} {...( rowProps ? rowProps( item ) : {} )}>
             { itemModel.fields.map( ( field:FieldModel<unknown> ) =>
               <td key={field.key}>
-                {field.render( ( field.getter || defaultGetter() )( item, field ), item )}
+                {this.renderValueCellContent( field, item )}
               </td>
             ) }
           </tr>
@@ -107,6 +103,12 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
         {footer && footer( fieldsCount )}
       </tfoot>
     </Table>;
+  }
+
+  private renderValueCellContent<T, V>( field: FieldModel<V>, item: T ) {
+    const fieldValue : V = ( field.getter || defaultGetter() )( item, field );
+    const rendered : ReactNode = ( field.render || defaultRender() )( fieldValue, item );
+    return rendered;
   }
 
   private renderPageSizeControlRow( tableColumnsCount: number ) : ReactNode {
@@ -120,11 +122,11 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
             onChange={this.handleSizeChange}
             size={size}
             value={fetchArgs.size}>
-            <option>5</option>
-            <option>10</option>
-            <option>25</option>
-            <option>50</option>
-            <option>100</option>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
           </Form.Control>
         </div>
         <Pagination
