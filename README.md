@@ -102,7 +102,8 @@ const itemModel = {
       getter: ( { birthday } ) => new Date( Date.parse( birthday ) ).getFullYear(),
     },
   ]
-}```
+}
+```
 
 ![](docs-images/readme-example.png)
 
