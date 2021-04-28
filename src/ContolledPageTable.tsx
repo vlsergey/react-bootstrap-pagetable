@@ -94,7 +94,8 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
         </tr> }
       </thead>
       <tbody>
-        { page.content.length == 0 && noContentRow( fieldsCount ) }
+        { !loading && !hasError && page.content.length == 0 &&
+           noContentRow( fieldsCount ) }
         { page.content.map( ( item : T ) =>
           <tr key={item2id( item )} {...( rowProps ? rowProps( item ) : {} )}>
             { itemModel.fields.map( ( field:FieldModel<unknown> ) =>
