@@ -2,8 +2,10 @@
   "compilerOptions": {
     "declaration": true,
     "declarationMap": true,
+    "downlevelIteration": true,
     "esModuleInterop": true,
     "jsx": "react",
+    "importHelpers" : true,
     "lib": ["dom", "es5", "es6"],
     "moduleResolution": "node",
     "noImplicitAny": true,

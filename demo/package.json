@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@vlsergey/js-config": "^1.1.0",
+    "@vlsergey/js-config": "^2.0.0",
     "@vlsergey/react-bootstrap-error-boundary": "^2.1.0",
     "@vlsergey/react-bootstrap-pagetable": "file:..",
     "autoprefixer": "^10.2.5",

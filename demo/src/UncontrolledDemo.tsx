@@ -1,4 +1,4 @@
-import { Action, FetchArgs, FieldModel, ItemModel, Page,
+import { Action, FetchArgs, fetchFromArray, FieldModel, ItemModel, Page,
   UncontrolledPageTable as PageTable } from '@vlsergey/react-bootstrap-pagetable';
 import React, { PureComponent, ReactNode } from 'react';
 import Container from 'react-bootstrap/Container';
@@ -17,6 +17,12 @@ function sleep( ms : number ) : Promise< unknown > {
   return new Promise( resolve => setTimeout( resolve, ms ) );
 }
 
+type TestType = { id : string };
+
+const sourceDataArray : TestType[] =
+  ([ ...(Array( 10000 ) as unknown[]).keys() ] as number[])
+  .map( ( key : number ) => ( { id: String( key ) } ) );
+
 export default class UncontrolledDemo extends PureComponent<unknown, StateType> {
 
   state : StateType = {
@@ -27,6 +33,17 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
     smallSize: false,
   }
 
+  private fetchData = async( fetchArgs : FetchArgs ) : Promise<Page<TestType>> => {
+    const { emulateError, emulateLongLoading } = this.state;
+    if ( emulateLongLoading ) {
+      await sleep( 1000 );
+    }
+    if ( emulateError ) {
+      throw new Error( 'Unable to load page (emulated error)' );
+    }
+    return fetchFromArray( sourceDataArray, fetchArgs );
+  }
+
   private handleCheckboxChange = ( { currentTarget: { checked, name } }: React.ChangeEvent<HTMLInputElement> ) => {
     this.setState( {
       [ name ]: !!checked,
@@ -35,7 +52,6 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
 
   render() : ReactNode {
     const { addAction, emulateError, emulateLongLoading, selectable, smallSize } = this.state;
-    type TestType = { id : string };
 
     const itemModel : ItemModel<TestType> = {
       idF: ( { id }:TestType ) => id,
@@ -57,27 +73,9 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
       } as Action<TestType>,
     ] as Action<TestType>[] : [];
 
-    const fetch = async( { page, size } : FetchArgs ) : Promise<Page<TestType>> => {
-      if ( emulateLongLoading ) {
-        await sleep( 1000 );
-      }
-      if ( emulateError ) {
-        throw new Error( 'Unable to load page (emulated error)' );
-      }
-      return {
-        content: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ].map( ( n : number ) => ( {
-          id: String( n + page * 10 ),
-        } ) ) as TestType[],
-        number: page,
-        totalElements: 10000,
-        totalPages: 1000,
-      };
-    };
-
-    /* eslint-disable react/jsx-no-bind */
     const pageTable = <PageTable
       actions={actions}
-      fetch={fetch}
+      fetch={this.fetchData}
       itemModel={itemModel}
       selectable={selectable}
       size={smallSize ? 'sm' : undefined} />;
