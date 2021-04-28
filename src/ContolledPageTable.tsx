@@ -21,6 +21,7 @@ export interface PropsType<T> {
   rowProps?: ( item : T ) => React.ComponentProps<'tr'>;
   hasError: boolean;
   loading : boolean;
+  noContentRow?: ( tableColumnsCount: number ) => ReactNode;
   page : Page<T>;
   size?: 'sm';
 }
@@ -30,6 +31,11 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
   static defaultProps = {
     hasError: false,
     loading: true,
+    noContentRow: ( tableColumnsCount: number ) : ReactNode => <tr>
+      <td colSpan={tableColumnsCount}>
+        <em>no content on this page, select another page to display</em>
+      </td>
+    </tr>,
     tableProps: {
       bordered: true,
       hover: true,
@@ -51,8 +57,8 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
   }
 
   render() : ReactNode {
-    const { footer, itemModel, hasError, error, loading, page, rowProps, size,
-      tableProps } = this.props;
+    const { footer, itemModel, hasError, error, loading, noContentRow,
+      page, rowProps, size, tableProps } = this.props;
 
     const item2id : IdFunction<T> = itemModel.idF;
     const fieldsCount : number = itemModel.fields.length;
@@ -88,6 +94,7 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
         </tr> }
       </thead>
       <tbody>
+        { page.content.length == 0 && noContentRow( fieldsCount ) }
         { page.content.map( ( item : T ) =>
           <tr key={item2id( item )} {...( rowProps ? rowProps( item ) : {} )}>
             { itemModel.fields.map( ( field:FieldModel<unknown> ) =>

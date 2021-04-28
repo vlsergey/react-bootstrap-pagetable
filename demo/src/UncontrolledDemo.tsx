@@ -20,8 +20,8 @@ function sleep( ms : number ) : Promise< unknown > {
 type TestType = { id : string };
 
 const sourceDataArray : TestType[] =
-  ([ ...(Array( 10000 ) as unknown[]).keys() ] as number[])
-  .map( ( key : number ) => ( { id: String( key ) } ) );
+  ( [ ...( Array( 10000 ) as unknown[] ).keys() ] as number[] )
+    .map( ( key : number ) => ( { id: String( key ) } ) );
 
 export default class UncontrolledDemo extends PureComponent<unknown, StateType> {
 

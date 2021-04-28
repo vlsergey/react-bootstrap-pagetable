@@ -34,6 +34,24 @@ There are 2 main properties to define. First is `itemModel` -- defines the data
 structure, how to display data. Second is `fetch` -- provides implementation
 of method to query data from server (or memory).
 
+```js
+import PageTable from '@vlsergey/react-bootstrap-pagetable';
+
+// ...
+return <PageTable
+         fetch={this.fetchDataImpl}
+         itemModel={itemModel} />
+```
+
+| Property        | Data type                                      | Default value | Description |
+| --------------- | ---------------------------------------------- | ------------- | ----------- |
+| **`fetch`**     | `( fetchArgs: FetchArgs ) => Promise<Page<T>>` | **required**  | See below   |
+| **`itemModel`** | `ItemModel<T>`                                 | **required**  | See below   |
+| `noContentRow`  | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
+| `rowProps`    | `( item : T ) => React.ComponentProps<'tr'>`     | `() => ({})`  | Additional properties for inner `<tr>` element |
+| `size`          | `undefined` \| `'sm'`                          | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
+| `tableProps`    | [props of react bootstrap `<Table>` component](https://react-bootstrap.github.io/components/table/#table-props) | `{}` | Additional properties for inner `<Table>` component |
+
 ### Item model
 So far itemModel (`itemModel : ItemModel`) defines 2 properties:
 
