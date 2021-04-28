@@ -41,7 +41,8 @@
   "dependencies": {
     "@vlsergey/react-bootstrap-button-with-spinner": "^1.3.0",
     "@vlsergey/react-bootstrap-pagination": "^2.2.4",
-    "memoize-one": "^5.1.1"
+    "memoize-one": "^5.1.1",
+    "tslib": "^2.2.0"
   },
   "devDependencies": {
     "@vlsergey/js-config": "^2.0.0",
