@@ -121,15 +121,7 @@ interface FetchArgs {
 */
 interface Page<T> {
   content : T[];
-  empty : boolean;
-  first : boolean;
-  hasContent : boolean;
-  hasNext : boolean;
-  hasPrevious : boolean;
-  last : boolean;
   number : number;
-  numberOfElements : number;
-  size : number;
   totalElements : number;
   totalPages : number;
 }
