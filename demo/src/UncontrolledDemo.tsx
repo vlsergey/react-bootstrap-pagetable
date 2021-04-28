@@ -68,15 +68,7 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
         content: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ].map( ( n : number ) => ( {
           id: String( n + page * 10 ),
         } ) ) as TestType[],
-        empty: false,
-        first: page === 0,
-        hasContent: true,
-        hasNext: page < 999,
-        hasPrevious: page > 0,
-        last: page === 999,
         number: page,
-        numberOfElements: 10,
-        size,
         totalElements: 10000,
         totalPages: 1000,
       };

@@ -5,6 +5,7 @@ import FetchArgs from './FetchArgs';
 import fetchFromArray from './fetchFromArray';
 import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
+import springDataRestResponseToPage from './springDataRestResponseToPage';
 import UncontrolledPageTable from './UncontrolledPageTable';
 import WithActionsPageTable from './actions/WithActionsPageTable';
 import WithSelectablePageTable from './WithSelectablePageTable';
@@ -20,6 +21,7 @@ export {
   Page,
   UncontrolledPageTable,
   singlePage,
+  springDataRestResponseToPage,
   WithActionsPageTable,
   WithSelectablePageTable,
 };
