@@ -54,19 +54,15 @@ have following properties:
   * `title` (`title : ReactNode`). What shall be shown as column title in header
   cell or in the column list in settings dialog popup. Note: `string` can be
   used as `ReactNode`, so feel free to provide just plain text.
-  * `description` (`description? : ReactNode`): Description of field. Currently
-  unused.
+  * `description` (`description? : ReactNode`): Description of field. _Optional_.
+  Currently unused.
   * `getter` (`getter? : ( item : unknown, fieldModel : FieldModel<V> ) => V`).
   _Optional_. Defines the way to obtain field value from object structure. By
   default obtains object property using `key`, i.e. `item[fieldModel.key]`.
   * `render` (`render : ( value : V, item : unknown ) => ReactNode`). _Optional_.
   Defines the way to render object field as table cell content. By default
-  just outputs value as `ReactNode`.
-    > Subject to change. In future versions by default any non-number and
-    non-string value will be converted to string using `JSON.stringify()` method.
-    So it will be easier to catch rendering problems and still provide some kind
-     of "display" to user.
-
+  just outputs string and number values as `ReactNode`, objects are stringified
+  using `JSON.stringify()`, `null` and `undefined` are returned as `null`.
   * `headerCellProps` (`headerCellProps?: ( fieldModel : FieldModel<V> ) => Record<string, unknown>`).
   _Optional_. Provides additional header cell react element (`<th>`) properties.
   By default no additional properties are provided. Header cell is still styled
