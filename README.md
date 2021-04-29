@@ -126,7 +126,7 @@ const itemModel = {
 
 ### fetch()
 
-```javascript
+```TypeScript
 fetch: ( fetchArgs: FetchArgs ) => Promise<Page<T>>
 
 interface FetchArgs {
@@ -153,6 +153,58 @@ interface Page<T> {
 ```
 Provides a way to get items to display. User shall not think about bouncing/scheduling/etc,
 just provide data fetch implementation. `page` field is 0-based.
+
+### Utility functions
+
+#### fetchFromArray
+
+Emulates fetching data from provided array. Supports pagination and sorting (with strings and numbers).
+
+```TypeScript
+import { fetchFromArray } from '@vlsergey/react-bootstrap-pagetable';
+
+async function fetchFromArray<T>(
+    itemModel : ItemModel<T>,
+    src : T[],
+    fetchArgs : FetchArgs ) : Promise<Page<T>>
+```
+
+#### fetchFromSpringDataRest
+
+```TypeScript
+import { fetchFromSpringDataRest } from '@vlsergey/react-bootstrap-pagetable';
+
+async function fetchFromSpringDataRest<T>(
+  url : string,
+  fetchArgs : FetchArgs) : Promise<Page<T>>
+```
+
+Fetches data from Spring Data REST API. Provided URL can be absolute or relative.
+Fields keys to sort or to filter assumed to be passed to server without modifications.
+Convert "virtual" fields to server ones before providing `fetchArgs` to function.
+
+#### springDataRestResponseToPage
+
+```TypeScript
+import { springDataRestResponseToPage } from '@vlsergey/react-bootstrap-pagetable';
+
+type SpringDataApiResponseType<T> = {
+  _embedded: Record<string, T[]>,
+  page: {
+    size: number,
+    totalElements: number,
+    totalPages: number,
+    number: number,
+  }
+}
+
+function springDataRestResponseToPage<T>(
+    key : string, response: SpringDataApiResponseType<T>
+) : Page<T>
+```
+
+Converts Spring Data REST API response to Page structure expected by PageTable.
+`key` is the name of content collection in `_embedded` structure.
 
 [npm-image]: https://img.shields.io/npm/v/@vlsergey/react-bootstrap-pagetable.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@vlsergey/react-bootstrap-pagetable

@@ -3,6 +3,7 @@ import Action from './actions/Action';
 import ControlledPageTable from './ControlledPageTable';
 import FetchArgs from './FetchArgs';
 import fetchFromArray from './fetchFromArray';
+import fetchFromSpringDataRest from './fetchFromSpringDataRest';
 import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
@@ -16,6 +17,7 @@ export {
   ControlledPageTable,
   emptyPage,
   fetchFromArray,
+  fetchFromSpringDataRest,
   FetchArgs,
   FieldModel,
   ItemModel,
