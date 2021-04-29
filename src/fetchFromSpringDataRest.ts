@@ -11,7 +11,8 @@ const FETCH_PARAMS = {
 
 export default async function fetchFromSpringDataRest<T>(
     url : string,
-    { page, size, sort }: FetchArgs ) : Promise<Page<T>> {
+    { page, size, sort } : FetchArgs,
+    responseCollectionKey : string ) : Promise<Page<T>> {
 
   const args : URLSearchParams = new URLSearchParams();
   args.append( 'page', String( page ) );
@@ -31,7 +32,7 @@ export default async function fetchFromSpringDataRest<T>(
 
   const json : unknown = await response.json();
 
-  const result : Page<T> = springDataRestResponseToPage<T>( 'tools',
+  const result : Page<T> = springDataRestResponseToPage<T>( responseCollectionKey,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     json as any );
   return result;

@@ -176,12 +176,15 @@ import { fetchFromSpringDataRest } from '@vlsergey/react-bootstrap-pagetable';
 
 async function fetchFromSpringDataRest<T>(
   url : string,
-  fetchArgs : FetchArgs) : Promise<Page<T>>
+  fetchArgs : FetchArgs,
+  responseCollectionKey : string ) : Promise<Page<T>>
 ```
 
 Fetches data from Spring Data REST API. Provided URL can be absolute or relative.
 Fields keys to sort or to filter assumed to be passed to server without modifications.
 Convert "virtual" fields to server ones before providing `fetchArgs` to function.
+
+`responseCollectionKey` is the name of result collection element inside of `_embedded` structure in response.
 
 #### springDataRestResponseToPage
 
