@@ -16,22 +16,26 @@ export interface PropsType<T> {
   fetchArgs: FetchArgs;
   footer? : ( tableColumnsCount: number ) => ReactNode;
   itemModel: ItemModel<T>;
-  onFetchArgsChange: ( fetchArgs : FetchArgs ) => unknown;
-  tableProps?: React.ComponentProps<Table>;
-  rowProps?: ( item : T ) => React.ComponentProps<'tr'>;
   hasError: boolean;
+  headerCell?: ( field : FieldModel<unknown> ) => ReactNode;
   loading : boolean;
   noContentRow?: ( tableColumnsCount: number ) => ReactNode;
+  onFetchArgsChange: ( fetchArgs : FetchArgs ) => unknown;
   page : Page<T>;
+  rowProps?: ( item : T ) => React.ComponentProps<'tr'>;
   size?: 'sm';
+  tableProps?: React.ComponentProps<Table>;
 }
 
-export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>> {
+export default class ControlledPageTable<T> extends PureComponent<PropsType<T>> {
 
   static defaultProps = {
     hasError: false,
+    headerCell: ( field : FieldModel<unknown> ) : ReactNode => <th key={field.key}>
+      {field.title}
+    </th>,
     loading: true,
-    noContentRow: ( tableColumnsCount: number ) : ReactNode => <tr>
+    noContentRow: ( tableColumnsCount: number ) : ReactNode => <tr key="$_noContentRow">
       <td colSpan={tableColumnsCount}>
         <em>no content on this page, select another page to display</em>
       </td>
@@ -57,8 +61,8 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
   }
 
   render() : ReactNode {
-    const { footer, itemModel, hasError, error, loading, noContentRow,
-      page, rowProps, size, tableProps } = this.props;
+    const { footer, itemModel, hasError, loading, noContentRow, page, rowProps,
+      size, tableProps } = this.props;
 
     const item2id : IdFunction<T> = itemModel.idF;
     const fieldsCount : number = itemModel.fields.length;
@@ -70,29 +74,7 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
     };
 
     return <Table {...actualTableProps}>
-      <thead>
-        {this.renderPageSizeControlRow( fieldsCount )}
-        <tr>
-          { itemModel.fields.map( ( field:FieldModel<unknown> ) =>
-            <th key={field.key}>
-              {field.title}
-            </th>
-          ) }
-        </tr>
-        { loading && <tr>
-          <td colSpan={fieldsCount}>
-            <ProgressBar animated max={100} min={0} now={100} />
-          </td>
-        </tr> }
-        { hasError && <tr>
-          <td colSpan={fieldsCount}>
-            <Alert style={{ margin: 0 }} variant="danger">
-              {'Error occured while loading'}
-              { !!error && `: ${error.message || JSON.stringify( error )}`}
-            </Alert>
-          </td>
-        </tr> }
-      </thead>
+      {this.renderHeader( fieldsCount )}
       <tbody>
         { !loading && !hasError && page.content.length == 0 &&
            noContentRow( fieldsCount ) }
@@ -111,6 +93,30 @@ export default class UncontolledPageTable<T> extends PureComponent<PropsType<T>>
         {footer && footer( fieldsCount )}
       </tfoot>
     </Table>;
+  }
+
+  private renderHeader( fieldsCount : number ) : ReactNode {
+    const { itemModel, hasError, headerCell, error, loading } = this.props;
+
+    return <thead>
+      {this.renderPageSizeControlRow( fieldsCount )}
+      <tr>
+        { itemModel.fields.map( headerCell ) }
+      </tr>
+      { loading && <tr>
+        <td colSpan={fieldsCount}>
+          <ProgressBar animated max={100} min={0} now={100} />
+        </td>
+      </tr> }
+      { hasError && <tr>
+        <td colSpan={fieldsCount}>
+          <Alert style={{ margin: 0 }} variant="danger">
+            {'Error occured while loading'}
+            { !!error && `: ${error.message || JSON.stringify( error )}`}
+          </Alert>
+        </td>
+      </tr> }
+    </thead>;
   }
 
   private renderValueCellContent<T, V>( field: FieldModel<V>, item: T ) {

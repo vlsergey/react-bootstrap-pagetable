@@ -1,17 +1,17 @@
+import InnerPageTable, * as InnerPageTableSpace from './sortable';
 import Page, { emptyPage } from './Page';
 import React, { PureComponent, ReactNode } from 'react';
-import WithActionsPageTable, * as WithActionsPageTableSpace from './actions/WithActionsPageTable';
 import FetchArgs from './FetchArgs';
 
-export type PropsType<T> = Omit<WithActionsPageTableSpace.PropsType<T>,
+export type PropsType<T> = Omit<InnerPageTableSpace.PropsType<T>,
   'error' | 'fetchArgs' | 'hasError' | 'loading' | 'onFetchArgsChange' | 'onRefreshRequired' | 'page' | 'ref' > & {
   fetch: ( fetchArgs: FetchArgs ) => Promise<Page<T>>;
 }
 
-type StateType<T> = Pick<WithActionsPageTableSpace.PropsType<T>,
+type StateType<T> = Pick<InnerPageTableSpace.PropsType<T>,
   'error' | 'fetchArgs' | 'hasError' | 'loading' | 'page' >;
 
-export default class ControlledPageTable<T>
+export default class UncontrolledPageTable<T>
   extends PureComponent<PropsType<T>, StateType<T>> {
 
   state: StateType<T> = {
@@ -56,7 +56,7 @@ export default class ControlledPageTable<T>
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch" }] */
     const { fetch, ...etcProps } = this.props;
 
-    return <WithActionsPageTable
+    return <InnerPageTable
       onFetchArgsChange={this.handleFetchArgsChange}
       onRefreshRequired={this.handleRefreshRequired}
       {...etcProps}

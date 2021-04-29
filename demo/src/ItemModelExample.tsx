@@ -29,16 +29,18 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
     itemModel: `({
   idF: ( { id } ) => id,
   fields: [
-    { key: 'name', title: 'Name' },
+    { key: 'name', title: 'Name', sortable: true },
     {
       key: 'birthday',
       title: 'Birth Date',
       render: ( value ) => new Date( Date.parse( value ) ).toLocaleDateString(),
+      sortable: true,
     },
     {
       key: 'birthyear',
       title: 'Birth Year',
       getter: ( { birthday } ) => new Date( Date.parse( birthday ) ).getFullYear(),
+      sortable: true,
     },
   ]
 })`,
@@ -141,7 +143,7 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
       errorMessageSuffix={<><br /><Button onClick={this.handleRetry}>retry</Button></>}
       key={`ErrorBoundary_${this.state.retryCounter}`}>
       <PageTable
-        fetch={( args : FetchArgs ) => fetchFromArray( parsedData, args )}
+        fetch={( args : FetchArgs ) => fetchFromArray( parsedItemModel, parsedData, args )}
         itemModel={parsedItemModel}
         ref={this.pageTableRef} />
     </ErrorBoundary>;

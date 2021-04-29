@@ -1,18 +1,19 @@
 import Page, { emptyPage, singlePage } from './Page';
 import Action from './actions/Action';
-import ContolledPageTable from './ContolledPageTable';
+import ControlledPageTable from './ControlledPageTable';
 import FetchArgs from './FetchArgs';
 import fetchFromArray from './fetchFromArray';
 import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
 import UncontrolledPageTable from './UncontrolledPageTable';
-import WithActionsPageTable from './actions/WithActionsPageTable';
+import WithActionsPageTable from './actions';
 import WithSelectablePageTable from './WithSelectablePageTable';
+import WithSortablePageTable from './sortable';
 
 export {
   Action,
-  ContolledPageTable,
+  ControlledPageTable,
   emptyPage,
   fetchFromArray,
   FetchArgs,
@@ -24,6 +25,7 @@ export {
   springDataRestResponseToPage,
   WithActionsPageTable,
   WithSelectablePageTable,
+  WithSortablePageTable,
 };
 
 export default UncontrolledPageTable;

@@ -1,18 +1,21 @@
 import { ReactNode } from 'react';
 
+export type FieldGetter<V> = ( ( item : unknown, fieldModel : FieldModel<V> ) => V );
+
 interface FieldModel<V> {
   key : string;
   title : ReactNode;
   description? : ReactNode;
+  sortable?: boolean;
 
-  getter? : ( item : unknown, fieldModel : FieldModel<V> ) => V,
+  getter? : FieldGetter<V>,
   render? : ( value : V, item : unknown ) => ReactNode;
   headerCellProps?: ( fieldModel : FieldModel<V> ) => Record<string, unknown>;
   valueCellProps?: ( value : V, item : unknown, fieldModel : FieldModel<V> ) => Record<string, unknown>;
 }
 
-export function defaultGetter<V, T>() : ( ( item : T, fieldModel : FieldModel<V> ) => V ) {
-  return ( item : T, fieldModel : FieldModel<V> ) => ( item as Record<string, unknown> )[ fieldModel.key ] as V;
+export function defaultGetter<V>() : FieldGetter<V> {
+  return ( item : unknown, fieldModel : FieldModel<V> ) => ( item as Record<string, unknown> )[ fieldModel.key ] as V;
 }
 
 const EMPTY_PROPS = Object.freeze( {} ) as Record<string, unknown>;

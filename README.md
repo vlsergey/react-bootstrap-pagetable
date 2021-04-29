@@ -15,8 +15,8 @@ Features:
 * Change size of page
 * Allow actions to be executed with elements (with or without autorefresh after action completed).
 * Allow selecting multiple elements and execute single action over them
+* Server-side sorting (i.e. passing `sort` argument to server)
 * (TODO) "Select all" checkbox
-* (TODO) server-side sorting (i.e. passing `sort` argument to server)
 * (TODO) server-side filtering
 * (TODO) support standard renderers for date, time and other OpenAPI types
 * (TODO) examples of custom field types with custom renderers (color)  
@@ -74,6 +74,7 @@ have following properties:
   used as `ReactNode`, so feel free to provide just plain text.
   * `description` (`description? : ReactNode`): Description of field. _Optional_.
   Currently unused.
+  * `sortable` (`boolean`): is field sortable or not. _Optional_. Default `false`.
   * `getter` (`getter? : ( item : unknown, fieldModel : FieldModel<V> ) => V`).
   _Optional_. Defines the way to obtain field value from object structure. By
   default obtains object property using `key`, i.e. `item[fieldModel.key]`.
@@ -104,16 +105,18 @@ Possible item model:
 const itemModel = {
   idF: ( { id } ) => id,
   fields: [
-    { key: 'name', title: 'Name' },
+    { key: 'name', title: 'Name', sortable: true },
     {
       key: 'birthday',
       title: 'Birth Date',
       render: ( value ) => new Date( Date.parse( value ) ).toLocaleDateString(),
+      sortable: true,
     },
     {
       key: 'birthyear',
       title: 'Birth Year',
       getter: ( { birthday } ) => new Date( Date.parse( birthday ) ).getFullYear(),
+      sortable: true,
     },
   ]
 }
@@ -128,9 +131,13 @@ fetch: ( fetchArgs: FetchArgs ) => Promise<Page<T>>
 
 interface FetchArgs {
   /** 0-based page to fetch */
-  page: number,
+  page?: number,
   /** Max number of items per page to fetch */
-  size: number,
+  size?: number,
+  /** Sort by field.
+  If multiple fields are specified sort done in order is from last to first.
+  (i.e. reversed before put in (for example) ORDER BY clause of SQL query) */
+  sort?: { field: string, direction?: 'ASC' | 'DESC' }[]
 }
 
 /**

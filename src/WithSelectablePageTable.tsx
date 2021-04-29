@@ -1,10 +1,10 @@
-import ContolledPageTable, * as ContolledPageTableSpace from './ContolledPageTable';
+import InnerPageTable, * as InnerPageTableSpace from './ControlledPageTable';
 import React, { PureComponent, ReactNode } from 'react';
 import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
 import memoizeOne from 'memoize-one';
 
-export type PropsType<T> = ContolledPageTableSpace.PropsType<T> & {
+export type PropsType<T> = InnerPageTableSpace.PropsType<T> & {
   selectable? : boolean;
   onSelectedIdsChange: ( selectedIds: string[] ) => unknown,
   selectedIds: string[],
@@ -50,7 +50,7 @@ export default class WithSelectablePageTable<T>
     const { itemModel, selectable, ...etcProps } = this.props;
 
     if ( !selectable ) {
-      return <ContolledPageTable itemModel={itemModel} {...etcProps} />;
+      return <InnerPageTable itemModel={itemModel} {...etcProps} />;
     }
 
     const newItemModel : ItemModel<T> = {
@@ -67,7 +67,7 @@ export default class WithSelectablePageTable<T>
       ]
     };
 
-    return <ContolledPageTable
+    return <InnerPageTable
       {...etcProps}
       itemModel={newItemModel}
       rowProps={this.rowProps} />;

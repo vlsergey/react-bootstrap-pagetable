@@ -19,6 +19,17 @@ function sleep( ms : number ) : Promise< unknown > {
 
 type TestType = { id : string };
 
+const itemModel : ItemModel<TestType> = {
+  idF: ( { id }:TestType ) => id,
+  fields: [
+    {
+      key: 'id',
+      render: ( value: string ) => value,
+      title: 'ID',
+    } as FieldModel<string>,
+  ],
+};
+
 const sourceDataArray : TestType[] =
   ( [ ...( Array( 10000 ) as unknown[] ).keys() ] as number[] )
     .map( ( key : number ) => ( { id: String( key ) } ) );
@@ -41,7 +52,7 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
     if ( emulateError ) {
       throw new Error( 'Unable to load page (emulated error)' );
     }
-    return fetchFromArray( sourceDataArray, fetchArgs );
+    return fetchFromArray( itemModel, sourceDataArray, fetchArgs );
   }
 
   private handleCheckboxChange = ( { currentTarget: { checked, name } }: React.ChangeEvent<HTMLInputElement> ) => {
@@ -52,17 +63,6 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
 
   render() : ReactNode {
     const { addAction, emulateError, emulateLongLoading, selectable, smallSize } = this.state;
-
-    const itemModel : ItemModel<TestType> = {
-      idF: ( { id }:TestType ) => id,
-      fields: [
-        {
-          key: 'id',
-          render: ( value: string ) => value,
-          title: 'ID',
-        } as FieldModel<string>,
-      ],
-    };
 
     const actions = addAction ? [
       {
