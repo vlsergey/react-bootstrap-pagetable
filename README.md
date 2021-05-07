@@ -10,7 +10,7 @@ Goal of this component is provide standard and simple-to-use component to displa
 
 Online demo: [HERE](https://vlsergey.github.io/react-bootstrap-pagetable/)
 
-Features:
+Main features:
 * [x] Display and navigate over pages of data
 * [x] Change size of page
 * [x] Allow actions to be executed with elements (with or without autorefresh after action completed).
@@ -20,11 +20,12 @@ Features:
 * [ ] (TODO) Support standard renderers for date, time and other OpenAPI types
 * [ ] (TODO) Allow to change visibility and order of columns to be displayed
 * [ ] (TODO) Allow to customize what to display before and after the `Table`: page selection, page size selection, custom text, etc.
-* Small features that nice to have:
- - [x] Abort `fetch()` request if next `fetch()` is called with new arguments
- - [x] Ignore results from old `fetch()` if new one is already called
- - [ ] (TODO) "Select all" checkbox
- - [ ] (TODO) examples of custom field types with custom renderers (color)  
+
+Additional small features that nice to have:
+* [x] Abort `fetch()` request if next `fetch()` is called with new arguments
+* [x] Ignore results from old `fetch()` if new one is already called
+* [ ] (TODO) "Select all" checkbox
+* [ ] (TODO) examples of custom field types with custom renderers (color)  
 
 ## API
 
