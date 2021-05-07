@@ -10,12 +10,4 @@ module.exports = {
     it: true,
   },
   plugins: [ 'promise' ],
-
-  settings: {
-    'import/resolver': {
-      node: {
-        moduleDirectory: [ 'node_modules', 'src', 'test' ],
-      },
-    },
-  },
 };

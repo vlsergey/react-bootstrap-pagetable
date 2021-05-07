@@ -14,8 +14,6 @@ module.exports = {
   },
   rules: {
     ...imported.rules,
-    'import/named': 0,
-    'import/no-unused-modules': 0,
     'no-duplicate-imports': 0,
   },
 };

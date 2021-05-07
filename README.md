@@ -11,16 +11,20 @@ Goal of this component is provide standard and simple-to-use component to displa
 Online demo: [HERE](https://vlsergey.github.io/react-bootstrap-pagetable/)
 
 Features:
-* Display and navigate over pages of data
-* Change size of page
-* Allow actions to be executed with elements (with or without autorefresh after action completed).
-* Allow selecting multiple elements and execute single action over them
-* Server-side sorting (i.e. passing `sort` argument to server)
-* (TODO) "Select all" checkbox
-* (TODO) server-side filtering
-* (TODO) support standard renderers for date, time and other OpenAPI types
-* (TODO) examples of custom field types with custom renderers (color)  
-* (TODO) Allow to change visibility and order of columns to be displayed
+* [x] Display and navigate over pages of data
+* [x] Change size of page
+* [x] Allow actions to be executed with elements (with or without autorefresh after action completed).
+* [x] Allow selecting multiple elements and execute single action over them
+* [x] Server-side sorting (i.e. passing `sort` argument to server)
+* [ ] (TODO) Server-side filtering
+* [ ] (TODO) Support standard renderers for date, time and other OpenAPI types
+* [ ] (TODO) Allow to change visibility and order of columns to be displayed
+* [ ] (TODO) Allow to customize what to display before and after the `Table`: page selection, page size selection, custom text, etc.
+* Small features that nice to have:
+ - [x] Abort `fetch()` request if next `fetch()` is called with new arguments
+ - [x] Ignore results from old `fetch()` if new one is already called
+ - [ ] (TODO) "Select all" checkbox
+ - [ ] (TODO) examples of custom field types with custom renderers (color)  
 
 ## API
 
@@ -127,7 +131,7 @@ const itemModel = {
 ### fetch()
 
 ```TypeScript
-fetch: ( fetchArgs: FetchArgs ) => Promise<Page<T>>
+fetch: ( fetchArgs: FetchArgs, fetchOptions: FetchOptions ) => Promise<Page<T>>
 
 interface FetchArgs {
   /** 0-based page to fetch */
@@ -138,6 +142,13 @@ interface FetchArgs {
   If multiple fields are specified sort done in order is from last to first.
   (i.e. reversed before put in (for example) ORDER BY clause of SQL query) */
   sort?: { field: string, direction?: 'ASC' | 'DESC' }[]
+}
+
+// Additional options to pass to fetch() implementation.
+// Can be just passed as fetch( ... , { ...fetchOptions, /* other options */ } )
+interface FetchOptions {
+  // value of new AbortController().signal to pass to fetch
+  signal?: AbortSignal,
 }
 
 /**

@@ -3,9 +3,13 @@ import Page, { emptyPage } from './Page';
 import React, { PureComponent, ReactNode } from 'react';
 import FetchArgs from './FetchArgs';
 
+export interface FetchOptions {
+  signal?: AbortSignal;
+}
+
 export type PropsType<T> = Omit<InnerPageTableSpace.PropsType<T>,
   'error' | 'fetchArgs' | 'hasError' | 'loading' | 'onFetchArgsChange' | 'onRefreshRequired' | 'page' | 'ref' > & {
-  fetch: ( fetchArgs: FetchArgs ) => Promise<Page<T>>;
+  fetch: ( fetchArgs: FetchArgs, fetchOptions: FetchOptions ) => Promise<Page<T>>;
 }
 
 type StateType<T> = Pick<InnerPageTableSpace.PropsType<T>,
@@ -13,6 +17,9 @@ type StateType<T> = Pick<InnerPageTableSpace.PropsType<T>,
 
 export default class UncontrolledPageTable<T>
   extends PureComponent<PropsType<T>, StateType<T>> {
+
+  private prevFetchArgs : FetchArgs = null;
+  private prevAbortController : AbortController = null;
 
   state: StateType<T> = {
     error: null,
@@ -42,12 +49,32 @@ export default class UncontrolledPageTable<T>
 
     try {
       this.setState( { loading: true } );
-      const page : Page<T> = await fetch( fetchArgs );
-      this.setState( { error: null, loading: false, hasError: false, page } );
+
+      if ( this.prevAbortController != null ) {
+        this.prevAbortController.abort();
+        this.prevAbortController = null;
+      }
+
+      // do not use fetch result from outdated query
+
+      // remember query here...
+      this.prevFetchArgs = fetchArgs;
+      const newAbortController = this.prevAbortController = window.AbortController ? new AbortController() : null;
+
+      const fetchOptions : FetchOptions = newAbortController != null ? { signal: newAbortController.signal } : {};
+      const page : Page<T> = await fetch( fetchArgs, fetchOptions );
+
+      // ...to compare query here
+      if ( this.prevFetchArgs === fetchArgs ) {
+        this.setState( { error: null, loading: false, hasError: false, page } );
+        this.prevFetchArgs = null;
+        this.prevAbortController = null;
+      }
+
     } catch ( error : unknown ) {
       this.setState( { error, loading: false, hasError: true } );
     }
-  } ;
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   scheduleRefreshNow = () : unknown => setTimeout( this.refresh, 0 );

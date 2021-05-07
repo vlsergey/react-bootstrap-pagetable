@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@vlsergey/js-config": "^2.0.0",
+    "@vlsergey/js-config": "^3.0.1",
     "eslint-watch": "^7.0.0",
     "react": "16.14.0",
     "react-bootstrap": "^1.0.0",
