@@ -10,6 +10,7 @@ export interface FetchOptions {
 export type PropsType<T> = Omit<InnerPageTableSpace.PropsType<T>,
   'error' | 'fetchArgs' | 'hasError' | 'loading' | 'onFetchArgsChange' | 'onRefreshRequired' | 'page' | 'ref' > & {
   fetch: ( fetchArgs: FetchArgs, fetchOptions: FetchOptions ) => Promise<Page<T>>;
+  onFetchArgsChange? : InnerPageTableSpace.PropsType<T>['onFetchArgsChange'];
 }
 
 type StateType<T> = Pick<InnerPageTableSpace.PropsType<T>,
@@ -34,7 +35,11 @@ export default class UncontrolledPageTable<T>
   }
 
   handleFetchArgsChange = ( fetchArgs: FetchArgs ) : void => {
+    const { onFetchArgsChange } = this.props;
     this.setState( { fetchArgs } );
+    if ( onFetchArgsChange ) {
+      onFetchArgsChange( fetchArgs );
+    }
     // add bounce?
     this.scheduleRefreshNow();
   }
@@ -80,8 +85,8 @@ export default class UncontrolledPageTable<T>
   scheduleRefreshNow = () : unknown => setTimeout( this.refresh, 0 );
 
   render() : ReactNode {
-    /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch" }] */
-    const { fetch, ...etcProps } = this.props;
+    /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch|onFetchArgsChange" }] */
+    const { fetch, onFetchArgsChange, ...etcProps } = this.props;
 
     return <InnerPageTable
       onFetchArgsChange={this.handleFetchArgsChange}

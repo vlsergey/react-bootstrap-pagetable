@@ -12,8 +12,9 @@ import Row from 'react-bootstrap/Row';
 type DataType = Record<string, unknown>;
 
 interface StateType {
-  refreshOnDataChange: boolean;
   data: string;
+  fetchArgs: FetchArgs;
+  refreshOnDataChange: boolean;
   retryCounter:number;
 }
 
@@ -28,7 +29,7 @@ class FilterCell extends PureComponent<{
   onChange: ( filterBy : string ) => unknown
 }> {
 
-  private handleChange = ( { currentTarget: { value } }: React.ChangeEvent ) : unknown =>
+  private handleChange = ( { currentTarget: { value } }: React.ChangeEvent<HTMLInputElement> ) : unknown =>
     this.props.onChange( value );
 
   render() : ReactNode {
@@ -82,23 +83,29 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
   { "id": "6", "name": "Fiona", "birthday": "2006-07-08" },
   { "id": "7", "name": "Helen", "birthday": "2007-08-09" }
 ]`,
+    fetchArgs: {},
     refreshOnDataChange: true,
     retryCounter: 0,
   }
 
   private pageTableRef = React.createRef<PageTable<DataType>>();
 
-  handleDataChange = ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : void => {
-    this.setState( { data: value } );
-    if ( this.state.refreshOnDataChange && this.pageTableRef.current ) {
-      this.pageTableRef.current.scheduleRefreshNow();
+  private handleDataChange
+    = ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : void => {
+      this.setState( { data: value } );
+      if ( this.state.refreshOnDataChange && this.pageTableRef.current ) {
+        this.pageTableRef.current.scheduleRefreshNow();
+      }
     }
-  }
 
-  handleRefreshOnDataChangeChange = ( { currentTarget: { checked } } : React.ChangeEvent<HTMLInputElement> ) : unknown =>
-    this.setState( { refreshOnDataChange: checked } );
+  private handleFetchArgsChange = ( fetchArgs: FetchArgs ) =>
+    this.setState( { fetchArgs } );
 
-  handleRetry = () : unknown =>
+  private handleRefreshOnDataChangeChange =
+    ( { currentTarget: { checked } } : React.ChangeEvent<HTMLInputElement> ) : unknown =>
+      this.setState( { refreshOnDataChange: checked } );
+
+  private handleRetry = () : unknown =>
     this.setState( ( { retryCounter } ) => ( { retryCounter: retryCounter + 1 } ) );
 
   render() : ReactNode {
@@ -130,14 +137,22 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
       </Row>
       <Row>
         <Col>
-          <h2>Result</h2>
+          <h2>FetchArgs structure</h2>
+          <code>
+            {JSON.stringify( this.state.fetchArgs )}
+          </code>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h2>Result (using <code>fetchFromArray()</code>)</h2>
           {this.renderResult()}
         </Col>
       </Row>
     </Container>;
   }
 
-  private renderResult() {
+  private renderResult() : ReactNode {
     const { data } = this.state;
 
     let parsedData : DataType[];
@@ -159,6 +174,7 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
       <PageTable
         fetch={( args : FetchArgs ) => fetchFromArray( ITEM_MODEL, parsedData, args )}
         itemModel={ITEM_MODEL}
+        onFetchArgsChange={this.handleFetchArgsChange}
         ref={this.pageTableRef} />
     </ErrorBoundary>;
   }
