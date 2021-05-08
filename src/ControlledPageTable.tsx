@@ -12,18 +12,19 @@ import Table from 'react-bootstrap/Table';
 type IdFunction<T> = ( item : T ) => string;
 
 export interface PropsType<T> {
+  columnHeaderCell?: ( field : FieldModel<unknown> ) => ReactNode;
+  columnHeaderRow?: ( fieldsToRender : FieldModel<unknown>[] ) => ReactNode;
   error? : unknown & {message? : string};
   fetchArgs: FetchArgs;
   footer? : ( tableColumnsCount: number ) => ReactNode;
   itemModel: ItemModel<T>;
   hasError: boolean;
-  headerCell?: ( field : FieldModel<unknown> ) => ReactNode;
   loading : boolean;
   noContentRow?: ( tableColumnsCount: number ) => ReactNode;
   onFetchArgsChange: ( fetchArgs : FetchArgs ) => unknown;
   page : Page<T>;
   rowProps?: ( item : T ) => React.ComponentProps<'tr'>;
-  size?: 'sm';
+  size?: 'lg' | 'sm';
   tableProps?: React.ComponentProps<Table>;
 }
 
@@ -31,7 +32,7 @@ export default class ControlledPageTable<T> extends PureComponent<PropsType<T>> 
 
   static defaultProps = {
     hasError: false,
-    headerCell: ( field : FieldModel<unknown> ) : ReactNode => <th key={field.key}>
+    columnHeaderCell: ( field : FieldModel<unknown> ) : ReactNode => <th key={field.key}>
       {field.title}
     </th>,
     loading: true,
@@ -49,6 +50,9 @@ export default class ControlledPageTable<T> extends PureComponent<PropsType<T>> 
       }
     },
   }
+
+  defaultCellHeaderRow = ( fieldsToRender : FieldModel<unknown>[] ) : ReactNode =>
+    <tr>{fieldsToRender.map( this.props.columnHeaderCell )}</tr>;
 
   private handlePageChange = ( { target: { value } } : {target: {value: number}} ) => {
     const { fetchArgs, onFetchArgsChange } = this.props;
@@ -73,14 +77,17 @@ export default class ControlledPageTable<T> extends PureComponent<PropsType<T>> 
       ...tableProps
     };
 
+    // TODO: allow user to change
+    const fieldsToRender : FieldModel<unknown>[] = itemModel.fields;
+
     return <Table {...actualTableProps}>
-      {this.renderHeader( fieldsCount )}
+      {this.renderHeader( fieldsToRender )}
       <tbody>
         { !loading && !hasError && page.content.length == 0 &&
            noContentRow( fieldsCount ) }
         { page.content.map( ( item : T ) =>
           <tr key={item2id( item )} {...( rowProps ? rowProps( item ) : {} )}>
-            { itemModel.fields.map( ( field:FieldModel<unknown> ) =>
+            { fieldsToRender.map( ( field:FieldModel<unknown> ) =>
               <td key={field.key}>
                 {this.renderValueCellContent( field, item )}
               </td>
@@ -95,14 +102,13 @@ export default class ControlledPageTable<T> extends PureComponent<PropsType<T>> 
     </Table>;
   }
 
-  private renderHeader( fieldsCount : number ) : ReactNode {
-    const { itemModel, hasError, headerCell, error, loading } = this.props;
+  private renderHeader( fieldsToRender : FieldModel<unknown>[] ) : ReactNode {
+    const { columnHeaderRow, hasError, error, loading } = this.props;
+    const fieldsCount : number = fieldsToRender.length;
 
     return <thead>
       {this.renderPageSizeControlRow( fieldsCount )}
-      <tr>
-        { itemModel.fields.map( headerCell ) }
-      </tr>
+      {( columnHeaderRow || this.defaultCellHeaderRow )( fieldsToRender )}
       { loading && <tr>
         <td colSpan={fieldsCount}>
           <ProgressBar animated max={100} min={0} now={100} />

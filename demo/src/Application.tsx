@@ -1,5 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import ContolledDemo from './ContolledDemo';
+import FiltersExample from './FiltersExample';
 import ItemModelExample from './ItemModelExample';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -32,6 +33,9 @@ export default class Application extends PureComponent<unknown, StateType> {
       </Tab>
       <Tab eventKey="itemModelExample" title={<><code>ItemModel</code> example</>}>
         <ItemModelExample />
+      </Tab>
+      <Tab eventKey="filtersExample" title={<>Filters example</>}>
+        <FiltersExample />
       </Tab>
     </Tabs>;
   }

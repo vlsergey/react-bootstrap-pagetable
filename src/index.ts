@@ -1,14 +1,15 @@
+import FieldModel, { FieldCellRenderer } from './FieldModel';
 import Page, { emptyPage, singlePage } from './Page';
 import Action from './actions/Action';
 import ControlledPageTable from './ControlledPageTable';
 import FetchArgs from './FetchArgs';
 import fetchFromArray from './fetchFromArray';
 import fetchFromSpringDataRest from './fetchFromSpringDataRest';
-import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
 import UncontrolledPageTable from './UncontrolledPageTable';
 import WithActionsPageTable from './actions';
+import WithFilterablePageTable from './filterable';
 import WithSelectablePageTable from './WithSelectablePageTable';
 import WithSortablePageTable from './sortable';
 
@@ -19,6 +20,7 @@ export {
   fetchFromArray,
   fetchFromSpringDataRest,
   FetchArgs,
+  FieldCellRenderer,
   FieldModel,
   ItemModel,
   Page,
@@ -26,6 +28,7 @@ export {
   singlePage,
   springDataRestResponseToPage,
   WithActionsPageTable,
+  WithFilterablePageTable,
   WithSelectablePageTable,
   WithSortablePageTable,
 };

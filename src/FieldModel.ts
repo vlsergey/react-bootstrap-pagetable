@@ -2,11 +2,19 @@ import { ReactNode } from 'react';
 
 export type FieldGetter<V> = ( ( item : unknown, fieldModel : FieldModel<V> ) => V );
 
+export type FieldCellRenderer<V, F> = (
+  filterBy : F,
+  onFilterByChange : ( filterBy : F ) => unknown,
+  fieldModel : FieldModel<V>
+) => ReactNode;
+
 interface FieldModel<V> {
   key : string;
   title : ReactNode;
   description? : ReactNode;
+
   sortable?: boolean;
+  renderFilterCell? : FieldCellRenderer<V, unknown>;
 
   getter? : FieldGetter<V>,
   render? : ( value : V, item : unknown ) => ReactNode;

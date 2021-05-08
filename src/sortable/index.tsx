@@ -1,14 +1,14 @@
-import InnerPageTable, * as InnerPageTableSpace from '../actions';
+import InnerPageTable, * as InnerPageTableSpace from '../filterable';
 import React, { PureComponent, ReactNode } from 'react';
 import FieldModel from '../FieldModel';
 import SortableHeaderCell from './SortableHeaderCell';
 
-export type PropsType<T> = Omit<InnerPageTableSpace.PropsType<T>, 'headerCell'>;
+export type PropsType<T> = Omit<InnerPageTableSpace.PropsType<T>, 'columnHeaderCell'>;
 
 export default class WithSortablePageTable<T>
   extends PureComponent<PropsType<T>> {
 
-  private renderHeaderCell = <V extends unknown>( field : FieldModel<V> ) : ReactNode =>
+  private renderColumnHeaderCell = <V extends unknown>( field : FieldModel<V> ) : ReactNode =>
     <SortableHeaderCell
       fetchArgs={this.props.fetchArgs}
       field={field}
@@ -30,8 +30,8 @@ export default class WithSortablePageTable<T>
 
     return <InnerPageTable
       {...etcProps}
+      columnHeaderCell={this.renderColumnHeaderCell}
       fetchArgs={fetchArgs}
-      headerCell={this.renderHeaderCell}
       itemModel={itemModel}
       onFetchArgsChange={onFetchArgsChange} />;
   }

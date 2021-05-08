@@ -1,4 +1,4 @@
-import PageTable, { FetchArgs, fetchFromArray, ItemModel }
+import PageTable, { FetchArgs, fetchFromArray, FieldCellRenderer, ItemModel }
   from '@vlsergey/react-bootstrap-pagetable';
 import React, { PureComponent, ReactNode } from 'react';
 import Alert from 'react-bootstrap/Alert';
@@ -14,36 +14,74 @@ type DataType = Record<string, unknown>;
 interface StateType {
   refreshOnDataChange: boolean;
   data: string;
-  itemModel: string;
   retryCounter:number;
 }
 
-export default class ItemModelExample extends PureComponent<unknown, StateType> {
+type TestType = {
+  id: string,
+  name: string,
+  birthday: string,
+}
 
-  state : StateType = {
-    data: `[
-  { "id": "1", "name": "Alice", "birthday": "2001-02-03" },
-  { "id": "2", "name": "Bob", "birthday": "2002-03-04" },
-  { "id": "3", "name": "Carl", "birthday": "2003-04-05" }
-]`,
-    itemModel: `({
-  idF: function( item ) { return item.id; },
+class FilterCell extends PureComponent<{
+  filterBy: string,
+  onChange: ( filterBy : string ) => unknown
+}> {
+
+  private handleChange = ( { currentTarget: { value } }: React.ChangeEvent ) : unknown =>
+    this.props.onChange( value );
+
+  render() : ReactNode {
+    return <td>
+      <Form.Control
+        onChange={this.handleChange}
+        placeholder="value to filter by (show values that contains entered text)"
+        type="text"
+        value={this.props.filterBy || ''} />
+    </td>;
+  }
+}
+
+const renderFilterByContainsCell : FieldCellRenderer<string, unknown> =
+  ( filterBy: string, onChange : ( ( filterBy: string ) => unknown ) ) =>
+    <FilterCell filterBy={filterBy} onChange={onChange} />;
+
+const ITEM_MODEL : ItemModel<TestType> = {
+  idF: ( { id } : TestType ) => id,
   fields: [
-    { key: 'name', title: 'Name', sortable: true },
+    {
+      key: 'name',
+      title: 'Name',
+      sortable: true,
+      renderFilterCell: renderFilterByContainsCell
+    },
     {
       key: 'birthday',
       title: 'Birth Date',
-      render: function( value ){ return new Date( Date.parse( value ) ).toLocaleDateString(); },
+      render: ( value : string ) => new Date( Date.parse( value ) ).toLocaleDateString(),
       sortable: true,
     },
     {
       key: 'birthyear',
       title: 'Birth Year',
-      getter: function( item ) { return new Date( Date.parse( item.birthday ) ).getFullYear(); },
+      getter: ( { birthday } : TestType ) => new Date( Date.parse( birthday ) ).getFullYear(),
       sortable: true,
     },
   ]
-})`,
+};
+
+export default class FiltersExample extends PureComponent<unknown, StateType> {
+
+  state : StateType = {
+    data: `[
+  { "id": "1", "name": "Alice", "birthday": "2001-02-03" },
+  { "id": "2", "name": "Bob", "birthday": "2002-03-04" },
+  { "id": "3", "name": "Carl", "birthday": "2003-04-05" },
+  { "id": "4", "name": "David", "birthday": "2004-05-06" },
+  { "id": "5", "name": "Eva", "birthday": "2005-06-07" },
+  { "id": "6", "name": "Fiona", "birthday": "2006-07-08" },
+  { "id": "7", "name": "Helen", "birthday": "2007-08-09" }
+]`,
     refreshOnDataChange: true,
     retryCounter: 0,
   }
@@ -57,9 +95,6 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
     }
   }
 
-  handleItemModelChange = ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : unknown =>
-    this.setState( { itemModel: value } );
-
   handleRefreshOnDataChangeChange = ( { currentTarget: { checked } } : React.ChangeEvent<HTMLInputElement> ) : unknown =>
     this.setState( { refreshOnDataChange: checked } );
 
@@ -67,20 +102,10 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
     this.setState( ( { retryCounter } ) => ( { retryCounter: retryCounter + 1 } ) );
 
   render() : ReactNode {
-    const { data, itemModel, refreshOnDataChange } = this.state;
+    const { data, refreshOnDataChange } = this.state;
 
     return <Container>
       <Row>
-        <Form.Group as={Col} controlId="itemModel">
-          <Form.Label>Item Model (JavaScript)</Form.Label>
-          <Form.Control
-            as="textarea"
-            className="text-monospace"
-            name="itemModel"
-            onChange={this.handleItemModelChange}
-            rows={20}
-            value={itemModel} />
-        </Form.Group>
         <Form.Group as={Col} controlId="data">
           <Form.Label>Data (JSON)</Form.Label>
           <Form.Control
@@ -88,7 +113,7 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
             className="text-monospace"
             name="data"
             onChange={this.handleDataChange}
-            rows={20}
+            rows={5}
             value={data} />
         </Form.Group>
       </Row>
@@ -113,7 +138,7 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
   }
 
   private renderResult() {
-    const { data, itemModel } = this.state;
+    const { data } = this.state;
 
     let parsedData : DataType[];
     try {
@@ -126,25 +151,14 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
       </Alert>;
     }
 
-    let parsedItemModel : ItemModel<DataType>;
-    try {
-      parsedItemModel = eval( itemModel ) as ItemModel<DataType>;
-    } catch ( err ) {
-      const error = err as {message?: string};
-      return <Alert variant="danger">
-        {'Unable to execute item model JavaScript: '}
-        {error.message || JSON.stringify( error )}
-      </Alert>;
-    }
-
     /* eslint-disable react/jsx-no-bind */
     return <ErrorBoundary
       errorMessagePrefix="Unable to render pagetable: "
       errorMessageSuffix={<><br /><Button onClick={this.handleRetry}>retry</Button></>}
       key={`ErrorBoundary_${this.state.retryCounter}`}>
       <PageTable
-        fetch={( args : FetchArgs ) => fetchFromArray( parsedItemModel, parsedData, args )}
-        itemModel={parsedItemModel}
+        fetch={( args : FetchArgs ) => fetchFromArray( ITEM_MODEL, parsedData, args )}
+        itemModel={ITEM_MODEL}
         ref={this.pageTableRef} />
     </ErrorBoundary>;
   }

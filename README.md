@@ -16,7 +16,7 @@ Main features:
 * [x] Allow actions to be executed with elements (with or without autorefresh after action completed).
 * [x] Allow selecting multiple elements and execute single action over them
 * [x] Server-side sorting (i.e. passing `sort` argument to server)
-* [ ] (TODO) Server-side filtering
+* [x] Server-side filtering (allow to display filters and pass filter arguments to server)
 * [ ] (TODO) Support standard renderers for date, time and other OpenAPI types
 * [ ] (TODO) Allow to change visibility and order of columns to be displayed
 * [ ] (TODO) Allow to customize what to display before and after the `Table`: page selection, page size selection, custom text, etc.
@@ -53,8 +53,8 @@ return <PageTable
 | **`fetch`**     | `( fetchArgs: FetchArgs ) => Promise<Page<T>>` | **required**  | See below   |
 | **`itemModel`** | `ItemModel<T>`                                 | **required**  | See below   |
 | `noContentRow`  | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
-| `rowProps`    | `( item : T ) => React.ComponentProps<'tr'>`     | `() => ({})`  | Additional properties for inner `<tr>` element |
-| `size`          | `undefined` \| `'sm'`                          | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
+| `rowProps`      | `( item : T ) => React.ComponentProps<'tr'>`   | `() => ({})`  | Additional properties for inner `<tr>` element |
+| `size`          | `undefined` \| `'lg'` \| `'sm'`                | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
 | `tableProps`    | [props of react bootstrap `<Table>` component](https://react-bootstrap.github.io/components/table/#table-props) | `{}` | Additional properties for inner `<Table>` component |
 
 ### Item model
