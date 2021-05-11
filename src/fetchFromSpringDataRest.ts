@@ -1,4 +1,4 @@
-import FetchArgs from './FetchArgs';
+import FetchArgs, { SortBy } from './FetchArgs';
 import Page from './Page';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
 
@@ -11,17 +11,24 @@ const FETCH_PARAMS = {
 
 export default async function fetchFromSpringDataRest<T>(
     url : string,
-    { page, size, sort } : FetchArgs,
+    { page, size, filter, sort } : FetchArgs,
     responseCollectionKey : string ) : Promise<Page<T>> {
 
   const args : URLSearchParams = new URLSearchParams();
   args.append( 'page', String( page ) );
   args.append( 'size', String( size ) );
 
-  const firstSort = sort ? sort[ sort.length - 1 ] : null;
-  if ( firstSort ) {
-    args.append( 'sort', firstSort.field + ( firstSort.direction === 'DESC' ? ',desc' : '' ) );
+  if ( filter ) {
+    for ( const [ fieldKey, filterValue ] of Object.entries( filter ) ) {
+      if ( typeof filterValue === 'string' || typeof filterValue === 'number' ) {
+        args.append( fieldKey, String( filterValue ) );
+      }
+    }
   }
+
+  sort.forEach( ( sortBy : SortBy ) =>
+    args.append( 'sort', sortBy.field + ( sortBy.direction === 'DESC' ? ',desc' : '' ) )
+  );
 
   const response : Response = await fetch( `${url}?${args.toString()}`, FETCH_PARAMS );
 
