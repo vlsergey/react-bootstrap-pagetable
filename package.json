@@ -15,7 +15,7 @@
     "test": "cross-env NODE_ENV=development karma start karma.conf.js --single-run",
     "test:watch": "cross-env NODE_ENV=development karma start karma.conf.js --no-single-run",
     "test:watch:chrome": "cross-env NODE_ENV=development karma start karma.conf.js --no-single-run --browsers Chrome",
-    "preversion": "npm run eslint:fix && npm test && npm run clean && npm run build && npm run clean --prefix=demo && npm run build --prefix=demo && npm run git:commitDocs",
+    "preversion": "npm run build && npm run eslint:fix && npm test && npm run clean && npm run build && npm run clean --prefix=demo && npm run build --prefix=demo && npm run git:commitDocs",
     "version": "npm publish --access=public",
     "postversion": "git push && git push --tags"
   },
