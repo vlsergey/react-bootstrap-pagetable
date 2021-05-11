@@ -62,6 +62,7 @@ export default class SortableHeaderCell<V> extends PureComponent<PropsType<V>> {
         <i className={iconClassName} css={css( `
           color: lightgray;
           line-height: unset;
+          margin-left: 0.25em;
         ` )} />
       </div>
     </th>;
