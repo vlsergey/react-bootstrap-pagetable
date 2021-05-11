@@ -1,4 +1,4 @@
-import PageTable, { FetchArgs, fetchFromArray, FieldCellRenderer, ItemModel }
+import PageTable, { FetchArgs, fetchFromArray, FieldFilterCellRenderer, ItemModel }
   from '@vlsergey/react-bootstrap-pagetable';
 import React, { PureComponent, ReactNode } from 'react';
 import Alert from 'react-bootstrap/Alert';
@@ -43,7 +43,7 @@ class FilterCell extends PureComponent<{
   }
 }
 
-const renderFilterByContainsCell : FieldCellRenderer<string, unknown> =
+const renderFilterByContainsCell : FieldFilterCellRenderer<string, unknown> =
   ( filterBy: string, onChange : ( ( filterBy: string ) => unknown ) ) =>
     <FilterCell filterBy={filterBy} onChange={onChange} />;
 

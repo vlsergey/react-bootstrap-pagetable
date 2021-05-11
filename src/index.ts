@@ -1,4 +1,4 @@
-import FieldModel, { FieldCellRenderer } from './FieldModel';
+import FieldModel, { FieldFilterCellRenderer } from './FieldModel';
 import Page, { emptyPage, singlePage } from './Page';
 import Action from './actions/Action';
 import ControlledPageTable from './ControlledPageTable';
@@ -20,7 +20,7 @@ export {
   fetchFromArray,
   fetchFromSpringDataRest,
   FetchArgs,
-  FieldCellRenderer,
+  FieldFilterCellRenderer,
   FieldModel,
   ItemModel,
   Page,
