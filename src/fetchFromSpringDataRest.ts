@@ -1,4 +1,4 @@
-import FetchArgs, { SortBy } from './FetchArgs';
+import FetchArgs from './FetchArgs';
 import Page from './Page';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
 
@@ -22,13 +22,17 @@ export default async function fetchFromSpringDataRest<T>(
     for ( const [ fieldKey, filterValue ] of Object.entries( filter ) ) {
       if ( typeof filterValue === 'string' || typeof filterValue === 'number' ) {
         args.append( fieldKey, String( filterValue ) );
+      } else {
+        console.warn( `Unsupported filter value type for field '${fieldKey}': ${typeof filterValue}` );
       }
     }
   }
 
-  sort.forEach( ( sortBy : SortBy ) =>
-    args.append( 'sort', sortBy.field + ( sortBy.direction === 'DESC' ? ',desc' : '' ) )
-  );
+  if ( sort ) {
+    for ( const sortBy of sort ) {
+      args.append( 'sort', sortBy.field + ( sortBy.direction === 'DESC' ? ',desc' : '' ) );
+    }
+  }
 
   const response : Response = await fetch( `${url}?${args.toString()}`, FETCH_PARAMS );
 
