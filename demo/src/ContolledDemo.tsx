@@ -1,4 +1,4 @@
-import { Action, FieldModel, ItemModel, Page, WithActionsPageTable as PageTable,
+import { Action, ControlledPageTable, FieldModel, ItemModel, Page,
   singlePage } from '@vlsergey/react-bootstrap-pagetable';
 import React, { PureComponent, ReactNode } from 'react';
 import Container from 'react-bootstrap/Container';
@@ -59,7 +59,7 @@ export default class ContolledDemo extends PureComponent<unknown, StateType> {
       } as Action<TestType>,
     ] as Action<TestType>[] : [];
 
-    const pageTable = <PageTable
+    const pageTable = <ControlledPageTable
       actions={actions}
       error={null}
       fetchArgs={{ size: 10, page: 0 }}

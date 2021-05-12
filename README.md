@@ -17,6 +17,7 @@ Main features:
 * [x] Allow selecting multiple elements and execute single action over them
 * [x] Server-side sorting (i.e. passing `sort` argument to server)
 * [x] Server-side filtering (allow to display filters and pass filter arguments to server)
+* [x] Integration with [react-router](https://reactrouter.com/) to support fetching arguments from URL and pushing changes back
 * [ ] (TODO) Support standard renderers for date, time and other OpenAPI types
 * [ ] (TODO) Allow to change visibility and order of columns to be displayed
 * [ ] (TODO) Allow to customize what to display before and after the `Table`: page selection, page size selection, custom text, etc.
@@ -39,7 +40,7 @@ There are 2 main properties to define. First is `itemModel` -- defines the data
 structure, how to display data. Second is `fetch` -- provides implementation
 of method to query data from server (or memory).
 
-```js
+```typescript
 import PageTable from '@vlsergey/react-bootstrap-pagetable';
 
 // ...
@@ -48,14 +49,20 @@ return <PageTable
          itemModel={itemModel} />
 ```
 
-| Property        | Data type                                      | Default value | Description |
-| --------------- | ---------------------------------------------- | ------------- | ----------- |
-| **`fetch`**     | `( fetchArgs: FetchArgs ) => Promise<Page<T>>` | **required**  | See below   |
-| **`itemModel`** | `ItemModel<T>`                                 | **required**  | See below   |
-| `noContentRow`  | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
-| `rowProps`      | `( item : T ) => React.ComponentProps<'tr'>`   | `() => ({})`  | Additional properties for inner `<tr>` element |
-| `size`          | `undefined` \| `'lg'` \| `'sm'`                | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
-| `tableProps`    | [props of react bootstrap `<Table>` component](https://react-bootstrap.github.io/components/table/#table-props) | `{}` | Additional properties for inner `<Table>` component |
+To enable [react-router](https://reactrouter.com/) integration import another variant of `PageTable`:
+```typescript
+import {UncontrolledWithReactRouter as PageTable} from '@vlsergey/react-bootstrap-pagetable';
+```
+
+| Property          | Data type                                      | Default value | Description |
+| ----------------- | ---------------------------------------------- | ------------- | ----------- |
+| **`fetch`**       | `( fetchArgs: FetchArgs ) => Promise<Page<T>>` | **required**  | See below   |
+| **`itemModel`**   | `ItemModel<T>`                                 | **required**  | See below   |
+| `noContentRow`    | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
+| `rowProps`        | `( item : T ) => React.ComponentProps<'tr'>`   | `() => ({})`  | Additional properties for inner `<tr>` element |
+| `size`            | `undefined` \| `'lg'` \| `'sm'`                | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
+| `tableProps`      | [props of react bootstrap `<Table>` component](https://react-bootstrap.github.io/components/table/#table-props) | `{}` | Additional properties for inner `<Table>` component |
+| `urlParamsPrefix` | `string`                                       | `""`          | What is the prefix of `page`, `size`, `sort` and other URL arguments that `PageTable` should interact with. Only with [react-router](https://reactrouter.com/) integration enabled.  |
 
 ### Item model
 So far itemModel (`itemModel : ItemModel`) defines 2 properties:

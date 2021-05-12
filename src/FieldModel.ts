@@ -3,10 +3,15 @@ import { ReactNode } from 'react';
 export type FieldGetter<V> = ( ( item : unknown, fieldModel : FieldModel<V> ) => V );
 
 export type FieldFilterCellRenderer<V, F> = (
+  fieldModel : FieldModel<V>,
   filterBy : F,
-  onFilterByChange : ( filterBy : F ) => unknown,
-  fieldModel : FieldModel<V>
+  onFilterByChange : ( filterBy : F ) => unknown
 ) => ReactNode;
+
+export interface FieldFilterValueConverter<F> {
+  fromString : ( str : string ) => F,
+  toString: ( filterBy : F ) => string,
+}
 
 interface FieldModel<V> {
   key : string;
@@ -15,6 +20,7 @@ interface FieldModel<V> {
 
   sortable?: boolean;
   renderFilterCell? : FieldFilterCellRenderer<V, unknown>;
+  filterValueConverter? : FieldFilterValueConverter<unknown>;
 
   getter? : FieldGetter<V>,
   render? : ( value : V, item : unknown ) => ReactNode;
@@ -24,6 +30,13 @@ interface FieldModel<V> {
 
 export function defaultGetter<V>() : FieldGetter<V> {
   return ( item : unknown, fieldModel : FieldModel<V> ) => ( item as Record<string, unknown> )[ fieldModel.key ] as V;
+}
+
+export function defaultFilterValueConverter() : FieldFilterValueConverter<unknown> {
+  return {
+    fromString: JSON.parse,
+    toString: JSON.stringify,
+  };
 }
 
 const EMPTY_PROPS = Object.freeze( {} ) as Record<string, unknown>;

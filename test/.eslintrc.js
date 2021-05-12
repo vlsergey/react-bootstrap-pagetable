@@ -9,5 +9,8 @@ module.exports = {
     describe: true,
     it: true,
   },
+  rules: {
+    "react/jsx-no-bind": 0,
+  },
   plugins: [ 'promise' ],
 };

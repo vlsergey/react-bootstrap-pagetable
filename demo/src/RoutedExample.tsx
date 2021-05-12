@@ -1,5 +1,6 @@
-import { FetchArgs, fetchFromArray, FieldFilterCellRenderer, FieldModel,
-  ItemModel, ControlledPageTable as PageTable }
+import { FetchArgs, fetchFromArray, FieldFilterCellRenderer,
+  FieldFilterValueConverter, FieldModel, ItemModel,
+  ControlledWithReactRouter as PageTable }
   from '@vlsergey/react-bootstrap-pagetable';
 import React, { PureComponent, ReactNode } from 'react';
 import Alert from 'react-bootstrap/Alert';
@@ -9,6 +10,7 @@ import Container from 'react-bootstrap/Container';
 import ErrorBoundary from '@vlsergey/react-bootstrap-error-boundary';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 
 type DataType = Record<string, unknown>;
 
@@ -30,7 +32,7 @@ class FilterCell extends PureComponent<{
 }> {
 
   private handleChange = ( { currentTarget: { value } }: React.ChangeEvent<HTMLInputElement> ) : unknown =>
-    this.props.onChange( value );
+    this.props.onChange( !value ? null : value );
 
   render() : ReactNode {
     return <td>
@@ -43,6 +45,11 @@ class FilterCell extends PureComponent<{
   }
 }
 
+const filterValueConverter : FieldFilterValueConverter<string> = {
+  fromString: ( str : string ) => str,
+  toString: ( str : string ) => str,
+};
+
 const renderFilterByContainsCell : FieldFilterCellRenderer<string, unknown> =
   ( { key } : FieldModel<string>, filterBy: string, onChange : ( ( filterBy: string ) => unknown ) ) =>
     <FilterCell filterBy={filterBy} key={key} onChange={onChange} />;
@@ -54,7 +61,8 @@ const ITEM_MODEL : ItemModel<TestType> = {
       key: 'name',
       title: 'Name',
       sortable: true,
-      renderFilterCell: renderFilterByContainsCell
+      filterValueConverter,
+      renderFilterCell: renderFilterByContainsCell,
     },
     {
       key: 'birthday',
@@ -71,7 +79,7 @@ const ITEM_MODEL : ItemModel<TestType> = {
   ]
 };
 
-export default class FiltersExample extends PureComponent<unknown, StateType> {
+export default class RoutedExample extends PureComponent<unknown, StateType> {
 
   state : StateType = {
     data: `[
@@ -89,7 +97,7 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
 
   private handleDataChange =
     ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : void =>
-      this.setState( { data: value } );
+      this.setState( { data: value } )
 
   private handleFetchArgsChange = ( fetchArgs: FetchArgs ) =>
     this.setState( { fetchArgs } );
@@ -105,6 +113,44 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
     const { data, fetchArgs } = this.state;
 
     return <Container>
+      <Row>
+        <p>This page displays integration between PageTable and <a href="https://reactrouter.com/">react-router</a>. Try to change filters, page, page size or sorting and notice change in page URL.</p>
+      </Row>
+      <Row>
+        <Col>
+          <h3>Controlled</h3>
+          <SyntaxHighlighter language="typescript">
+            {`import { FetchArgs, fetchFromArray, FieldModel, ItemModel,
+  ControlledWithReactRouter as PageTable }
+  from '@vlsergey/react-bootstrap-pagetable';
+
+/* ... */
+
+<PageTable
+  fetchArgs={fetchArgs}
+  itemModel={ITEM_MODEL}
+  onFetchArgsChange={this.handleFetchArgsChange}
+  page={fetchFromArray( ITEM_MODEL, data, fetchArgs )} />;
+`}
+          </SyntaxHighlighter>
+        </Col>
+        <Col>
+          <h3>Uncontrolled</h3>
+          <SyntaxHighlighter language="typescript">
+            {`import { FetchArgs, FieldModel, fetchFromArray, ItemModel,
+  UncontrolledWithReactRouter as PageTable }
+  from '@vlsergey/react-bootstrap-pagetable';
+
+/* ... */
+
+<PageTable
+  itemModel={ITEM_MODEL}
+  fetch={(fetchArgs: FetchArgs) =>
+    fetchFromArray( ITEM_MODEL, data, fetchArgs )} />;
+`}
+          </SyntaxHighlighter>
+        </Col>
+      </Row>
       <Row>
         <Form.Group as={Col} controlId="data">
           <Form.Label>Data (JSON)</Form.Label>
@@ -124,7 +170,7 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
             name="fetchArgs"
             onChange={this.handleFetchArgsTextChange}
             rows={5}
-            value={JSON.stringify( fetchArgs )} />
+            value={JSON.stringify( fetchArgs, undefined, 2 )} />
         </Form.Group> }
       </Row>
       <Row>
@@ -156,7 +202,6 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
       errorMessageSuffix={<><br /><Button onClick={this.handleRetry}>retry</Button></>}
       key={`ErrorBoundary_${this.state.retryCounter}`}>
       <PageTable
-        fetchArgs={fetchArgs}
         itemModel={ITEM_MODEL}
         onFetchArgsChange={this.handleFetchArgsChange}
         page={fetchFromArray( ITEM_MODEL, parsedData, fetchArgs )} />

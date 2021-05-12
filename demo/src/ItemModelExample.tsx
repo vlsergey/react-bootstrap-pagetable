@@ -1,4 +1,4 @@
-import PageTable, { FetchArgs, fetchFromArray, ItemModel }
+import { FetchArgs, fetchFromArray, ItemModel, ControlledPageTable as PageTable }
   from '@vlsergey/react-bootstrap-pagetable';
 import React, { PureComponent, ReactNode } from 'react';
 import Alert from 'react-bootstrap/Alert';
@@ -12,8 +12,8 @@ import Row from 'react-bootstrap/Row';
 type DataType = Record<string, unknown>;
 
 interface StateType {
-  refreshOnDataChange: boolean;
   data: string;
+  fetchArgs: FetchArgs;
   itemModel: string;
   retryCounter:number;
 }
@@ -26,6 +26,7 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
   { "id": "2", "name": "Bob", "birthday": "2002-03-04" },
   { "id": "3", "name": "Carl", "birthday": "2003-04-05" }
 ]`,
+    fetchArgs: {},
     itemModel: `({
   idF: function( item ) { return item.id; },
   fields: [
@@ -44,30 +45,29 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
     },
   ]
 })`,
-    refreshOnDataChange: true,
     retryCounter: 0,
   }
 
-  private pageTableRef = React.createRef<PageTable<DataType>>();
+  private handleDataChange =
+    ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : void =>
+      this.setState( { data: value } );
 
-  handleDataChange = ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : void => {
-    this.setState( { data: value } );
-    if ( this.state.refreshOnDataChange && this.pageTableRef.current ) {
-      this.pageTableRef.current.scheduleRefreshNow();
-    }
-  }
+  private handleFetchArgsChange = ( fetchArgs : FetchArgs ) : void =>
+    this.setState( { fetchArgs } );
 
-  handleItemModelChange = ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : unknown =>
-    this.setState( { itemModel: value } );
+  private handleFetchArgsTextChange =
+    ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) =>
+      this.setState( { fetchArgs: JSON.parse( value ) as FetchArgs } );
 
-  handleRefreshOnDataChangeChange = ( { currentTarget: { checked } } : React.ChangeEvent<HTMLInputElement> ) : unknown =>
-    this.setState( { refreshOnDataChange: checked } );
+  private handleItemModelChange =
+    ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : unknown =>
+      this.setState( { itemModel: value } );
 
-  handleRetry = () : unknown =>
+  private handleRetry = () : unknown =>
     this.setState( ( { retryCounter } ) => ( { retryCounter: retryCounter + 1 } ) );
 
   render() : ReactNode {
-    const { data, itemModel, refreshOnDataChange } = this.state;
+    const { data, fetchArgs, itemModel } = this.state;
 
     return <Container>
       <Row>
@@ -81,26 +81,31 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
             rows={20}
             value={itemModel} />
         </Form.Group>
-        <Form.Group as={Col} controlId="data">
-          <Form.Label>Data (JSON)</Form.Label>
-          <Form.Control
-            as="textarea"
-            className="text-monospace"
-            name="data"
-            onChange={this.handleDataChange}
-            rows={20}
-            value={data} />
-        </Form.Group>
-      </Row>
-      <Row>
         <Col>
-          <Form.Check
-            checked={refreshOnDataChange}
-            id="refreshOnDataChange"
-            label={<>Automatically invoke <code>refresh()</code> on data update</>}
-            name="refreshOnDataChange"
-            onChange={this.handleRefreshOnDataChangeChange}
-            type="checkbox" />
+          <Row>
+            <Form.Group as={Col} controlId="data">
+              <Form.Label>Data (JSON)</Form.Label>
+              <Form.Control
+                as="textarea"
+                className="text-monospace"
+                name="data"
+                onChange={this.handleDataChange}
+                rows={8}
+                value={data} />
+            </Form.Group>
+          </Row>
+          { !!Object.keys( fetchArgs ).length && <Row>
+            <Form.Group as={Col} controlId="fetchArgs">
+              <Form.Label>FetchArgs</Form.Label>
+              <Form.Control
+                as="textarea"
+                className="text-monospace"
+                name="fetchArgs"
+                onChange={this.handleFetchArgsTextChange}
+                rows={8}
+                value={JSON.stringify( fetchArgs, undefined, 2 )} />
+            </Form.Group>
+          </Row>}
         </Col>
       </Row>
       <Row>
@@ -112,8 +117,8 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
     </Container>;
   }
 
-  private renderResult() {
-    const { data, itemModel } = this.state;
+  renderResult() : ReactNode {
+    const { data, fetchArgs, itemModel } = this.state;
 
     let parsedData : DataType[];
     try {
@@ -143,9 +148,10 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
       errorMessageSuffix={<><br /><Button onClick={this.handleRetry}>retry</Button></>}
       key={`ErrorBoundary_${this.state.retryCounter}`}>
       <PageTable
-        fetch={( args : FetchArgs ) => fetchFromArray( parsedItemModel, parsedData, args )}
+        fetchArgs={fetchArgs}
         itemModel={parsedItemModel}
-        ref={this.pageTableRef} />
+        onFetchArgsChange={this.handleFetchArgsChange}
+        page={fetchFromArray( parsedItemModel, parsedData, fetchArgs )} />
     </ErrorBoundary>;
   }
 }

@@ -1,16 +1,21 @@
 import React, { PureComponent, ReactNode } from 'react';
-import WithSelectablePageTable, * as WithSelectablePageTableSpace from '../WithSelectablePageTable';
 import Action from './Action';
+import { PropsType as ControlledPropsType } from '../ControlledBase';
 import ItemModel from '../ItemModel';
+import { NewComponentProps as SelectablePropsType } from '../withSelectable';
 import Toolbar from './Toolbar';
 
-export interface PropsType<T>
-  extends Omit<WithSelectablePageTableSpace.PropsType<T>, 'selectedIds' | 'onSelectedIdsChange'> {
+export type RequiredChildComponentProps<T> =
+  Pick<SelectablePropsType, 'onSelectedIdsChange' | 'selectable' | 'selectedIds'> &
+  Pick<ControlledPropsType<T>, 'footer' | 'itemModel' | 'page' | 'size'>;
+
+export interface NewComponentProps<T> {
   actions?: Action<T>[];
   buttonProps?: ( action : Action<T>, selectedItems : T[] ) => Record<string, unknown>;
   toolbarProps?: Record<string, unknown>;
   onAfterAction? : ( action : Action<T>, items : T[] ) => unknown;
-  onRefreshRequired : () => unknown;
+  onRefreshRequired? : () => unknown;
+  onSelectedIdsChange? : SelectablePropsType['onSelectedIdsChange'];
 }
 
 export type StateType = {
@@ -26,20 +31,25 @@ function filterItemsByIdsImpl<T>(
   return items.filter( item => idsSet.has( item2Id( item ) ) );
 }
 
-export default class WithActionsPageTable<T> extends PureComponent<PropsType<T>, StateType> {
+const withActions = <T, P extends RequiredChildComponentProps<T>>( Child : React.ComponentType<P> ) :
+React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>> =>
+    class WithActions extends PureComponent<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>, StateType> {
 
   state = {
     selectedIds: [] as string[],
   }
 
-  private handleAfterAction = async( action : Action<T> ) => {
-    if ( action.refreshAfterAction ) {
+  handleAfterAction = async( action : Action<T> ) => {
+    if ( action.refreshAfterAction && this.props.onRefreshRequired ) {
       await this.props.onRefreshRequired();
     }
   }
 
-  private handleSelectedIdsChange = ( selectedIds: string[] ) => {
+  handleSelectedIdsChange = ( selectedIds: string[] ) => {
     this.setState( { selectedIds } );
+    if ( this.props.onSelectedIdsChange ) {
+      this.props.onSelectedIdsChange( selectedIds );
+    }
   }
 
   render() : ReactNode {
@@ -47,15 +57,15 @@ export default class WithActionsPageTable<T> extends PureComponent<PropsType<T>,
     const { selectedIds } = this.state;
 
     if ( !actions || actions.length === 0 ) {
-      return <WithSelectablePageTable
-        {...etcProps}
+      return <Child
+        {...etcProps as unknown as P}
         onSelectedIdsChange={this.handleSelectedIdsChange}
         selectable={selectable}
         selectedIds={selectedIds} />;
     }
 
-    return <WithSelectablePageTable
-      {...etcProps}
+    return <Child
+      {...etcProps as unknown as P}
       footer={this.renderFooter}
       onSelectedIdsChange={this.handleSelectedIdsChange}
       selectable
@@ -78,5 +88,6 @@ export default class WithActionsPageTable<T> extends PureComponent<PropsType<T>,
       {footer && footer( tableColumnsCount )}
     </>;
   }
+    };
 
-}
+export default withActions;

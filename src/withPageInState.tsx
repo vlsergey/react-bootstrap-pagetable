@@ -1,30 +1,35 @@
-import InnerPageTable, * as InnerPageTableSpace from './sortable';
 import Page, { emptyPage } from './Page';
 import React, { PureComponent, ReactNode } from 'react';
+import { PropsType as ControlledPropsType } from './ControlledBase';
 import FetchArgs from './FetchArgs';
+import { NewComponentProps as WithActionsPropsType } from './actions';
+
+export type RequiredChildComponentProps<T> =
+  Pick<ControlledPropsType<T>, 'fetchArgs' | 'error' | 'hasError' | 'itemModel' | 'loading' | 'onFetchArgsChange' | 'page'> &
+  Pick<WithActionsPropsType<T>, 'onRefreshRequired'>;
+
+export interface NewComponentProps<T> {
+  fetch: ( fetchArgs: FetchArgs, fetchOptions: FetchOptions ) => Promise<Page<T>> | Page<T>;
+}
 
 export interface FetchOptions {
   signal?: AbortSignal;
 }
 
-export type PropsType<T> = Omit<InnerPageTableSpace.PropsType<T>,
-  'error' | 'fetchArgs' | 'hasError' | 'loading' | 'onFetchArgsChange' | 'onRefreshRequired' | 'page' | 'ref' > & {
-  fetch: ( fetchArgs: FetchArgs, fetchOptions: FetchOptions ) => Promise<Page<T>>;
-  onFetchArgsChange? : InnerPageTableSpace.PropsType<T>['onFetchArgsChange'];
-}
+type StateType<T> = Pick<ControlledPropsType<T>,
+  'error' | 'hasError' | 'loading' | 'page' >;
 
-type StateType<T> = Pick<InnerPageTableSpace.PropsType<T>,
-  'error' | 'fetchArgs' | 'hasError' | 'loading' | 'page' >;
+type PropsType<T, P extends RequiredChildComponentProps<T>> =
+  Omit<P, 'error' | 'hasError' | 'loading' | 'onRefreshRequired' | 'page'> & NewComponentProps<T>;
 
-export default class UncontrolledPageTable<T>
-  extends PureComponent<PropsType<T>, StateType<T>> {
+const withPageInState = <T, P extends RequiredChildComponentProps<T>>( Child : React.ComponentType<P> ) : React.ComponentType<PropsType<T, P>> =>
+  class WithPageInState extends PureComponent<PropsType<T, P>, StateType<T>> {
 
-  private prevFetchArgs : FetchArgs = null;
-  private prevAbortController : AbortController = null;
+  prevFetchArgs : FetchArgs = null;
+  prevAbortController : AbortController = null;
 
   state: StateType<T> = {
     error: null,
-    fetchArgs: { page: 0, size: 10 },
     hasError: false,
     loading: true,
     page: emptyPage<T>(),
@@ -34,14 +39,10 @@ export default class UncontrolledPageTable<T>
     void this.refresh();
   }
 
-  handleFetchArgsChange = ( fetchArgs: FetchArgs ) : void => {
-    const { onFetchArgsChange } = this.props;
-    this.setState( { fetchArgs } );
-    if ( onFetchArgsChange ) {
-      onFetchArgsChange( fetchArgs );
+  componentDidUpdate( prevProps : { fetchArgs: FetchArgs } ) {
+    if ( this.props.fetchArgs !== prevProps.fetchArgs ) {
+      this.scheduleRefreshNow();
     }
-    // add bounce?
-    this.scheduleRefreshNow();
   }
 
   handleRefreshRequired = () : void => {
@@ -49,10 +50,16 @@ export default class UncontrolledPageTable<T>
   }
 
   refresh = async() : Promise<void> => {
-    const { fetch } = this.props;
-    const { fetchArgs } = this.state;
+    const { fetch, fetchArgs } = this.props;
+    if ( fetchArgs === this.prevFetchArgs ) {
+      return;
+    }
 
     try {
+      if ( fetch === undefined )
+        throw new Error( 'fetch() implementation was not provided to PageTable. ' +
+          'Check PageTable properties or switch to Controllable variant of PageTable' );
+
       this.setState( { loading: true } );
 
       if ( this.prevAbortController != null ) {
@@ -86,13 +93,14 @@ export default class UncontrolledPageTable<T>
 
   render() : ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch|onFetchArgsChange" }] */
-    const { fetch, onFetchArgsChange, ...etcProps } = this.props;
+    const { fetch, ...etcProps } = this.props;
 
-    return <InnerPageTable
-      onFetchArgsChange={this.handleFetchArgsChange}
+    return <Child
       onRefreshRequired={this.handleRefreshRequired}
-      {...etcProps}
+      {...( etcProps as unknown as P )}
       {...this.state} />;
   }
 
-}
+  };
+
+export default withPageInState;

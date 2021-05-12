@@ -18,8 +18,8 @@ export interface PropsType<T> {
   fetchArgs: FetchArgs;
   footer? : ( tableColumnsCount: number ) => ReactNode;
   itemModel: ItemModel<T>;
-  hasError: boolean;
-  loading : boolean;
+  hasError? : boolean;
+  loading? : boolean;
   noContentRow?: ( tableColumnsCount: number ) => ReactNode;
   onFetchArgsChange: ( fetchArgs : FetchArgs ) => unknown;
   page : Page<T>;
@@ -28,14 +28,14 @@ export interface PropsType<T> {
   tableProps?: React.ComponentProps<Table>;
 }
 
-export default class ControlledPageTable<T> extends PureComponent<PropsType<T>> {
+export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
 
   static defaultProps = {
-    hasError: false,
     columnHeaderCell: ( field : FieldModel<unknown> ) : ReactNode => <th key={field.key}>
       {field.title}
     </th>,
-    loading: true,
+    loading: false,
+    hasError: false,
     noContentRow: ( tableColumnsCount: number ) : ReactNode => <tr key="$_noContentRow">
       <td colSpan={tableColumnsCount}>
         <em>no content on this page, select another page to display</em>

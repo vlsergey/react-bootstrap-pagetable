@@ -1,19 +1,23 @@
-import InnerPageTable, * as InnerPageTableSpace from '../actions';
+import ControlledBase, { PropsType as ControlledPropsType } from './ControlledBase';
 import React, { PureComponent, ReactNode } from 'react';
-import FieldModel from '../FieldModel';
+import FieldModel from './FieldModel';
 
-export type PropsType<T> = Omit<InnerPageTableSpace.PropsType<T>, 'columnHeaderRow'>;
+type RequiredChildComponentProps<T> =
+  Pick<ControlledPropsType<T>, 'columnHeaderCell' | 'columnHeaderRow' | 'fetchArgs' | 'itemModel' | 'onFetchArgsChange'>;
 
-export default class WithFilterablePageTable<T> extends PureComponent<PropsType<T>> {
+const withFilterable = <T, P extends RequiredChildComponentProps<T>>( Child : React.ComponentType<P> ) :
+  React.ComponentType<Omit<P, 'columnHeaderRow'>> =>
+    class WithFilterable extends PureComponent<Omit<P, 'columnHeaderRow'>> {
 
-  private renderColumnHeaderRow = ( fieldsToRender : FieldModel<unknown>[] ) : ReactNode => {
+  renderColumnHeaderRow = ( fieldsToRender : FieldModel<unknown>[] ) : ReactNode => {
     const { fetchArgs, onFetchArgsChange } = this.props;
     return <>
-      <tr>{fieldsToRender.map( this.props.columnHeaderCell )}</tr>
+      <tr>{fieldsToRender.map( this.props.columnHeaderCell || ControlledBase.defaultProps.columnHeaderCell )}</tr>
       <tr>
         {fieldsToRender.map( ( field : FieldModel<unknown> ) =>
           field.renderFilterCell
             ? field.renderFilterCell(
+              field,
               ( fetchArgs.filter || {} )[ field.key ] || null,
               ( newFilterBy : string ) => onFetchArgsChange( {
                 ...fetchArgs,
@@ -21,9 +25,8 @@ export default class WithFilterablePageTable<T> extends PureComponent<PropsType<
                   ...fetchArgs.filter,
                   [ field.key ]: newFilterBy,
                 }
-              } ),
-              field )
-            : <td />
+              } ) )
+            : <td key={field.key} />
         )}
       </tr>
     </>;
@@ -35,19 +38,21 @@ export default class WithFilterablePageTable<T> extends PureComponent<PropsType<
     const tableFilterable = itemModel.fields.some( ( { renderFilterCell } ) => !!renderFilterCell );
 
     if ( !tableFilterable ) {
-      return <InnerPageTable
-        {...etcProps}
+      return <Child
+        {...etcProps as P}
         fetchArgs={fetchArgs}
         itemModel={itemModel}
         onFetchArgsChange={onFetchArgsChange} />;
     }
 
-    return <InnerPageTable
-      {...etcProps}
+    return <Child
+      {...etcProps as P}
       columnHeaderRow={this.renderColumnHeaderRow}
       fetchArgs={fetchArgs}
       itemModel={itemModel}
       onFetchArgsChange={onFetchArgsChange} />;
   }
 
-}
+    };
+
+export default withFilterable;

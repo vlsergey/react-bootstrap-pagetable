@@ -5,6 +5,7 @@ const mainPackageJson = require( '../package.json' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
@@ -67,6 +68,7 @@ module.exports = {
     alias: {
         'react': path.resolve(__dirname, '../node_modules/react'),
         'react-dom': path.resolve(__dirname, '../node_modules/react-dom'),
+        'react-router': path.resolve(__dirname, '../node_modules/react-router'),
     },
     extensions: [".tsx", ".ts", ".js"],
     fallback: {
@@ -87,6 +89,7 @@ module.exports = {
     new webpack.DefinePlugin( {
       VERSION: JSON.stringify( mainPackageJson.version )
     } ),
+    new CssMinimizerPlugin(),
     new HtmlWebpackPlugin( {
       filename: 'index.html',
       template: 'src/index.html',
