@@ -39,6 +39,7 @@ export {
   withFetchArgsInState,
   withFilterable,
   withPageInState,
+  withReactRouter,
   withSelectable,
   withSortable,
 };

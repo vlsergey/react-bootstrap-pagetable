@@ -2,6 +2,7 @@ import FieldModel, { defaultFilterValueConverter, FieldFilterValueConverter }
   from './FieldModel';
 import React, { PureComponent, ReactNode } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { PropsType as ControlledPropsType } from './ControlledBase';
 import FetchArgs from './FetchArgs';
 import ItemModel from './ItemModel';
 import memoizeOne from 'memoize-one';
@@ -36,18 +37,16 @@ function toFetchArgsImpl(
   return result;
 }
 
-export type RequiredChildComponentProps<T> = {
-  fetchArgs: FetchArgs;
-  itemModel: ItemModel<T>;
-  onFetchArgsChange: ( fetchArgs : FetchArgs ) => unknown;
-}
+export type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'fetchArgs' | 'itemModel' | 'onFetchArgsChange'>;
 
-export type NewComponentProps = {
+export type NewComponentProps<T> = {
   urlParamsPrefix? : string,
+  // optional now
+  onFetchArgsChange?: ControlledPropsType<T>['onFetchArgsChange'];
 }
 
 type InnerComponentProps<T, P extends RequiredChildComponentProps<T>>
-  = RouteComponentProps<unknown> & NewComponentProps & Omit<P, 'fetchArgs'>;
+  = RouteComponentProps<unknown> & NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>;
 
 const withReactRouterImpl =
   <T, P extends RequiredChildComponentProps<T>>( Child: React.ComponentType<P> ) : React.ComponentType<InnerComponentProps<T, P>> =>
@@ -104,7 +103,7 @@ const withReactRouterImpl =
     };
 
 const withReactRouter =
-  <T, P extends RequiredChildComponentProps<T>>( Child: React.ComponentType<P> ) : React.ComponentType<NewComponentProps & Omit<P, 'fetchArgs'>> =>
-    withRouter( withReactRouterImpl( Child ) ) as unknown as React.ComponentType<NewComponentProps & Omit<P, 'fetchArgs'>>;
+  <T, P extends RequiredChildComponentProps<T>>( Child: React.ComponentType<P> ) : React.ComponentType<NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>> =>
+    withRouter( withReactRouterImpl( Child ) ) as unknown as React.ComponentType<NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>>;
 
 export default withReactRouter;
