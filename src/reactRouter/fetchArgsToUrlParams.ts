@@ -2,16 +2,15 @@ import FetchArgs, {SortBy} from '../FetchArgs';
 import FieldModel, {defaultFilterValueConverter, FieldFilterValueConverter}
   from '../FieldModel';
 import ItemModel from '../ItemModel';
-import {Location} from 'history';
 
 export default function fetchArgsToUrlParams (
     itemModel: ItemModel<unknown>,
     urlParamsPrefix: string,
-    current: Location,
+    currentSearch: ConstructorParameters<typeof URLSearchParams>[0],
     fetchArgs: FetchArgs
 ): URLSearchParams {
   const prefix = urlParamsPrefix || '';
-  const params = new URLSearchParams(current.search);
+  const params = new URLSearchParams(currentSearch);
 
   if (fetchArgs.page) {
     params.set(`${prefix}page`, String(fetchArgs.page));
