@@ -8,7 +8,7 @@ module.exports = function( config ) {
   imported(config);
   config.set( {
     files: [
-      'test/**/*Test.tsx',
+      'test/**/*Test.ts*',
     ],
     webpack: {
       output: {

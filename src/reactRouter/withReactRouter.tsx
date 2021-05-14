@@ -28,11 +28,11 @@ const withReactRouterImpl =
   );
 
   handleFetchArgsChange = (fetchArgs: FetchArgs): void => {
-    const {history, itemModel, location, onFetchArgsChange,
+    const {history, itemModel, location: {search}, onFetchArgsChange,
       urlParamsPrefix} = this.props;
 
     const updated: URLSearchParams = fetchArgsToUrlParams(itemModel,
-      urlParamsPrefix, location, fetchArgs);
+      urlParamsPrefix, search, fetchArgs);
     const newSearch: string = updated.toString();
 
     if (onFetchArgsChange) {

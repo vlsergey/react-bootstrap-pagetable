@@ -1,11 +1,11 @@
-import {ControlledBase, emptyPage, ItemModel, withReactRouter} from '../src';
+import {ControlledBase, emptyPage, ItemModel, withReactRouter} from '../../src';
 import {HashRouter} from 'react-router-dom';
 import React from 'react';
 import {renderIntoDocument} from 'react-dom/test-utils';
 
 const NOOP = () => { /* NOOP */ };
 
-describe('withReactRouter', () => {
+describe('reactRouter/withReactRouter', () => {
   it('result can be used as JSX element', () => {
     const PageTable = withReactRouter(ControlledBase);
 
