@@ -45,7 +45,7 @@ export {
 };
 
 // Main mixins (what user is advised to use)
-export const ControlledPageTable = withActions( withFilterable( withSelectable( withSortable( ControlledBase ) ) ) );
+export const ControlledPageTable = withActions( withSortable( withFilterable( withSelectable( ControlledBase ) ) ) );
 export const UncontrolledPageTable = withFetchArgsInState( withPageInState( ControlledPageTable ) );
 export const ControlledWithReactRouter = withReactRouter( ControlledPageTable );
 export const UncontrolledWithReactRouter = withReactRouter( withPageInState( ControlledPageTable ) );
