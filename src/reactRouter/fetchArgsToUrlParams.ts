@@ -13,7 +13,7 @@ export default function fetchArgsToUrlParams (
   const params = new URLSearchParams(currentSearch);
 
   if (fetchArgs.page) {
-    params.set(`${prefix}page`, String(fetchArgs.page));
+    params.set(`${prefix}page`, String(fetchArgs.page + 1));
   } else {
     params.delete(`${prefix}page`);
   }
