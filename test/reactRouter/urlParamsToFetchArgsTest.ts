@@ -16,10 +16,10 @@ describe('reactRouter/urlParamsToFetchArgs', () => {
   });
 
   it('Page argument filled into FetchArgs::page', () => {
-    assert.equal(42, urlParamsToFetchArgs(itemModel, '', new URLSearchParams('page=42')).page);
-    assert.equal(42, urlParamsToFetchArgs(itemModel, '', new URLSearchParams('foo=bar&page=42')).page);
-    assert.equal(42, urlParamsToFetchArgs(itemModel, 'myPrefix', new URLSearchParams('myPrefixpage=42')).page);
-    assert.equal(42, urlParamsToFetchArgs(itemModel, 'myPrefix', new URLSearchParams('page=666&myPrefixpage=42')).page);
+    assert.equal(41, urlParamsToFetchArgs(itemModel, '', new URLSearchParams('page=42')).page);
+    assert.equal(41, urlParamsToFetchArgs(itemModel, '', new URLSearchParams('foo=bar&page=42')).page);
+    assert.equal(41, urlParamsToFetchArgs(itemModel, 'myPrefix', new URLSearchParams('myPrefixpage=42')).page);
+    assert.equal(41, urlParamsToFetchArgs(itemModel, 'myPrefix', new URLSearchParams('page=666&myPrefixpage=42')).page);
   });
 
 });
