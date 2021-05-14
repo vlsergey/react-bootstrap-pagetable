@@ -12,7 +12,7 @@ import withActions from './actions';
 import withFetchArgsInState from './withFetchArgsInState';
 import withFilterable from './withFilterable';
 import withPageInState from './withPageInState';
-import withReactRouter from './withReactRouter';
+import withReactRouter from './reactRouter/withReactRouter';
 import withSelectable from './withSelectable';
 import withSortable from './sortable';
 
