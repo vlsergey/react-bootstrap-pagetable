@@ -1,6 +1,6 @@
-import { FetchArgs, fetchFromArray, ItemModel, ControlledPageTable as PageTable }
+import {FetchArgs, fetchFromArray, ItemModel, ControlledPageTable as PageTable}
   from '@vlsergey/react-bootstrap-pagetable';
-import React, { PureComponent, ReactNode } from 'react';
+import React, {PureComponent, ReactNode} from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from '@vlsergey/react-bootstrap-button-with-spinner';
 import Col from 'react-bootstrap/Col';
@@ -15,12 +15,12 @@ interface StateType {
   data: string;
   fetchArgs: FetchArgs;
   itemModel: string;
-  retryCounter:number;
+  retryCounter: number;
 }
 
 export default class ItemModelExample extends PureComponent<unknown, StateType> {
 
-  state : StateType = {
+  state: StateType = {
     data: `[
   { "id": "1", "name": "Alice", "birthday": "2001-02-03" },
   { "id": "2", "name": "Bob", "birthday": "2002-03-04" },
@@ -46,28 +46,28 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
   ]
 })`,
     retryCounter: 0,
-  }
+  };
 
   private handleDataChange =
-    ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : void =>
-      this.setState( { data: value } );
+    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): void =>
+      this.setState({data: value});
 
-  private handleFetchArgsChange = ( fetchArgs : FetchArgs ) : void =>
-    this.setState( { fetchArgs } );
+  private handleFetchArgsChange = (fetchArgs: FetchArgs): void =>
+    this.setState({fetchArgs});
 
   private handleFetchArgsTextChange =
-    ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) =>
-      this.setState( { fetchArgs: JSON.parse( value ) as FetchArgs } );
+    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
+      this.setState({fetchArgs: JSON.parse(value) as FetchArgs});
 
   private handleItemModelChange =
-    ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : unknown =>
-      this.setState( { itemModel: value } );
+    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): unknown =>
+      this.setState({itemModel: value});
 
-  private handleRetry = () : unknown =>
-    this.setState( ( { retryCounter } ) => ( { retryCounter: retryCounter + 1 } ) );
+  private handleRetry = (): unknown =>
+    this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1}));
 
-  render() : ReactNode {
-    const { data, fetchArgs, itemModel } = this.state;
+  render (): ReactNode {
+    const {data, fetchArgs, itemModel} = this.state;
 
     return <Container>
       <Row>
@@ -94,7 +94,7 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
                 value={data} />
             </Form.Group>
           </Row>
-          { !!Object.keys( fetchArgs ).length && <Row>
+          { !!Object.keys(fetchArgs).length && <Row>
             <Form.Group as={Col} controlId="fetchArgs">
               <Form.Label>FetchArgs</Form.Label>
               <Form.Control
@@ -103,7 +103,7 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
                 name="fetchArgs"
                 onChange={this.handleFetchArgsTextChange}
                 rows={8}
-                value={JSON.stringify( fetchArgs, undefined, 2 )} />
+                value={JSON.stringify(fetchArgs, undefined, 2)} />
             </Form.Group>
           </Row>}
         </Col>
@@ -117,28 +117,28 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
     </Container>;
   }
 
-  renderResult() : ReactNode {
-    const { data, fetchArgs, itemModel } = this.state;
+  renderResult (): ReactNode {
+    const {data, fetchArgs, itemModel} = this.state;
 
-    let parsedData : DataType[];
+    let parsedData: DataType[];
     try {
-      parsedData = JSON.parse( data ) as DataType[];
-    } catch ( err ) {
+      parsedData = JSON.parse(data) as DataType[];
+    } catch (err) {
       const error = err as {message?: string};
       return <Alert variant="danger">
         {'Unable to parse data JSON: '}
-        {error.message || JSON.stringify( error )}
+        {error.message || JSON.stringify(error)}
       </Alert>;
     }
 
-    let parsedItemModel : ItemModel<DataType>;
+    let parsedItemModel: ItemModel<DataType>;
     try {
-      parsedItemModel = eval( itemModel ) as ItemModel<DataType>;
-    } catch ( err ) {
+      parsedItemModel = eval(itemModel) as ItemModel<DataType>;
+    } catch (err) {
       const error = err as {message?: string};
       return <Alert variant="danger">
         {'Unable to execute item model JavaScript: '}
-        {error.message || JSON.stringify( error )}
+        {error.message || JSON.stringify(error)}
       </Alert>;
     }
 
@@ -151,7 +151,7 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
         fetchArgs={fetchArgs}
         itemModel={parsedItemModel}
         onFetchArgsChange={this.handleFetchArgsChange}
-        page={fetchFromArray( parsedItemModel, parsedData, fetchArgs )} />
+        page={fetchFromArray(parsedItemModel, parsedData, fetchArgs)} />
     </ErrorBoundary>;
   }
 }

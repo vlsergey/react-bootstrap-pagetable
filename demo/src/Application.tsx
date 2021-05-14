@@ -1,5 +1,5 @@
-import { HashRouter, Link, Route, Switch } from 'react-router-dom';
-import React, { PureComponent, ReactNode } from 'react';
+import {HashRouter, Link, Route, Switch} from 'react-router-dom';
+import React, {PureComponent, ReactNode} from 'react';
 import ContolledDemo from './ContolledDemo';
 import FiltersExample from './FiltersExample';
 import ItemModelExample from './ItemModelExample';
@@ -8,7 +8,7 @@ import RoutedExample from './RoutedExample';
 import UncontrolledDemo from './UncontrolledDemo';
 
 export default class Application extends PureComponent<unknown> {
-  render() : ReactNode {
+  render (): ReactNode {
     return <HashRouter>
       <Nav className="mr-auto">
         <Nav.Link as={Link} key="contolled" to="/controlled">Contolled PageTable Demo</Nav.Link>
