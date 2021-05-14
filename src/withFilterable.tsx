@@ -1,43 +1,43 @@
-import ControlledBase, { PropsType as ControlledPropsType } from './ControlledBase';
-import React, { PureComponent, ReactNode } from 'react';
+import ControlledBase, {PropsType as ControlledPropsType} from './ControlledBase';
+import React, {PureComponent, ReactNode} from 'react';
 import FieldModel from './FieldModel';
 
 type RequiredChildComponentProps<T> =
   Pick<ControlledPropsType<T>, 'columnHeaderCell' | 'columnHeaderRow' | 'fetchArgs' | 'itemModel' | 'onFetchArgsChange'>;
 
-const withFilterable = <T, P extends RequiredChildComponentProps<T>>( Child : React.ComponentType<P> ) :
+const withFilterable = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>):
   React.ComponentType<Omit<P, 'columnHeaderRow'>> =>
     class WithFilterable extends PureComponent<Omit<P, 'columnHeaderRow'>> {
 
-  renderColumnHeaderRow = ( fieldsToRender : FieldModel<unknown>[] ) : ReactNode => {
-    const { fetchArgs, onFetchArgsChange } = this.props;
+  renderColumnHeaderRow = (fieldsToRender: FieldModel<unknown>[]): ReactNode => {
+    const {fetchArgs, onFetchArgsChange} = this.props;
     return <>
-      <tr>{fieldsToRender.map( this.props.columnHeaderCell || ControlledBase.defaultProps.columnHeaderCell )}</tr>
+      <tr>{fieldsToRender.map(this.props.columnHeaderCell || ControlledBase.defaultProps.columnHeaderCell)}</tr>
       <tr>
-        {fieldsToRender.map( ( field : FieldModel<unknown> ) =>
+        {fieldsToRender.map((field: FieldModel<unknown>) =>
           field.renderFilterCell
             ? field.renderFilterCell(
               field,
-              ( fetchArgs.filter || {} )[ field.key ] || null,
-              ( newFilterBy : string ) => onFetchArgsChange( {
+              (fetchArgs.filter || {})[ field.key ] || null,
+              (newFilterBy: string) => onFetchArgsChange({
                 ...fetchArgs,
                 filter: {
                   ...fetchArgs.filter,
                   [ field.key ]: newFilterBy,
                 }
-              } ) )
+              }))
             : <td key={field.key} />
         )}
       </tr>
     </>;
-  }
+  };
 
-  render() : ReactNode {
-    const { fetchArgs, itemModel, onFetchArgsChange, ...etcProps } = this.props;
+  render (): ReactNode {
+    const {fetchArgs, itemModel, onFetchArgsChange, ...etcProps} = this.props;
 
-    const tableFilterable = itemModel.fields.some( ( { renderFilterCell } ) => !!renderFilterCell );
+    const tableFilterable = itemModel.fields.some(({renderFilterCell}) => !!renderFilterCell);
 
-    if ( !tableFilterable ) {
+    if (!tableFilterable) {
       return <Child
         {...etcProps as P}
         fetchArgs={fetchArgs}

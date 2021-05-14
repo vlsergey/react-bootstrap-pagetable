@@ -1,33 +1,33 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, {PureComponent, ReactNode} from 'react';
 import FetchArgs from '../FetchArgs';
 import FieldModel from '../FieldModel';
 import ItemModel from '../ItemModel';
 import SortableHeaderCell from './SortableHeaderCell';
 
 interface RequiredBaseComponentProps {
-  columnHeaderCell?: ( field : FieldModel<unknown> ) => ReactNode;
+  columnHeaderCell?: (field: FieldModel<unknown>) => ReactNode;
   fetchArgs: FetchArgs;
   itemModel: ItemModel<unknown>;
-  onFetchArgsChange: ( fetchArgs : FetchArgs ) => unknown;
+  onFetchArgsChange: (fetchArgs: FetchArgs) => unknown;
 }
 
-const withSortable = <P extends RequiredBaseComponentProps>( Child : React.ComponentType<P> ) :
+const withSortable = <P extends RequiredBaseComponentProps>(Child: React.ComponentType<P>):
 React.ComponentType<Omit<P, 'columnHeaderCell'>> =>
     class WithSortable extends PureComponent<Omit<P, 'columnHeaderCell'>> {
 
-    renderColumnHeaderCell = <V extends unknown>( field : FieldModel<V> ) : ReactNode =>
+    renderColumnHeaderCell = (field: FieldModel<unknown>): ReactNode =>
       <SortableHeaderCell
         fetchArgs={this.props.fetchArgs}
         field={field}
         key={field.key}
         onFetchArgsChange={this.props.onFetchArgsChange} />;
 
-    render() : ReactNode {
-      const { fetchArgs, itemModel, onFetchArgsChange, ...etcProps } = this.props;
+    render (): ReactNode {
+      const {fetchArgs, itemModel, onFetchArgsChange, ...etcProps} = this.props;
 
-      const tableSortable = itemModel.fields.some( ( { sortable } ) => sortable );
+      const tableSortable = itemModel.fields.some(({sortable}) => sortable);
 
-      if ( !tableSortable ) {
+      if (!tableSortable) {
         return <Child
           {...etcProps as P}
           fetchArgs={fetchArgs}

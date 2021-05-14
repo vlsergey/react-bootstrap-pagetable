@@ -1,5 +1,5 @@
-import React, { PureComponent, ReactNode } from 'react';
-import { PropsType as ControlledPropsType } from './ControlledBase';
+import React, {PureComponent, ReactNode} from 'react';
+import {PropsType as ControlledPropsType} from './ControlledBase';
 import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
 import memoizeOne from 'memoize-one';
@@ -7,54 +7,54 @@ import memoizeOne from 'memoize-one';
 type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'itemModel' | 'rowProps'>;
 
 export interface NewComponentProps {
-  selectable? : boolean;
-  onSelectedIdsChange: ( selectedIds: string[] ) => unknown,
-  selectedIds: string[],
+  selectable?: boolean;
+  onSelectedIdsChange: (selectedIds: string[]) => unknown;
+  selectedIds: string[];
 }
 
-const renderCheckboxField = ( selected : boolean ) : ReactNode =>
+const renderCheckboxField = (selected: boolean): ReactNode =>
   <input checked={selected} readOnly type="checkbox" />;
 
 const withSelectable =
-  <T, P extends RequiredChildComponentProps<T>>( Child : React.ComponentType<P> ) : React.ComponentType<NewComponentProps & P> =>
+  <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>): React.ComponentType<NewComponentProps & P> =>
     class WithSelectable extends PureComponent<NewComponentProps & P> {
 
-  getSelectedSet : ( ( selectedIds : string[] ) => Set<string> ) =
-    memoizeOne( ( selectedIds : string[] ) => new Set( selectedIds ) ) ;
+  getSelectedSet: ((selectedIds: string[]) => Set<string>) =
+    memoizeOne((selectedIds: string[]) => new Set(selectedIds)) ;
 
-  handleTrigger( item : T ) : unknown {
-    const itemKey : string = this.props.itemModel.idF( item );
-    const { onSelectedIdsChange, selectedIds } = this.props;
+  handleTrigger (item: T): unknown {
+    const itemKey: string = this.props.itemModel.idF(item);
+    const {onSelectedIdsChange, selectedIds} = this.props;
 
-    const index = selectedIds.indexOf( itemKey );
-    if ( index === -1 ) {
-      const newSelectedIds : string[] = [ ...selectedIds, itemKey ];
-      return onSelectedIdsChange( newSelectedIds );
+    const index = selectedIds.indexOf(itemKey);
+    if (index === -1) {
+      const newSelectedIds: string[] = [ ...selectedIds, itemKey ];
+      return onSelectedIdsChange(newSelectedIds);
     }
 
     const spliced = [ ...selectedIds ];
-    spliced.splice( index, 1 );
-    return onSelectedIdsChange( spliced );
+    spliced.splice(index, 1);
+    return onSelectedIdsChange(spliced);
   }
 
-  rowProps : ( ( item : T ) => Record<string, unknown> ) = ( item : T ) => ( {
-    onClick: () => this.handleTrigger( item ),
-    style: { cursor: 'pointer' },
-  } );
+  rowProps: ((item: T) => Record<string, unknown>) = (item: T) => ({
+    onClick: () => this.handleTrigger(item),
+    style: {cursor: 'pointer'},
+  });
 
-  selectableFieldGetter = ( item: T ) : boolean =>
-    this.getSelectedSet( this.props.selectedIds ).has( this.props.itemModel.idF( item ) );
+  selectableFieldGetter = (item: T): boolean =>
+    this.getSelectedSet(this.props.selectedIds).has(this.props.itemModel.idF(item));
 
-  render() : ReactNode {
+  render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "onSelectedIdsChange|selectedIds" }] */
-    const { itemModel, onSelectedIdsChange, selectable, selectedIds,
-      ...etcProps } = this.props;
+    const {itemModel, onSelectedIdsChange, selectable, selectedIds,
+      ...etcProps} = this.props;
 
-    if ( !selectable ) {
+    if (!selectable) {
       return <Child itemModel={itemModel} {...etcProps as P} />;
     }
 
-    const newItemModel : ItemModel<T> = {
+    const newItemModel: ItemModel<T> = {
       ...itemModel,
       fields: [
         {

@@ -1,6 +1,6 @@
-import FieldModel, { FieldFilterCellRenderer, FieldFilterValueConverter }
+import FieldModel, {FieldFilterCellRenderer, FieldFilterValueConverter}
   from './FieldModel';
-import Page, { emptyPage, singlePage } from './Page';
+import Page, {emptyPage, singlePage} from './Page';
 import Action from './actions/Action';
 import ControlledBase from './ControlledBase';
 import FetchArgs from './FetchArgs';
@@ -45,9 +45,9 @@ export {
 };
 
 // Main mixins (what user is advised to use)
-export const ControlledPageTable = withActions( withSortable( withFilterable( withSelectable( ControlledBase ) ) ) );
-export const UncontrolledPageTable = withFetchArgsInState( withPageInState( ControlledPageTable ) );
-export const ControlledWithReactRouter = withReactRouter( ControlledPageTable );
-export const UncontrolledWithReactRouter = withReactRouter( withPageInState( ControlledPageTable ) );
+export const ControlledPageTable = withActions(withSortable(withFilterable(withSelectable(ControlledBase))));
+export const UncontrolledPageTable = withFetchArgsInState(withPageInState(ControlledPageTable));
+export const ControlledWithReactRouter = withReactRouter(ControlledPageTable);
+export const UncontrolledWithReactRouter = withReactRouter(withPageInState(ControlledPageTable));
 
 export default UncontrolledPageTable;

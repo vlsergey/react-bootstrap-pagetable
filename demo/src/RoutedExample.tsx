@@ -1,8 +1,8 @@
-import { FetchArgs, fetchFromArray, FieldFilterCellRenderer,
+import {FetchArgs, fetchFromArray, FieldFilterCellRenderer,
   FieldFilterValueConverter, FieldModel, ItemModel,
-  ControlledWithReactRouter as PageTable }
+  ControlledWithReactRouter as PageTable}
   from '@vlsergey/react-bootstrap-pagetable';
-import React, { PureComponent, ReactNode } from 'react';
+import React, {PureComponent, ReactNode} from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from '@vlsergey/react-bootstrap-button-with-spinner';
 import Col from 'react-bootstrap/Col';
@@ -17,24 +17,24 @@ type DataType = Record<string, unknown>;
 interface StateType {
   data: string;
   fetchArgs: FetchArgs;
-  retryCounter:number;
+  retryCounter: number;
 }
 
 type TestType = {
-  id: string,
-  name: string,
-  birthday: string,
-}
+  id: string;
+  name: string;
+  birthday: string;
+};
 
 class FilterCell extends PureComponent<{
-  filterBy: string,
-  onChange: ( filterBy : string ) => unknown
+  filterBy: string;
+  onChange: (filterBy: string) => unknown;
 }> {
 
-  private handleChange = ( { currentTarget: { value } }: React.ChangeEvent<HTMLInputElement> ) : unknown =>
-    this.props.onChange( !value ? null : value );
+  private handleChange = ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): unknown =>
+    this.props.onChange(!value ? null : value);
 
-  render() : ReactNode {
+  render (): ReactNode {
     return <td>
       <Form.Control
         onChange={this.handleChange}
@@ -45,17 +45,17 @@ class FilterCell extends PureComponent<{
   }
 }
 
-const filterValueConverter : FieldFilterValueConverter<string> = {
-  fromString: ( str : string ) => str,
-  toString: ( str : string ) => str,
+const filterValueConverter: FieldFilterValueConverter<string> = {
+  fromString: (str: string) => str,
+  toString: (str: string) => str,
 };
 
-const renderFilterByContainsCell : FieldFilterCellRenderer<string, unknown> =
-  ( { key } : FieldModel<string>, filterBy: string, onChange : ( ( filterBy: string ) => unknown ) ) =>
+const renderFilterByContainsCell: FieldFilterCellRenderer<string, unknown> =
+  ({key}: FieldModel<string>, filterBy: string, onChange: ((filterBy: string) => unknown)) =>
     <FilterCell filterBy={filterBy} key={key} onChange={onChange} />;
 
-const ITEM_MODEL : ItemModel<TestType> = {
-  idF: ( { id } : TestType ) => id,
+const ITEM_MODEL: ItemModel<TestType> = {
+  idF: ({id}: TestType) => id,
   fields: [
     {
       key: 'name',
@@ -67,13 +67,13 @@ const ITEM_MODEL : ItemModel<TestType> = {
     {
       key: 'birthday',
       title: 'Birth Date',
-      render: ( value : string ) => new Date( Date.parse( value ) ).toLocaleDateString(),
+      render: (value: string) => new Date(Date.parse(value)).toLocaleDateString(),
       sortable: true,
     },
     {
       key: 'birthyear',
       title: 'Birth Year',
-      getter: ( { birthday } : TestType ) => new Date( Date.parse( birthday ) ).getFullYear(),
+      getter: ({birthday}: TestType) => new Date(Date.parse(birthday)).getFullYear(),
       sortable: true,
     },
   ]
@@ -81,7 +81,7 @@ const ITEM_MODEL : ItemModel<TestType> = {
 
 export default class RoutedExample extends PureComponent<unknown, StateType> {
 
-  state : StateType = {
+  state: StateType = {
     data: `[
   { "id": "1", "name": "Alice", "birthday": "2001-02-03" },
   { "id": "2", "name": "Bob", "birthday": "2002-03-04" },
@@ -93,24 +93,24 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
 ]`,
     fetchArgs: {},
     retryCounter: 0,
-  }
+  };
 
   private handleDataChange =
-    ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) : void =>
-      this.setState( { data: value } )
+    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): void =>
+      this.setState({data: value});
 
-  private handleFetchArgsChange = ( fetchArgs: FetchArgs ) =>
-    this.setState( { fetchArgs } );
+  private handleFetchArgsChange = (fetchArgs: FetchArgs) =>
+    this.setState({fetchArgs});
 
   private handleFetchArgsTextChange =
-    ( { currentTarget: { value } } : React.ChangeEvent<HTMLInputElement> ) =>
-      this.setState( { fetchArgs: JSON.parse( value ) as FetchArgs } );
+    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
+      this.setState({fetchArgs: JSON.parse(value) as FetchArgs});
 
-  private handleRetry = () : unknown =>
-    this.setState( ( { retryCounter } ) => ( { retryCounter: retryCounter + 1 } ) );
+  private handleRetry = (): unknown =>
+    this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1}));
 
-  render() : ReactNode {
-    const { data, fetchArgs } = this.state;
+  render (): ReactNode {
+    const {data, fetchArgs} = this.state;
 
     return <Container>
       <Row>
@@ -162,7 +162,7 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
             rows={5}
             value={data} />
         </Form.Group>
-        { !!Object.keys( fetchArgs ).length && <Form.Group as={Col} controlId="fetchArgs">
+        { !!Object.keys(fetchArgs).length && <Form.Group as={Col} controlId="fetchArgs">
           <Form.Label>FetchArgs</Form.Label>
           <Form.Control
             as="textarea"
@@ -170,7 +170,7 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
             name="fetchArgs"
             onChange={this.handleFetchArgsTextChange}
             rows={5}
-            value={JSON.stringify( fetchArgs, undefined, 2 )} />
+            value={JSON.stringify(fetchArgs, undefined, 2)} />
         </Form.Group> }
       </Row>
       <Row>
@@ -182,17 +182,17 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
     </Container>;
   }
 
-  private renderResult() : ReactNode {
-    const { data, fetchArgs } = this.state;
+  private renderResult (): ReactNode {
+    const {data, fetchArgs} = this.state;
 
-    let parsedData : DataType[];
+    let parsedData: DataType[];
     try {
-      parsedData = JSON.parse( data ) as DataType[];
-    } catch ( err ) {
+      parsedData = JSON.parse(data) as DataType[];
+    } catch (err) {
       const error = err as {message?: string};
       return <Alert variant="danger">
         {'Unable to parse data JSON: '}
-        {error.message || JSON.stringify( error )}
+        {error.message || JSON.stringify(error)}
       </Alert>;
     }
 
@@ -204,7 +204,7 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
       <PageTable
         itemModel={ITEM_MODEL}
         onFetchArgsChange={this.handleFetchArgsChange}
-        page={fetchFromArray( ITEM_MODEL, parsedData, fetchArgs )} />
+        page={fetchFromArray(ITEM_MODEL, parsedData, fetchArgs)} />
     </ErrorBoundary>;
   }
 }

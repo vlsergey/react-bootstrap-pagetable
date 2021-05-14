@@ -3,25 +3,25 @@
 * can be pass to PageTable without transformation.
 */
 interface Page<T> {
-  content : T[];
+  content: T[];
   /* The number of the current page. Is always non-negative. */
-  number : number;
-  totalElements : number;
-  totalPages : number;
+  number: number;
+  totalElements: number;
+  totalPages: number;
 }
 
-const EMPTY_PAGE_IMPL : Page<unknown> = Object.freeze( {
+const EMPTY_PAGE_IMPL: Page<unknown> = Object.freeze({
   content: [],
   number: 0,
   totalElements: 0,
   totalPages: 0,
-} );
+});
 
-export function emptyPage<T>() : Page<T> {
+export function emptyPage<T> (): Page<T> {
   return EMPTY_PAGE_IMPL as unknown as Page<T>;
 }
 
-export function singlePage<T>( items: T[] ) : Page<T> {
+export function singlePage<T> (items: T[]): Page<T> {
   return {
     content: items,
     number: 0,
