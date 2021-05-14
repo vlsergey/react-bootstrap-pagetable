@@ -62,7 +62,7 @@ const ITEM_MODEL : ItemModel<TestType> = {
       title: 'Name',
       sortable: true,
       filterValueConverter,
-      renderFilterCell: renderFilterByContainsCell,
+      renderFilterCell: renderFilterByContainsCell
     },
     {
       key: 'birthday',
