@@ -1,8 +1,9 @@
-import FieldModel, {defaultGetter, defaultRender} from './FieldModel';
 import React, {PureComponent, ReactNode} from 'react';
 import Alert from 'react-bootstrap/Alert';
 import FetchArgs from './FetchArgs';
+import FieldModel from './FieldModel';
 import Form from 'react-bootstrap/Form';
+import ItemFieldValue from './ItemFieldValue';
 import ItemModel from './ItemModel';
 import Page from './Page';
 import Pagination from '@vlsergey/react-bootstrap-pagination';
@@ -12,8 +13,8 @@ import Table from 'react-bootstrap/Table';
 type IdFunction<T> = (item: T) => string;
 
 export interface PropsType<T> {
-  columnHeaderCell?: (field: FieldModel<unknown>) => ReactNode;
-  columnHeaderRow?: (fieldsToRender: FieldModel<unknown>[]) => ReactNode;
+  columnHeaderCell?: (field: FieldModel<T, unknown>) => ReactNode;
+  columnHeaderRow?: (fieldsToRender: FieldModel<T, unknown>[]) => ReactNode;
   error?: unknown & {message?: string};
   fetchArgs: FetchArgs;
   footer?: (tableColumnsCount: number) => ReactNode;
@@ -31,7 +32,7 @@ export interface PropsType<T> {
 export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
 
   static defaultProps = {
-    columnHeaderCell: (field: FieldModel<unknown>): ReactNode => <th key={field.key}>
+    columnHeaderCell: (field: FieldModel<unknown, unknown>): ReactNode => <th key={field.key}>
       {field.title}
     </th>,
     loading: false,
@@ -51,7 +52,7 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
     },
   };
 
-  defaultCellHeaderRow = (fieldsToRender: FieldModel<unknown>[]): ReactNode =>
+  defaultCellHeaderRow = (fieldsToRender: FieldModel<T, unknown>[]): ReactNode =>
     <tr>{fieldsToRender.map(this.props.columnHeaderCell)}</tr>;
 
   private handlePageChange = ({target: {value}}: {target: {value: number}}) => {
@@ -78,7 +79,7 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
     };
 
     // TODO: allow user to change
-    const fieldsToRender: FieldModel<unknown>[] = itemModel.fields;
+    const fieldsToRender: FieldModel<T, unknown>[] = itemModel.fields;
 
     return <Table {...actualTableProps}>
       {this.renderHeader(fieldsToRender)}
@@ -87,9 +88,9 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
            noContentRow(fieldsCount) }
         { page.content.map((item: T) =>
           <tr key={item2id(item)} {...(rowProps ? rowProps(item) : {})}>
-            { fieldsToRender.map((field: FieldModel<unknown>) =>
+            { fieldsToRender.map((field: FieldModel<T, unknown>) =>
               <td key={field.key}>
-                {this.renderValueCellContent(field, item)}
+                <ItemFieldValue field={field} item={item} itemModel={itemModel} />
               </td>
             ) }
           </tr>
@@ -102,7 +103,7 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
     </Table>;
   }
 
-  private renderHeader (fieldsToRender: FieldModel<unknown>[]): ReactNode {
+  private renderHeader (fieldsToRender: FieldModel<T, unknown>[]): ReactNode {
     const {columnHeaderRow, hasError, error, loading} = this.props;
     const fieldsCount: number = fieldsToRender.length;
 
@@ -123,12 +124,6 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
         </td>
       </tr> }
     </thead>;
-  }
-
-  private renderValueCellContent<T, V>(field: FieldModel<V>, item: T) {
-    const fieldValue: V = (field.getter || defaultGetter())(item, field);
-    const rendered: ReactNode = (field.render || defaultRender())(fieldValue, item);
-    return rendered;
   }
 
   private renderPageSizeControlRow (tableColumnsCount: number): ReactNode {

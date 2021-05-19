@@ -42,9 +42,9 @@ export default class ContolledDemo extends PureComponent<unknown, StateType> {
       fields: [
         {
           key: 'id',
-          render: (value: string) => value,
+          render: ({value}) => value,
           title: 'ID',
-        } as FieldModel<string>,
+        } as FieldModel<TestType, string>,
       ],
     };
 

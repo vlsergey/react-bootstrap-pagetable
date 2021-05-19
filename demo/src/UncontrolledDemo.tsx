@@ -1,4 +1,4 @@
-import {Action, FetchArgs, fetchFromArray, FieldModel, ItemModel, Page,
+import {Action, FetchArgs, fetchFromArray, ItemModel, Page,
   UncontrolledPageTable as PageTable} from '@vlsergey/react-bootstrap-pagetable';
 import React, {PureComponent, ReactNode} from 'react';
 import Container from 'react-bootstrap/Container';
@@ -24,9 +24,9 @@ const itemModel: ItemModel<TestType> = {
   fields: [
     {
       key: 'id',
-      render: (value: string) => value,
+      render: ({value}) => value,
       title: 'ID',
-    } as FieldModel<string>,
+    },
   ],
 };
 

@@ -4,13 +4,13 @@ import FetchArgs, {Direction, SortBy} from '../FetchArgs';
 import React, {PureComponent, ReactNode} from 'react';
 import FieldModel from '../FieldModel';
 
-export interface PropsType<V> {
+export interface PropsType<I, V> {
   fetchArgs: FetchArgs;
-  field: FieldModel<V>;
+  field: FieldModel<I, V>;
   onFetchArgsChange: (fetchArgs: FetchArgs) => unknown;
 }
 
-export default class SortableHeaderCell<V> extends PureComponent<PropsType<V>> {
+export default class SortableHeaderCell<I, V> extends PureComponent<PropsType<I, V>> {
 
   private handleClick = (): void => {
     const {fetchArgs} = this.props;

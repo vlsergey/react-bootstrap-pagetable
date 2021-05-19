@@ -1,6 +1,6 @@
+import FieldModel, {ValueRendererProps} from './FieldModel';
 import React, {PureComponent, ReactNode} from 'react';
 import {PropsType as ControlledPropsType} from './ControlledBase';
-import FieldModel from './FieldModel';
 import ItemModel from './ItemModel';
 import memoizeOne from 'memoize-one';
 
@@ -12,8 +12,8 @@ export interface NewComponentProps {
   selectedIds: string[];
 }
 
-const renderCheckboxField = (selected: boolean): ReactNode =>
-  <input checked={selected} readOnly type="checkbox" />;
+const renderCheckboxField = ({value}: ValueRendererProps<unknown, boolean>) =>
+  <input checked={value} readOnly type="checkbox" />;
 
 const withSelectable =
   <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>): React.ComponentType<NewComponentProps & P> =>
@@ -63,7 +63,7 @@ const withSelectable =
           render: renderCheckboxField,
           // TODO: add check-all checkbox
           title: <div />,
-        } as FieldModel<boolean>,
+        } as FieldModel<T, boolean>,
         ...itemModel.fields,
       ]
     };

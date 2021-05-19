@@ -1,7 +1,7 @@
 import FieldModel from './FieldModel';
 
 interface ItemModel<T> {
-  fields: FieldModel<unknown>[];
+  fields: FieldModel<T, unknown>[];
   idF: (item: T) => string;
 }
 

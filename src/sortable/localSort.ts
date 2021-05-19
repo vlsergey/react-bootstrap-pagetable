@@ -1,5 +1,5 @@
 import {Direction, SortBy} from '../FetchArgs';
-import FieldModel, {defaultGetter, FieldGetter} from '../FieldModel';
+import FieldModel, {defaultGetter, ValueGetter} from '../FieldModel';
 import ItemModel from '../ItemModel';
 
 export default function localSort<T> (
@@ -17,18 +17,18 @@ export default function localSort<T> (
   actualSortBy.forEach(({field, direction}: SortBy) => {
     const fieldModel = itemModel.fields.find(({key}) => key === field);
     if (!fieldModel) throw Error(`Missing field ${field} model in item model`);
-    inplaceSort(result, fieldModel, direction);
+    inplaceSort(itemModel, result, fieldModel, direction);
   });
 
   return result;
 }
 
-function inplaceSort<T, V> (src: T[], fieldModel: FieldModel<V>, direction: Direction): void {
-  const getter: FieldGetter<V> = fieldModel.getter || defaultGetter();
+function inplaceSort<T, V> (itemModel: ItemModel<T>, src: T[], fieldModel: FieldModel<T, V>, direction: Direction): void {
+  const getter: ValueGetter<T, V> = fieldModel.getter || defaultGetter;
 
   const ascComparator: ((a: T, b: T) => number) = (a: T, b: T) => {
-    const vA: V = getter(a, fieldModel);
-    const vB: V = getter(b, fieldModel);
+    const vA: V = getter(a, fieldModel, itemModel);
+    const vB: V = getter(b, fieldModel, itemModel);
 
     if (vA === undefined && vB === undefined) return 0;
     if (vA === undefined && vB !== undefined) return +1; // A to the end

@@ -17,10 +17,10 @@ export default function fetchFromArray<T> (
       const filterBy: unknown = filter[ fieldKey ];
       if (typeof filterBy !== 'string') return false;
 
-      const field: FieldModel<unknown> = itemModel.fields.find(({key}) => key == fieldKey);
+      const field: FieldModel<T, unknown> = itemModel.fields.find(({key}) => key == fieldKey);
       if (!field) return false;
 
-      const itemValue: unknown = (field.getter || defaultGetter())(item, field);
+      const itemValue: unknown = (field.getter || defaultGetter)(item, field, itemModel);
       if (typeof itemValue !== 'string') return false;
 
       return itemValue.toLowerCase().includes(filterBy.toLowerCase());
