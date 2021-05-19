@@ -24,7 +24,7 @@ const FieldFilterCell =
           ...fetchArgs.filter,
           [ field.key ]: newFilterBy,
         }
-      }), [ onFetchArgsChange ]);
+      }), [ field, fetchArgs, onFetchArgsChange ]);
 
     return React.createElement(filterCellRenderer, {
       field,
