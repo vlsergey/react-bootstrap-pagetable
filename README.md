@@ -72,11 +72,8 @@ identifier of object in the data list. It's usually object ID. Identifier
 *should* be unique in single data page scope and *shall* be unique in whole
 table scope. Internally it's used to store selected rows identifiers and to
 provide `key` to React element array items.
-* `fields (fields: FieldModel<unknown>[])`. List of object properties that can
-be displayed in the table. Until version 1.0 every listed column is visible and
-order can't be change. This is subject to change. In future versions user will
-be able to hide some columns and/or to reorder them. Each field model should
-have following properties:
+* `fields (fields: FieldModel<ItemModel, FieldValueType>[])`.
+List of object properties that can be displayed in the table. Until version 1.0 every listed column is visible and order can't be change. This is subject to change. In future versions user will be able to hide some columns and/or to reorder them. Each field model should have following properties:
   * `key` (`key: string`). Defines internal string key for field. Internally
   it's used to provide `key` to React element array items. In future versions
   it will also be used to store 'shown/hidden' lists of column. Assumed to be
@@ -86,7 +83,7 @@ have following properties:
   used as `ReactNode`, so feel free to provide just plain text.
   * `description` (`description?: ReactNode`): Description of field. _Optional_.
   Currently unused.
-  * `sortable` (`boolean`): is field sortable or not. _Optional_. Default `false`.
+  * `sortable` (`boolean`): is field sortable or not. _Optional_. Default `false`. Enabling this will render additional sorting icons in table header cell and will allow user to change sorting by clicking on header cell. Component _does not_ define a way to sort elements, only fills `sort` field in `FetchArgs` structure passed to `fetch()` function.
   * `getter` (`getter?: ( item: I, fieldModel: FieldModel<I, V>, itemModel: ItemModel<I> ) => V`).
   _Optional_. Defines the way to obtain field value from object structure. By
   default obtains object property using `key`, i.e. `item[fieldModel.key]`.
