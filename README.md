@@ -59,15 +59,15 @@ import {UncontrolledWithReactRouter as PageTable} from '@vlsergey/react-bootstra
 | **`fetch`**       | `( fetchArgs: FetchArgs ) => Promise<Page<T>>` | **required**  | See below   |
 | **`itemModel`**   | `ItemModel<T>`                                 | **required**  | See below   |
 | `noContentRow`    | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
-| `rowProps`        | `( item : T ) => React.ComponentProps<'tr'>`   | `() => ({})`  | Additional properties for inner `<tr>` element |
+| `rowProps`        | `( item: T ) => React.ComponentProps<'tr'>`   | `() => ({})`  | Additional properties for inner `<tr>` element |
 | `size`            | `undefined` \| `'lg'` \| `'sm'`                | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
 | `tableProps`      | [props of react bootstrap `<Table>` component](https://react-bootstrap.github.io/components/table/#table-props) | `{}` | Additional properties for inner `<Table>` component |
 | `urlParamsPrefix` | `string`                                       | `""`          | What is the prefix of `page`, `size`, `sort` and other URL arguments that `PageTable` should interact with. Only with [react-router](https://reactrouter.com/) integration enabled.  |
 
 ### Item model
-So far itemModel (`itemModel : ItemModel`) defines 2 properties:
+So far itemModel (`itemModel: ItemModel`) defines 2 properties:
 
-* `idF` (`idF: (item : T) => string`). Defines a way to get unique
+* `idF` (`idF: (item: T) => string`). Defines a way to get unique
 identifier of object in the data list. It's usually object ID. Identifier
 *should* be unique in single data page scope and *shall* be unique in whole
 table scope. Internally it's used to store selected rows identifiers and to
@@ -81,26 +81,26 @@ have following properties:
   it's used to provide `key` to React element array items. In future versions
   it will also be used to store 'shown/hidden' lists of column. Assumed to be
   safe to change from version to version (nothing really bad happens on change).
-  * `title` (`title : ReactNode`). What shall be shown as column title in header
+  * `title` (`title: ReactNode`). What shall be shown as column title in header
   cell or in the column list in settings dialog popup. Note: `string` can be
   used as `ReactNode`, so feel free to provide just plain text.
-  * `description` (`description? : ReactNode`): Description of field. _Optional_.
+  * `description` (`description?: ReactNode`): Description of field. _Optional_.
   Currently unused.
   * `sortable` (`boolean`): is field sortable or not. _Optional_. Default `false`.
-  * `getter` (`getter? : ( item : I, fieldModel : FieldModel<I, V>, itemModel : ItemModel<I> ) => V`).
+  * `getter` (`getter?: ( item: I, fieldModel: FieldModel<I, V>, itemModel: ItemModel<I> ) => V`).
   _Optional_. Defines the way to obtain field value from object structure. By
   default obtains object property using `key`, i.e. `item[fieldModel.key]`.
-  * `render` (`render : ( props: { value: V, item : I, itemModel: ItemModel<I> } ) => ReactNode`). _Optional_.
+  * `render` (`render: ( props: { value: V, item: I, itemModel: ItemModel<I> } ) => ReactNode`). _Optional_.
   Defines the way to render object field as table cell content. By default
   just outputs string and number values as `ReactNode`, objects are stringified
   using `JSON.stringify()`, `null` and `undefined` are returned as `null`.
   Feel free to use function, React functional component or React class component
   here. Props type is exported from library as `ValueRendererProps` interface.
-  * `headerCellProps` (`headerCellProps?: ( fieldModel : FieldModel<V> ) => Record<string, unknown>`).
+  * `headerCellProps` (`headerCellProps?: ( fieldModel: FieldModel<V> ) => Record<string, unknown>`).
   _Optional_. Provides additional header cell react element (`<th>`) properties.
   By default no additional properties are provided. Header cell is still styled
   using default bootstrap styles of `<Table>` component.
-  * `valueCellProps` (`valueCellProps?: ( value : V, item : unknown, fieldModel : FieldModel<V> ) => Record<string, unknown>`).
+  * `valueCellProps` (`valueCellProps?: ( value: V, item: unknown, fieldModel: FieldModel<V> ) => Record<string, unknown>`).
   _Optional_. Provides additional value cell react element (`<td>`) properties.
 
 #### Example
@@ -168,10 +168,10 @@ interface FetchOptions {
 * can be pass to PageTable without transformation.
 */
 interface Page<T> {
-  content : T[];
-  number : number;
-  totalElements : number;
-  totalPages : number;
+  content: T[];
+  number: number;
+  totalElements: number;
+  totalPages: number;
 }
 ```
 Provides a way to get items to display. User shall not think about bouncing/scheduling/etc,
@@ -187,9 +187,9 @@ Emulates fetching data from provided array. Supports pagination and sorting (wit
 import { fetchFromArray } from '@vlsergey/react-bootstrap-pagetable';
 
 async function fetchFromArray<T>(
-    itemModel : ItemModel<T>,
-    src : T[],
-    fetchArgs : FetchArgs ) : Promise<Page<T>>
+    itemModel: ItemModel<T>,
+    src: T[],
+    fetchArgs: FetchArgs ): Promise<Page<T>>
 ```
 
 #### fetchFromSpringDataRest
@@ -198,9 +198,9 @@ async function fetchFromArray<T>(
 import { fetchFromSpringDataRest } from '@vlsergey/react-bootstrap-pagetable';
 
 async function fetchFromSpringDataRest<T>(
-  url : string,
-  fetchArgs : FetchArgs,
-  responseCollectionKey : string ) : Promise<Page<T>>
+  url: string,
+  fetchArgs: FetchArgs,
+  responseCollectionKey: string ): Promise<Page<T>>
 ```
 
 Fetches data from Spring Data REST API. Provided URL can be absolute or relative.
@@ -225,8 +225,8 @@ type SpringDataApiResponseType<T> = {
 }
 
 function springDataRestResponseToPage<T>(
-    key : string, response: SpringDataApiResponseType<T>
-) : Page<T>
+    key: string, response: SpringDataApiResponseType<T>
+): Page<T>
 ```
 
 Converts Spring Data REST API response to Page structure expected by PageTable.
