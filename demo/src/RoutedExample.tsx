@@ -1,8 +1,8 @@
-import {FetchArgs, fetchFromArray, FieldFilterCellRenderer,
-  FieldFilterValueConverter, FieldModel, ItemModel,
+import {FetchArgs, fetchFromArray, FieldModel,
+  FilterCellRendererProps, FilterValueConverter, ItemModel,
   ControlledWithReactRouter as PageTable}
   from '@vlsergey/react-bootstrap-pagetable';
-import React, {PureComponent, ReactNode} from 'react';
+import React, {PureComponent, ReactNode, useCallback} from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from '@vlsergey/react-bootstrap-button-with-spinner';
 import Col from 'react-bootstrap/Col';
@@ -26,33 +26,21 @@ type TestType = {
   birthday: string;
 };
 
-class FilterCell extends PureComponent<{
-  filterBy: string;
-  onChange: (filterBy: string) => unknown;
-}> {
+const FilterCell = ({filterBy, onFilterByChange}: FilterCellRendererProps<TestType, string, string>) =>
+  <td>
+    <Form.Control
+      onChange={useCallback(
+        ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) => onFilterByChange(value)
+        , [ onFilterByChange ])}
+      placeholder="value to filter by (show values that contains entered text)"
+      type="text"
+      value={filterBy || ''} />
+  </td>;
 
-  private handleChange = ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): unknown =>
-    this.props.onChange(!value ? null : value);
-
-  render (): ReactNode {
-    return <td>
-      <Form.Control
-        onChange={this.handleChange}
-        placeholder="value to filter by (show values that contains entered text)"
-        type="text"
-        value={this.props.filterBy || ''} />
-    </td>;
-  }
-}
-
-const filterValueConverter: FieldFilterValueConverter<string> = {
+const filterValueConverter: FilterValueConverter<string> = {
   fromString: (str: string) => str,
   toString: (str: string) => str,
 };
-
-const renderFilterByContainsCell: FieldFilterCellRenderer<string, unknown> =
-  ({key}: FieldModel<string>, filterBy: string, onChange: ((filterBy: string) => unknown)) =>
-    <FilterCell filterBy={filterBy} key={key} onChange={onChange} />;
 
 const ITEM_MODEL: ItemModel<TestType> = {
   idF: ({id}: TestType) => id,
@@ -62,12 +50,12 @@ const ITEM_MODEL: ItemModel<TestType> = {
       title: 'Name',
       sortable: true,
       filterValueConverter,
-      renderFilterCell: renderFilterByContainsCell
-    },
+      renderFilterCell: FilterCell
+    } as FieldModel<TestType, string>,
     {
       key: 'birthday',
       title: 'Birth Date',
-      render: (value: string) => new Date(Date.parse(value)).toLocaleDateString(),
+      render: ({value}: {value: string}) => new Date(Date.parse(value)).toLocaleDateString(),
       sortable: true,
     },
     {

@@ -5,7 +5,7 @@ import ItemModel from '../ItemModel';
 import SortableHeaderCell from './SortableHeaderCell';
 
 interface RequiredBaseComponentProps {
-  columnHeaderCell?: (field: FieldModel<unknown>) => ReactNode;
+  columnHeaderCell?: (field: FieldModel<unknown, unknown>) => ReactNode;
   fetchArgs: FetchArgs;
   itemModel: ItemModel<unknown>;
   onFetchArgsChange: (fetchArgs: FetchArgs) => unknown;
@@ -15,7 +15,7 @@ const withSortable = <P extends RequiredBaseComponentProps>(Child: React.Compone
 React.ComponentType<Omit<P, 'columnHeaderCell'>> =>
     class WithSortable extends PureComponent<Omit<P, 'columnHeaderCell'>> {
 
-    renderColumnHeaderCell = (field: FieldModel<unknown>): ReactNode =>
+    renderColumnHeaderCell = (field: FieldModel<unknown, unknown>): ReactNode =>
       <SortableHeaderCell
         fetchArgs={this.props.fetchArgs}
         field={field}

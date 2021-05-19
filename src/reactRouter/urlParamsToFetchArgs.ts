@@ -1,5 +1,5 @@
 import FetchArgs, {Direction} from '../FetchArgs';
-import FieldModel, {defaultFilterValueConverter, FieldFilterValueConverter}
+import FieldModel, {defaultFilterValueConverter, FilterValueConverter}
   from '../FieldModel';
 import ItemModel from '../ItemModel';
 
@@ -39,12 +39,12 @@ export default function urlParamsToFetchArgs (
     }
   }
 
-  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown>) =>
+  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown, unknown>) =>
     ifHave(key, filterStringValue => {
       if (!result.filter) {
         result.filter = {};
       }
-      const converter: FieldFilterValueConverter<unknown> = filterValueConverter || defaultFilterValueConverter();
+      const converter: FilterValueConverter<unknown> = filterValueConverter || defaultFilterValueConverter();
       result.filter[ key ] = converter.fromString(filterStringValue);
     })
   );

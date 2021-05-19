@@ -1,5 +1,6 @@
 import ControlledBase, {PropsType as ControlledPropsType} from './ControlledBase';
 import React, {PureComponent, ReactNode} from 'react';
+import FieldFilterCell from './FieldFilterCell';
 import FieldModel from './FieldModel';
 
 type RequiredChildComponentProps<T> =
@@ -9,24 +10,17 @@ const withFilterable = <T, P extends RequiredChildComponentProps<T>>(Child: Reac
   React.ComponentType<Omit<P, 'columnHeaderRow'>> =>
     class WithFilterable extends PureComponent<Omit<P, 'columnHeaderRow'>> {
 
-  renderColumnHeaderRow = (fieldsToRender: FieldModel<unknown>[]): ReactNode => {
+  renderColumnHeaderRow = (fieldsToRender: FieldModel<unknown, unknown>[]): ReactNode => {
     const {fetchArgs, onFetchArgsChange} = this.props;
     return <>
       <tr>{fieldsToRender.map(this.props.columnHeaderCell || ControlledBase.defaultProps.columnHeaderCell)}</tr>
       <tr>
-        {fieldsToRender.map((field: FieldModel<unknown>) =>
-          field.renderFilterCell
-            ? field.renderFilterCell(
-              field,
-              (fetchArgs.filter || {})[ field.key ] || null,
-              (newFilterBy: string) => onFetchArgsChange({
-                ...fetchArgs,
-                filter: {
-                  ...fetchArgs.filter,
-                  [ field.key ]: newFilterBy,
-                }
-              }))
-            : <td key={field.key} />
+        {fieldsToRender.map((field: FieldModel<unknown, unknown>) =>
+          <FieldFilterCell
+            fetchArgs={fetchArgs}
+            field={field}
+            key={field.key}
+            onFetchArgsChange={onFetchArgsChange} />
         )}
       </tr>
     </>;

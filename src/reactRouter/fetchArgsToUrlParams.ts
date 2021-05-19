@@ -1,5 +1,5 @@
 import FetchArgs, {SortBy} from '../FetchArgs';
-import FieldModel, {defaultFilterValueConverter, FieldFilterValueConverter}
+import FieldModel, {defaultFilterValueConverter, FilterValueConverter}
   from '../FieldModel';
 import ItemModel from '../ItemModel';
 
@@ -30,10 +30,10 @@ export default function fetchArgsToUrlParams (
     params.delete(`${prefix}sort`);
   }
 
-  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown>) => {
+  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown, unknown>) => {
     const filterValue = (fetchArgs.filter || {})[ key ];
     if (filterValue !== null && filterValue !== undefined) {
-      const converter: FieldFilterValueConverter<unknown> = filterValueConverter || defaultFilterValueConverter();
+      const converter: FilterValueConverter<unknown> = filterValueConverter || defaultFilterValueConverter();
       params.set(prefix + key, converter.toString(filterValue));
     } else {
       params.delete(prefix + key);

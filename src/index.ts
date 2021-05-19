@@ -1,11 +1,13 @@
-import FieldModel, {FieldFilterCellRenderer, FieldFilterValueConverter}
-  from './FieldModel';
+import FieldModel, {FilterCellRendererProps, FilterValueConverter,
+  ValueGetter, ValueRendererProps} from './FieldModel';
 import Page, {emptyPage, singlePage} from './Page';
 import Action from './actions/Action';
 import ControlledBase from './ControlledBase';
 import FetchArgs from './FetchArgs';
 import fetchFromArray from './fetchFromArray';
 import fetchFromSpringDataRest from './fetchFromSpringDataRest';
+import FieldFilterCell from './FieldFilterCell';
+import ItemFieldValue from './ItemFieldValue';
 import ItemModel from './ItemModel';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
 import withActions from './actions';
@@ -20,11 +22,17 @@ export {
   // API interfaces and models
   Action,
   FetchArgs,
-  FieldFilterCellRenderer,
-  FieldFilterValueConverter,
+  FilterCellRendererProps,
+  FilterValueConverter,
   FieldModel,
   ItemModel,
   Page,
+  ValueGetter,
+  ValueRendererProps,
+
+  // core implementation components (API hiders and simplifiers)
+  FieldFilterCell,
+  ItemFieldValue,
 
   // utils
   emptyPage,

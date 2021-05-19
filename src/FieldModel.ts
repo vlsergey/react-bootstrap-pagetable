@@ -1,38 +1,45 @@
+import ItemModel from './ItemModel';
 import {ReactNode} from 'react';
 
-export type FieldGetter<V> = ((item: unknown, fieldModel: FieldModel<V>) => V);
+export type ValueGetter<ItemType, ValueType> =
+  ((item: ItemType, fieldModel: FieldModel<ItemType, ValueType>, itemType: ItemModel<ItemType>) => ValueType);
 
-export type FieldFilterCellRenderer<V, F> = (
-  fieldModel: FieldModel<V>,
-  filterBy: F,
-  onFilterByChange: (filterBy: F) => unknown
-) => ReactNode;
+export interface FilterCellRendererProps<ItemType, ValueType, FilterValueType> {
+  field: FieldModel<ItemType, ValueType>;
+  filterBy: FilterValueType;
+  onFilterByChange: (filterBy: FilterValueType) => unknown;
+}
 
-export interface FieldFilterValueConverter<F> {
+export interface FilterValueConverter<F> {
   fromString: (str: string) => F;
   toString: (filterBy: F) => string;
 }
 
-interface FieldModel<V> {
+export interface ValueRendererProps<ItemType, ValueType> {
+  value: ValueType;
+  item: ItemType;
+}
+
+interface FieldModel<ItemType, ValueType> {
   key: string;
   title: ReactNode;
   description?: ReactNode;
 
   sortable?: boolean;
-  renderFilterCell?: FieldFilterCellRenderer<V, unknown>;
-  filterValueConverter?: FieldFilterValueConverter<unknown>;
+  renderFilterCell?: (props: FilterCellRendererProps<ItemType, ValueType, unknown>) => ReactNode;
+  filterValueConverter?: FilterValueConverter<unknown>;
 
-  getter?: FieldGetter<V>;
-  render?: (value: V, item: unknown) => ReactNode;
-  headerCellProps?: (fieldModel: FieldModel<V>) => Record<string, unknown>;
-  valueCellProps?: (value: V, item: unknown, fieldModel: FieldModel<V>) => Record<string, unknown>;
+  getter?: ValueGetter<ItemType, ValueType>;
+  render?: (props: ValueRendererProps<ItemType, ValueType>) => ReactNode;
+  headerCellProps?: (fieldModel: FieldModel<ItemType, ValueType>) => Record<string, unknown>;
+  valueCellProps?: (value: ValueType, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>) => Record<string, unknown>;
 }
 
-export function defaultGetter<V> (): FieldGetter<V> {
-  return (item: unknown, fieldModel: FieldModel<V>) => (item as Record<string, unknown>)[ fieldModel.key ] as V;
-}
+export const defaultGetter =
+  <I, V>(item: I, fieldModel: FieldModel<I, V>): V =>
+    (item as Record<string, unknown>)[ fieldModel.key ] as V;
 
-export function defaultFilterValueConverter (): FieldFilterValueConverter<unknown> {
+export function defaultFilterValueConverter (): FilterValueConverter<unknown> {
   return {
     fromString: JSON.parse,
     toString: JSON.stringify,
@@ -41,24 +48,24 @@ export function defaultFilterValueConverter (): FieldFilterValueConverter<unknow
 
 const EMPTY_PROPS = Object.freeze({}) as Record<string, unknown>;
 
-export function defaultHeaderCellProps<V> (): ((fieldModel: FieldModel<V>) => Record<string, unknown>) {
+export function defaultHeaderCellProps<I, V> (): ((fieldModel: FieldModel<I, V>) => Record<string, unknown>) {
   return () => EMPTY_PROPS;
 }
 
-export function defaultValueCellProps<V> (): ((value: V, item: unknown, fieldModel: FieldModel<V>) => Record<string, unknown>) {
+export function defaultValueCellProps<I, V> (): ((value: V, item: I, fieldModel: FieldModel<I, V>) => Record<string, unknown>) {
   return () => EMPTY_PROPS;
 }
 
-export function defaultRender<V> (): ((value: V, item: unknown) => ReactNode) {
-  return (value: V) => {
-    if (value === null || value === undefined) {
-      return null;
-    }
-    if (typeof value === 'string' || typeof value === 'number') {
-      return value;
-    }
-    return JSON.stringify(value);
-  };
+export function defaultRender<ValueType> (
+    {value}: ValueRendererProps<ValueType, unknown>
+): ReactNode {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  if (typeof value === 'string' || typeof value === 'number') {
+    return value;
+  }
+  return JSON.stringify(value);
 }
 
 export default FieldModel;

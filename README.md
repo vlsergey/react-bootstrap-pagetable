@@ -87,13 +87,15 @@ have following properties:
   * `description` (`description? : ReactNode`): Description of field. _Optional_.
   Currently unused.
   * `sortable` (`boolean`): is field sortable or not. _Optional_. Default `false`.
-  * `getter` (`getter? : ( item : unknown, fieldModel : FieldModel<V> ) => V`).
+  * `getter` (`getter? : ( item : I, fieldModel : FieldModel<I, V>, itemModel : ItemModel<I> ) => V`).
   _Optional_. Defines the way to obtain field value from object structure. By
   default obtains object property using `key`, i.e. `item[fieldModel.key]`.
-  * `render` (`render : ( value : V, item : unknown ) => ReactNode`). _Optional_.
+  * `render` (`render : ( props: { value: V, item : I, itemModel: ItemModel<I> } ) => ReactNode`). _Optional_.
   Defines the way to render object field as table cell content. By default
   just outputs string and number values as `ReactNode`, objects are stringified
   using `JSON.stringify()`, `null` and `undefined` are returned as `null`.
+  Feel free to use function, React functional component or React class component
+  here. Props type is exported from library as `ValueRendererProps` interface.
   * `headerCellProps` (`headerCellProps?: ( fieldModel : FieldModel<V> ) => Record<string, unknown>`).
   _Optional_. Provides additional header cell react element (`<th>`) properties.
   By default no additional properties are provided. Header cell is still styled
@@ -121,7 +123,7 @@ const itemModel = {
     {
       key: 'birthday',
       title: 'Birth Date',
-      render: ( value ) => new Date( Date.parse( value ) ).toLocaleDateString(),
+      render: ( { value } ) => new Date( Date.parse( value ) ).toLocaleDateString(),
       sortable: true,
     },
     {
@@ -146,6 +148,8 @@ interface FetchArgs {
   page?: number,
   /** Max number of items per page to fetch */
   size?: number,
+  /** Filter values filled by filter cells (by invoking onFilterByChange callback) */
+  filter?: Record<string, unknown>;
   /** Sort by field.
   If multiple fields are specified sort done in order is from last to first.
   (i.e. reversed before put in (for example) ORDER BY clause of SQL query) */
