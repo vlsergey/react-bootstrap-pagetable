@@ -9,10 +9,10 @@ const itemModel: ItemModel<TestItem> = {
   fields: [],
 };
 
-const defaultFetchArgs : FetchArgs = {
+const defaultFetchArgs: FetchArgs = {
   page: 555,
   size: 777,
-}
+};
 
 describe('reactRouter/urlParamsToFetchArgs', () => {
 

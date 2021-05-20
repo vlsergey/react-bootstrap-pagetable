@@ -18,7 +18,7 @@ describe('withPageInState', () => {
 
     renderIntoDocument(<PageTable
       fetch={() => Promise.resolve(emptyPage())}
-      fetchArgs={{}}
+      fetchArgs={{page: 0, size: 10}}
       itemModel={testItemModel}
       onFetchArgsChange={NOOP} />);
   });

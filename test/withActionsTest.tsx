@@ -17,7 +17,7 @@ describe('withActions', () => {
     } as ItemModel<TestItem>;
 
     renderIntoDocument(<PageTable
-      fetchArgs={{}}
+      fetchArgs={{page: 0, size: 10}}
       hasError={false}
       itemModel={testItemModel}
       loading={false}
