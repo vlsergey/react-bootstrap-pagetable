@@ -79,7 +79,10 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
   { "id": "6", "name": "Fiona", "birthday": "2006-07-08" },
   { "id": "7", "name": "Helen", "birthday": "2007-08-09" }
 ]`,
-    fetchArgs: {},
+    fetchArgs: {
+      page: 0,
+      size: 5,
+    },
     retryCounter: 0,
   };
 
@@ -190,6 +193,8 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
       errorMessageSuffix={<><br /><Button onClick={this.handleRetry}>retry</Button></>}
       key={`ErrorBoundary_${this.state.retryCounter}`}>
       <PageTable
+        defaultPage={fetchArgs.page}
+        defaultSize={fetchArgs.size}
         itemModel={ITEM_MODEL}
         onFetchArgsChange={this.handleFetchArgsChange}
         page={fetchFromArray(ITEM_MODEL, parsedData, fetchArgs)} />

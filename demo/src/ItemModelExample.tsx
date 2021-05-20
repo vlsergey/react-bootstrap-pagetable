@@ -26,7 +26,10 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
   { "id": "2", "name": "Bob", "birthday": "2002-03-04" },
   { "id": "3", "name": "Carl", "birthday": "2003-04-05" }
 ]`,
-    fetchArgs: {},
+    fetchArgs: {
+      page: 0,
+      size: 5,
+    },
     itemModel: `({
   idF: function( item ) { return item.id; },
   fields: [

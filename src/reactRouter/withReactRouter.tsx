@@ -10,9 +10,11 @@ import urlParamsToFetchArgs from './urlParamsToFetchArgs';
 export type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'fetchArgs' | 'itemModel' | 'onFetchArgsChange'>;
 
 export type NewComponentProps<T> = {
-  urlParamsPrefix?: string;
+  defaultPage?: number;
+  defaultSize?: number;
   // optional now
   onFetchArgsChange?: ControlledPropsType<T>['onFetchArgsChange'];
+  urlParamsPrefix?: string;
 };
 
 type InnerComponentProps<T, P extends RequiredChildComponentProps<T>>
@@ -22,21 +24,39 @@ const withReactRouterImpl =
   <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>): React.ComponentType<InnerComponentProps<T, P>> =>
     class RoutedPageTable extends PureComponent<InnerComponentProps<T, P>> {
 
-  toFetchArgs = memoizeOne(
-    (itemModel: ItemModel<unknown>, urlParamsPrefix: string, search: string): FetchArgs =>
-      urlParamsToFetchArgs(itemModel, urlParamsPrefix, new URLSearchParams(search))
+  static defaultProps = {
+    ...Child.defaultProps,
+    defaultPage: 0,
+    defaultSize: 10,
+  } as unknown as Partial<InnerComponentProps<T, P>>;
+
+  getDefaultFetchArgs = memoizeOne(
+    (defaultPage: number, defaultSize: number): FetchArgs =>
+      ({page: defaultPage, size: defaultSize})
+  );
+
+  toFetchArgs = memoizeOne((
+    defaultFetchArgs: FetchArgs,
+    itemModel: ItemModel<unknown>,
+    urlParamsPrefix: string,
+    search: string
+  ): FetchArgs =>
+    urlParamsToFetchArgs(defaultFetchArgs, itemModel, urlParamsPrefix, new URLSearchParams(search))
   );
 
   handleFetchArgsChange = (fetchArgs: FetchArgs): void => {
-    const {history, itemModel, location: {pathname, search}, onFetchArgsChange,
-      urlParamsPrefix} = this.props;
+    const {defaultPage, defaultSize, history, itemModel,
+      location: {pathname, search}, onFetchArgsChange, urlParamsPrefix
+    } = this.props;
 
     const updated: URLSearchParams = fetchArgsToUrlParams(itemModel,
       urlParamsPrefix, search, fetchArgs);
     const newSearch: string = updated.toString();
 
     if (onFetchArgsChange) {
-      onFetchArgsChange(this.toFetchArgs(itemModel, urlParamsPrefix, newSearch));
+      const defaultFetchArgs: FetchArgs = this.getDefaultFetchArgs(defaultPage, defaultSize);
+      const newFetchArgs: FetchArgs = this.toFetchArgs(defaultFetchArgs, itemModel, urlParamsPrefix, newSearch);
+      onFetchArgsChange(newFetchArgs);
     }
 
     history.replace(`${pathname}?${newSearch}`);
@@ -44,10 +64,13 @@ const withReactRouterImpl =
 
   render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "history|match|onFetchArgsChange" }] */
-    const {itemModel, history, location, match, onFetchArgsChange,
-      urlParamsPrefix, ...etcProps} = this.props;
+    const {defaultPage, defaultSize, itemModel, history, location, match,
+      onFetchArgsChange, urlParamsPrefix, ...etcProps} = this.props;
+
+    const defaultFetchArgs: FetchArgs = this.getDefaultFetchArgs(defaultPage, defaultSize);
+    const fetchArgs: FetchArgs = this.toFetchArgs(defaultFetchArgs, itemModel, urlParamsPrefix, location.search);
     return <Child
-      fetchArgs={this.toFetchArgs(itemModel, urlParamsPrefix, location.search)}
+      fetchArgs={fetchArgs}
       itemModel={itemModel}
       onFetchArgsChange={this.handleFetchArgsChange}
       {...etcProps as unknown as P} />;

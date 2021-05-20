@@ -7,9 +7,9 @@ export type SortBy = {
 
 interface FetchArgs {
   /** 0-based page to fetch */
-  page?: number;
+  page: number;
   /** Max number of items per page to fetch */
-  size?: number;
+  size: number;
 
   filter?: Record<string, unknown>;
 

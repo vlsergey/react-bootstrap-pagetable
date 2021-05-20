@@ -12,16 +12,9 @@ export default function fetchArgsToUrlParams (
   const prefix = urlParamsPrefix || '';
   const params = new URLSearchParams(currentSearch);
 
-  if (fetchArgs.page) {
-    params.set(`${prefix}page`, String(fetchArgs.page + 1));
-  } else {
-    params.delete(`${prefix}page`);
-  }
-  if (fetchArgs.size) {
-    params.set(`${prefix}size`, String(fetchArgs.size));
-  } else {
-    params.delete(`${prefix}size`);
-  }
+  params.set(`${prefix}page`, String(fetchArgs.page + 1));
+  params.set(`${prefix}size`, String(fetchArgs.size));
+
   if (fetchArgs.sort) {
     params.set(`${prefix}sort`, fetchArgs.sort
       .map(({field, direction}: SortBy) => `${field}${direction === 'DESC' ? ',DESC' : ''}`)

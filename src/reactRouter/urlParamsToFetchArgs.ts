@@ -4,6 +4,7 @@ import FieldModel, {defaultFilterValueConverter, FilterValueConverter}
 import ItemModel from '../ItemModel';
 
 export default function urlParamsToFetchArgs (
+    defaultFetchArgs: FetchArgs,
     itemModel: ItemModel<unknown>,
     urlParamsPrefix: string,
     params: URLSearchParams
@@ -17,7 +18,7 @@ export default function urlParamsToFetchArgs (
     }
   };
 
-  const result = {} as FetchArgs;
+  const result = {...defaultFetchArgs} as FetchArgs;
   ifHave('page', page => result.page = Number(page) - 1);
   ifHave('size', size => result.size = Number(size));
 
