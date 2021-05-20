@@ -58,6 +58,8 @@ import {UncontrolledWithReactRouter as PageTable} from '@vlsergey/react-bootstra
 | ----------------- | ---------------------------------------------- | ------------- | ----------- |
 | **`fetch`**       | `( fetchArgs: FetchArgs ) => Promise<Page<T>>` | **required**  | See below   |
 | **`itemModel`**   | `ItemModel<T>`                                 | **required**  | See below   |
+| `defaultPage`     | `number`                                       | `0`           | Default page to display (0-based) |
+| `defaultSize`     | `number`                                       | `10`          | Default page size to display |
 | `noContentRow`    | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
 | `rowProps`        | `( item: T ) => React.ComponentProps<'tr'>`   | `() => ({})`  | Additional properties for inner `<tr>` element |
 | `size`            | `undefined` \| `'lg'` \| `'sm'`                | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
@@ -142,9 +144,9 @@ fetch: ( fetchArgs: FetchArgs, fetchOptions: FetchOptions ) => Promise<Page<T>>
 
 interface FetchArgs {
   /** 0-based page to fetch */
-  page?: number,
+  page: number,
   /** Max number of items per page to fetch */
-  size?: number,
+  size: number,
   /** Filter values filled by filter cells (by invoking onFilterByChange callback) */
   filter?: Record<string, unknown>;
   /** Sort by field.

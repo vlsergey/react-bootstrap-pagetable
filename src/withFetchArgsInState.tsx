@@ -8,17 +8,35 @@ export type RequiredChildComponentProps<T> =
 type StateType<T> = Pick<ControlledPropsType<T>, 'fetchArgs'>;
 
 export interface NewComponentProps<T> {
+  defaultPage?: number;
+  defaultSize?: number;
   // now optional
   onFetchArgsChange?: ControlledPropsType<T>['onFetchArgsChange'];
 }
 
+type PropsType<T, P extends RequiredChildComponentProps<T>> =
+  NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>;
+
 const withFetchArgsInState = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>):
   React.ComponentType<NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>> =>
-    class WithFetchArgsInState extends PureComponent<NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>, StateType<T>> {
+    class WithFetchArgsInState extends PureComponent<PropsType<T, P>, StateType<T>> {
 
-  state: StateType<T> = {
-    fetchArgs: {page: 0, size: 10},
-  };
+  static defaultProps = {
+    ...Child.defaultProps,
+    defaultPage: 0,
+    defaultSize: 10,
+  } as Partial<NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>>;
+
+  constructor (props: PropsType<T, P>) {
+    super(props);
+
+    this.state = {
+      fetchArgs: {
+        page: props.defaultPage,
+        size: props.defaultSize,
+      }
+    };
+  }
 
   handleFetchArgsChange = (fetchArgs: FetchArgs): void => {
     const {onFetchArgsChange} = this.props;
@@ -29,12 +47,12 @@ const withFetchArgsInState = <T, P extends RequiredChildComponentProps<T>>(Child
   };
 
   render (): ReactNode {
-    /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "onFetchArgsChange" }] */
-    const {onFetchArgsChange, ...etcProps} = this.props;
+    /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "defaultPage|defaultSize|onFetchArgsChange" }] */
+    const {onFetchArgsChange, defaultPage, defaultSize, ...etcProps} = this.props;
 
     return <Child
       onFetchArgsChange={this.handleFetchArgsChange}
-      {...etcProps as P}
+      {...etcProps as unknown as P}
       {...this.state} />;
   }
 

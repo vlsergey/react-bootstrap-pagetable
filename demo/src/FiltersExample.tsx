@@ -71,7 +71,10 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
   { "id": "6", "name": "Fiona", "birthday": "2006-07-08" },
   { "id": "7", "name": "Helen", "birthday": "2007-08-09" }
 ]`,
-    fetchArgs: {},
+    fetchArgs: {
+      page: 0,
+      size: 5,
+    },
     retryCounter: 0,
   };
 
