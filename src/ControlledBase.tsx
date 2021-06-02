@@ -1,16 +1,15 @@
+import DefaultRowsRenderer, {PropsType as RowsRendererPropsType}
+  from './DefaultRowsRenderer';
 import React, {PureComponent, ReactNode} from 'react';
 import Alert from 'react-bootstrap/Alert';
 import FetchArgs from './FetchArgs';
 import FieldModel from './FieldModel';
 import Form from 'react-bootstrap/Form';
-import ItemFieldValue from './ItemFieldValue';
 import ItemModel from './ItemModel';
 import Page from './Page';
 import Pagination from '@vlsergey/react-bootstrap-pagination';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Table from 'react-bootstrap/Table';
-
-type IdFunction<T> = (item: T) => string;
 
 export interface PropsType<T> {
   columnHeaderCell?: (field: FieldModel<T, unknown>) => ReactNode;
@@ -24,6 +23,7 @@ export interface PropsType<T> {
   noContentRow?: (tableColumnsCount: number) => ReactNode;
   onFetchArgsChange: (fetchArgs: FetchArgs) => unknown;
   page: Page<T>;
+  rowsRenderer?: (props: RowsRendererPropsType<T>) => JSX.Element;
   rowProps?: (item: T) => React.ComponentProps<'tr'>;
   size?: 'lg' | 'sm';
   tableProps?: React.ComponentProps<Table>;
@@ -42,6 +42,7 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
         <em>no content on this page, select another page to display</em>
       </td>
     </tr>,
+    rowsRenderer: DefaultRowsRenderer,
     tableProps: {
       bordered: true,
       hover: true,
@@ -69,7 +70,6 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
     const {footer, itemModel, hasError, loading, noContentRow, page, rowProps,
       size, tableProps} = this.props;
 
-    const item2id: IdFunction<T> = itemModel.idF;
     const fieldsCount: number = itemModel.fields.length;
 
     // memoize?
@@ -80,21 +80,18 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
 
     // TODO: allow user to change
     const fieldsToRender: FieldModel<T, unknown>[] = itemModel.fields;
+    const RowsRenderer = this.props.rowsRenderer;
 
     return <Table {...actualTableProps}>
       {this.renderHeader(fieldsToRender)}
       <tbody>
         { !loading && !hasError && page.content.length == 0 &&
            noContentRow(fieldsCount) }
-        { page.content.map((item: T) =>
-          <tr key={item2id(item)} {...(rowProps ? rowProps(item) : {})}>
-            { fieldsToRender.map((field: FieldModel<T, unknown>) =>
-              <td key={field.key}>
-                <ItemFieldValue field={field} item={item} itemModel={itemModel} />
-              </td>
-            ) }
-          </tr>
-        ) }
+        <RowsRenderer
+          fieldsToRender={fieldsToRender}
+          itemModel={itemModel}
+          items={page.content}
+          rowProps={rowProps} />
       </tbody>
       <tfoot>
         {this.renderPageSizeControlRow(fieldsCount)}

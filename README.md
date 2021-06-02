@@ -58,9 +58,11 @@ import {UncontrolledWithReactRouter as PageTable} from '@vlsergey/react-bootstra
 | ----------------- | ---------------------------------------------- | ------------- | ----------- |
 | **`fetch`**       | `( fetchArgs: FetchArgs ) => Promise<Page<T>>` | **required**  | See below   |
 | **`itemModel`**   | `ItemModel<T>`                                 | **required**  | See below   |
+| `actions`         | `Action[]`                                     | `0`           | Allows to display buttons at the bottom of page table and use them to execute actions over single or multiple elements from single page of the table. |
 | `defaultPage`     | `number`                                       | `0`           | Default page to display (0-based) |
 | `defaultSize`     | `number`                                       | `10`          | Default page size to display |
 | `noContentRow`    | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
+| `rowsRenderer     | `( props: RowsRendererProps ) => JSX.Element`  | `DefaultRowsRenderer` | Allows to override default rows renderer. |
 | `rowProps`        | `( item: T ) => React.ComponentProps<'tr'>`   | `() => ({})`  | Additional properties for inner `<tr>` element |
 | `size`            | `undefined` \| `'lg'` \| `'sm'`                | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
 | `tableProps`      | [props of react bootstrap `<Table>` component](https://react-bootstrap.github.io/components/table/#table-props) | `{}` | Additional properties for inner `<Table>` component |

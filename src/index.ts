@@ -1,3 +1,4 @@
+import DefaultRowsRenderer, {PropsType as RowsRendererPropsType} from './DefaultRowsRenderer';
 import FieldModel, {FilterCellRendererProps, FilterValueConverter,
   ValueGetter, ValueRendererProps} from './FieldModel';
 import Page, {emptyPage, singlePage} from './Page';
@@ -50,6 +51,9 @@ export {
   withReactRouter,
   withSelectable,
   withSortable,
+
+  // customization
+  DefaultRowsRenderer, RowsRendererPropsType
 };
 
 // Main mixins (what user is advised to use)
