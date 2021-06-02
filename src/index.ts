@@ -10,7 +10,7 @@ import FieldFilterCell from './FieldFilterCell';
 import ItemFieldValue from './ItemFieldValue';
 import ItemModel from './ItemModel';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
-import withActions from './actions';
+import withActions from './actions/withActions';
 import withFetchArgsInState from './withFetchArgsInState';
 import withFilterable from './withFilterable';
 import withPageInState from './withPageInState';
