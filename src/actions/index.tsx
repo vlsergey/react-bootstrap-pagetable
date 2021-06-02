@@ -39,7 +39,12 @@ React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'sele
     selectedIds: [] as string[],
   };
 
-  handleAfterAction = async (action: Action<T>) => {
+  handleAfterAction = async (action: Action<T>, items: T[]) => {
+    const {onAfterAction} = this.props;
+    if (onAfterAction) {
+      await onAfterAction(action, items);
+    }
+
     if (action.refreshAfterAction && this.props.onRefreshRequired) {
       await this.props.onRefreshRequired();
     }
@@ -81,6 +86,7 @@ React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'sele
         <td colSpan={tableColumnsCount}>
           <Toolbar
             actions={actions}
+            onAfterAction={this.handleAfterAction}
             selectedItems={filterItemsByIdsImpl(itemModel, page.content, selectedIds)}
             size={size} />
         </td>
