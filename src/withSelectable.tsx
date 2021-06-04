@@ -1,6 +1,6 @@
 import FieldModel, {ValueRendererProps} from './FieldModel';
 import React, {PureComponent, ReactNode} from 'react';
-import {PropsType as ControlledPropsType} from './ControlledBase';
+import {PropsType as ControlledPropsType} from './controlled';
 import ItemModel from './ItemModel';
 import memoizeOne from 'memoize-one';
 

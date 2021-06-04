@@ -1,5 +1,5 @@
 import React, {PureComponent, ReactNode} from 'react';
-import {PropsType as ControlledPropsType} from './ControlledBase';
+import {PropsType as ControlledPropsType} from './controlled';
 import FetchArgs from './FetchArgs';
 
 export type RequiredChildComponentProps<T> =

@@ -1,4 +1,4 @@
-import ControlledBase, {PropsType as ControlledPropsType} from './ControlledBase';
+import ControlledBase, {PropsType as ControlledPropsType} from './controlled';
 import React, {PureComponent, ReactNode} from 'react';
 import FieldFilterCell from './FieldFilterCell';
 import FieldModel from './FieldModel';

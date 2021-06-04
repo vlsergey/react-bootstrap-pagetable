@@ -1,9 +1,13 @@
-import DefaultRowsRenderer, {PropsType as RowsRendererPropsType} from './DefaultRowsRenderer';
+import DefaultItemFieldCellRenderer,
+{PropsType as ItemFieldCellRendererPropsType}
+  from './controlled/DefaultItemFieldCellRenderer';
+import DefaultRowsRenderer, {PropsType as RowsRendererPropsType}
+  from './controlled/DefaultRowsRenderer';
 import FieldModel, {FilterCellRendererProps, FilterValueConverter,
   ValueGetter, ValueRendererProps} from './FieldModel';
 import Page, {emptyPage, singlePage} from './Page';
 import Action from './actions/Action';
-import ControlledBase from './ControlledBase';
+import ControlledBase from './controlled';
 import FetchArgs from './FetchArgs';
 import fetchFromArray from './fetchFromArray';
 import fetchFromSpringDataRest from './fetchFromSpringDataRest';
@@ -53,7 +57,8 @@ export {
   withSortable,
 
   // customization
-  DefaultRowsRenderer, RowsRendererPropsType
+  DefaultItemFieldCellRenderer, ItemFieldCellRendererPropsType,
+  DefaultRowsRenderer, RowsRendererPropsType,
 };
 
 // Main mixins (what user is advised to use)

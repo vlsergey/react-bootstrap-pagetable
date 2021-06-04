@@ -1,6 +1,6 @@
 import React, {PureComponent, ReactNode} from 'react';
 import Action from './Action';
-import {PropsType as ControlledPropsType} from '../ControlledBase';
+import {PropsType as ControlledPropsType} from '../controlled';
 import ItemModel from '../ItemModel';
 import {NewComponentProps as SelectablePropsType} from '../withSelectable';
 import Toolbar from './Toolbar';

@@ -1,12 +1,14 @@
+import DefaultItemFieldCellRenderer, {PropsType as ItemFieldCellRendererProps}
+  from './DefaultItemFieldCellRenderer';
 import DefaultRowsRenderer, {PropsType as RowsRendererPropsType}
   from './DefaultRowsRenderer';
 import React, {PureComponent, ReactNode} from 'react';
 import Alert from 'react-bootstrap/Alert';
-import FetchArgs from './FetchArgs';
-import FieldModel from './FieldModel';
+import FetchArgs from '../FetchArgs';
+import FieldModel from '../FieldModel';
 import Form from 'react-bootstrap/Form';
-import ItemModel from './ItemModel';
-import Page from './Page';
+import ItemModel from '../ItemModel';
+import Page from '../Page';
 import Pagination from '@vlsergey/react-bootstrap-pagination';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Table from 'react-bootstrap/Table';
@@ -18,6 +20,7 @@ export interface PropsType<T> {
   fetchArgs: FetchArgs;
   footer?: (tableColumnsCount: number) => ReactNode;
   itemModel: ItemModel<T>;
+  itemFieldCellRenderer?: (props: ItemFieldCellRendererProps<T, unknown>) => JSX.Element;
   hasError?: boolean;
   loading?: boolean;
   noContentRow?: (tableColumnsCount: number) => ReactNode;
@@ -35,6 +38,7 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
     columnHeaderCell: (field: FieldModel<unknown, unknown>): ReactNode => <th key={field.key}>
       {field.title}
     </th>,
+    itemFieldCellRenderer: DefaultItemFieldCellRenderer,
     loading: false,
     hasError: false,
     noContentRow: (tableColumnsCount: number): ReactNode => <tr key="$_noContentRow">
@@ -67,8 +71,8 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
   };
 
   render (): ReactNode {
-    const {footer, itemModel, hasError, loading, noContentRow, page, rowProps,
-      size, tableProps} = this.props;
+    const {footer, itemFieldCellRenderer, itemModel, hasError, loading,
+      noContentRow, page, rowProps, size, tableProps} = this.props;
 
     const fieldsCount: number = itemModel.fields.length;
 
@@ -89,6 +93,7 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
            noContentRow(fieldsCount) }
         <RowsRenderer
           fieldsToRender={fieldsToRender}
+          itemFieldCellRenderer={itemFieldCellRenderer}
           itemModel={itemModel}
           items={page.content}
           rowProps={rowProps} />
