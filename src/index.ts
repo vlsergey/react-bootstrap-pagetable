@@ -1,5 +1,5 @@
 import DefaultItemFieldCellRenderer,
-{PropsType as ItemFieldCellRendererPropsType}
+{PropsType as DefaultItemFieldCellRendererPropsType}
   from './controlled/DefaultItemFieldCellRenderer';
 import DefaultRowsRenderer, {PropsType as RowsRendererPropsType}
   from './controlled/DefaultRowsRenderer';
@@ -12,6 +12,8 @@ import FetchArgs from './FetchArgs';
 import fetchFromArray from './fetchFromArray';
 import fetchFromSpringDataRest from './fetchFromSpringDataRest';
 import FieldFilterCell from './FieldFilterCell';
+import ItemFieldCellRendererPropsType
+  from './controlled/ItemFieldCellRendererPropsType';
 import ItemFieldValue from './ItemFieldValue';
 import ItemModel from './ItemModel';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
@@ -57,7 +59,7 @@ export {
   withSortable,
 
   // customization
-  DefaultItemFieldCellRenderer, ItemFieldCellRendererPropsType,
+  ItemFieldCellRendererPropsType, DefaultItemFieldCellRenderer, DefaultItemFieldCellRendererPropsType,
   DefaultRowsRenderer, RowsRendererPropsType,
 };
 

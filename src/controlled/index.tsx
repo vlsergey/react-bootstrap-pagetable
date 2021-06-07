@@ -1,12 +1,12 @@
-import DefaultItemFieldCellRenderer, {PropsType as ItemFieldCellRendererProps}
-  from './DefaultItemFieldCellRenderer';
 import DefaultRowsRenderer, {PropsType as RowsRendererPropsType}
   from './DefaultRowsRenderer';
 import React, {PureComponent, ReactNode} from 'react';
 import Alert from 'react-bootstrap/Alert';
+import DefaultItemFieldCellRenderer from './DefaultItemFieldCellRenderer';
 import FetchArgs from '../FetchArgs';
 import FieldModel from '../FieldModel';
 import Form from 'react-bootstrap/Form';
+import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 import ItemModel from '../ItemModel';
 import Page from '../Page';
 import Pagination from '@vlsergey/react-bootstrap-pagination';
@@ -20,7 +20,7 @@ export interface PropsType<T> {
   fetchArgs: FetchArgs;
   footer?: (tableColumnsCount: number) => ReactNode;
   itemModel: ItemModel<T>;
-  itemFieldCellRenderer?: (props: ItemFieldCellRendererProps<T, unknown>) => JSX.Element;
+  itemFieldCellRenderer?: (props: ItemFieldCellRendererPropsType<T, unknown>) => JSX.Element;
   hasError?: boolean;
   loading?: boolean;
   noContentRow?: (tableColumnsCount: number) => ReactNode;

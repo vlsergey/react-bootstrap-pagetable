@@ -1,18 +1,15 @@
-import FieldModel from '../FieldModel';
+import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 import ItemFieldValue from '../ItemFieldValue';
-import ItemModel from '../ItemModel';
 import React from 'react';
 
-export interface PropsType<ItemType, ValueType> {
-  field: FieldModel<ItemType, ValueType>;
-  item: ItemType;
-  itemModel: ItemModel<ItemType>;
-}
+export type PropsType<ItemType, ValueType> =
+  ItemFieldCellRendererPropsType<ItemType, ValueType> &
+  React.ComponentProps<'td'>;
 
 function DefaultItemFieldCellRenderer<ItemType, ValueType> (
-    {field, item, itemModel}: PropsType<ItemType, ValueType>
+    {field, item, itemModel, ...etc}: PropsType<ItemType, ValueType>
 ): JSX.Element {
-  return <td key={field.key}>
+  return <td {...etc}>
     <ItemFieldValue field={field} item={item} itemModel={itemModel} />
   </td>;
 }
