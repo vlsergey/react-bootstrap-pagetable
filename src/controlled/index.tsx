@@ -2,10 +2,12 @@ import DefaultRowsRenderer, {PropsType as RowsRendererPropsType}
   from './DefaultRowsRenderer';
 import React, {PureComponent, ReactNode} from 'react';
 import Alert from 'react-bootstrap/Alert';
+import DefaultHeaderFooter from './DefaultHeaderFooter';
 import DefaultItemFieldCellRenderer from './DefaultItemFieldCellRenderer';
 import FetchArgs from '../FetchArgs';
 import FieldModel from '../FieldModel';
 import Form from 'react-bootstrap/Form';
+import HeaderFooterPropsType from './HeaderFooterPropsType';
 import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 import ItemModel from '../ItemModel';
 import Page from '../Page';
@@ -19,9 +21,11 @@ export interface PropsType<T> {
   error?: unknown & {message?: string};
   fetchArgs: FetchArgs;
   footer?: (tableColumnsCount: number) => ReactNode;
+  footerRenderer?: (props: HeaderFooterPropsType<T>) => JSX.Element;
   itemModel: ItemModel<T>;
   itemFieldCellRenderer?: (props: ItemFieldCellRendererPropsType<T, unknown>) => JSX.Element;
   hasError?: boolean;
+  headerRenderer?: (props: HeaderFooterPropsType<T>) => JSX.Element;
   loading?: boolean;
   noContentRow?: (tableColumnsCount: number) => ReactNode;
   onFetchArgsChange: (fetchArgs: FetchArgs) => unknown;
@@ -38,9 +42,11 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
     columnHeaderCell: (field: FieldModel<unknown, unknown>): ReactNode => <th key={field.key}>
       {field.title}
     </th>,
+    footerRenderer: DefaultHeaderFooter,
+    hasError: false,
+    headerRenderer: DefaultHeaderFooter,
     itemFieldCellRenderer: DefaultItemFieldCellRenderer,
     loading: false,
-    hasError: false,
     noContentRow: (tableColumnsCount: number): ReactNode => <tr key="$_noContentRow">
       <td colSpan={tableColumnsCount}>
         <em>no content on this page, select another page to display</em>
@@ -71,8 +77,9 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
   };
 
   render (): ReactNode {
-    const {footer, itemFieldCellRenderer, itemModel, hasError, loading,
-      noContentRow, page, rowProps, size, tableProps} = this.props;
+    const {fetchArgs, footer, footerRenderer, itemFieldCellRenderer, itemModel,
+      hasError, headerRenderer, loading, noContentRow, onFetchArgsChange, page,
+      rowProps, size, tableProps} = this.props;
 
     const fieldsCount: number = itemModel.fields.length;
 
@@ -86,23 +93,26 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
     const fieldsToRender: FieldModel<T, unknown>[] = itemModel.fields;
     const RowsRenderer = this.props.rowsRenderer;
 
-    return <Table {...actualTableProps}>
-      {this.renderHeader(fieldsToRender)}
-      <tbody>
-        { !loading && !hasError && page.content.length == 0 &&
-           noContentRow(fieldsCount) }
-        <RowsRenderer
-          fieldsToRender={fieldsToRender}
-          itemFieldCellRenderer={itemFieldCellRenderer}
-          itemModel={itemModel}
-          items={page.content}
-          rowProps={rowProps} />
-      </tbody>
-      <tfoot>
-        {this.renderPageSizeControlRow(fieldsCount)}
-        {footer && footer(fieldsCount)}
-      </tfoot>
-    </Table>;
+    return <>
+      {React.createElement(headerRenderer, {fetchArgs, onFetchArgsChange, page, size})}
+      <Table {...actualTableProps}>
+        {this.renderHeader(fieldsToRender)}
+        <tbody>
+          { !loading && !hasError && page.content.length == 0 &&
+             noContentRow(fieldsCount) }
+          <RowsRenderer
+            fieldsToRender={fieldsToRender}
+            itemFieldCellRenderer={itemFieldCellRenderer}
+            itemModel={itemModel}
+            items={page.content}
+            rowProps={rowProps} />
+        </tbody>
+        <tfoot>
+          {footer && footer(fieldsCount)}
+        </tfoot>
+      </Table>
+      {React.createElement(footerRenderer, {fetchArgs, onFetchArgsChange, page, size})}
+    </>;
   }
 
   private renderHeader (fieldsToRender: FieldModel<T, unknown>[]): ReactNode {
@@ -110,7 +120,6 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
     const fieldsCount: number = fieldsToRender.length;
 
     return <thead>
-      {this.renderPageSizeControlRow(fieldsCount)}
       {(columnHeaderRow || this.defaultCellHeaderRow)(fieldsToRender)}
       { loading && <tr>
         <td colSpan={fieldsCount}>

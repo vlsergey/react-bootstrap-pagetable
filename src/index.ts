@@ -8,14 +8,18 @@ import FieldModel, {FilterCellRendererProps, FilterValueConverter,
 import Page, {emptyPage, singlePage} from './Page';
 import Action from './actions/Action';
 import ControlledBase from './controlled';
+import DefaultHeaderFooter from './controlled/DefaultHeaderFooter';
 import FetchArgs from './FetchArgs';
 import fetchFromArray from './fetchFromArray';
 import fetchFromSpringDataRest from './fetchFromSpringDataRest';
 import FieldFilterCell from './FieldFilterCell';
+import HeaderFooterPropsType from './controlled/HeaderFooterPropsType';
 import ItemFieldCellRendererPropsType
   from './controlled/ItemFieldCellRendererPropsType';
 import ItemFieldValue from './ItemFieldValue';
 import ItemModel from './ItemModel';
+import PageSizeSelector from './controlled/PageSizeSelector';
+import Pagination from '@vlsergey/react-bootstrap-pagination';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
 import withActions from './actions/withActions';
 import withFetchArgsInState from './withFetchArgsInState';
@@ -61,6 +65,7 @@ export {
   // customization
   ItemFieldCellRendererPropsType, DefaultItemFieldCellRenderer, DefaultItemFieldCellRendererPropsType,
   DefaultRowsRenderer, RowsRendererPropsType,
+  HeaderFooterPropsType, DefaultHeaderFooter, PageSizeSelector, Pagination,
 };
 
 // Main mixins (what user is advised to use)
