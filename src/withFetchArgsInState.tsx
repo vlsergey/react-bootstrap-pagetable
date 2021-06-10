@@ -31,13 +31,11 @@ const withFetchArgsInState = <T, P extends RequiredChildComponentProps<T>>(Child
 
   constructor (props: PropsType<T, P>) {
     super(props);
-
-    const sortBy = strToSort(props.defaultSort);
     this.state = {
       fetchArgs: {
         page: props.defaultPage,
         size: props.defaultSize,
-        sort: !sortBy ? undefined : [ sortBy ],
+        sort: strToSort(props.defaultSort),
       }
     };
   }

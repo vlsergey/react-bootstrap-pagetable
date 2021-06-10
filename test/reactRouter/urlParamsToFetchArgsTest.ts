@@ -2,19 +2,19 @@ import {FetchArgs, ItemModel} from '../../src';
 import {assert} from 'chai';
 import urlParamsToFetchArgs from '../../src/reactRouter/urlParamsToFetchArgs';
 
-type TestItem = {id: string};
+describe('reactRouter', () => describe('urlParamsToFetchArgs', () => {
 
-const itemModel: ItemModel<TestItem> = {
-  idF: ({id}: TestItem) => id,
-  fields: [],
-};
+  type TestItem = {id: string};
 
-const defaultFetchArgs: FetchArgs = {
-  page: 555,
-  size: 777,
-};
+  const itemModel: ItemModel<TestItem> = {
+    idF: ({id}: TestItem) => id,
+    fields: [],
+  };
 
-describe('reactRouter/urlParamsToFetchArgs', () => {
+  const defaultFetchArgs: FetchArgs = {
+    page: 555,
+    size: 777,
+  };
 
   it('Missing page argument does not change FetchArgs::page', () => {
     assert.equal(555, urlParamsToFetchArgs(defaultFetchArgs, itemModel, '', new URLSearchParams('')).page);
@@ -27,4 +27,4 @@ describe('reactRouter/urlParamsToFetchArgs', () => {
     assert.equal(41, urlParamsToFetchArgs(defaultFetchArgs, itemModel, 'myPrefix', new URLSearchParams('page=666&myPrefixpage=42')).page);
   });
 
-});
+}));

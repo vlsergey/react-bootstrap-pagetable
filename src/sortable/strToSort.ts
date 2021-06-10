@@ -1,6 +1,20 @@
 import {SortBy} from '../FetchArgs';
 
-export default function strToSort (str: string): SortBy {
+export default function strToSort (str: (string | string[])): SortBy[] {
+  if (!str) return null;
+
+  if (typeof str === 'string') {
+    const sortBy: SortBy = strToSortBy(str);
+    if (!sortBy) return null;
+    return [ sortBy ];
+  }
+
+  const strAsArray = str;
+  const resultArray: SortBy[] = strAsArray.map(strToSortBy).filter(x => !!x);
+  return !resultArray ? null : resultArray;
+}
+
+function strToSortBy (str: string): SortBy {
   if (!str) return null;
 
   const commaIndex: number = str.indexOf(',');

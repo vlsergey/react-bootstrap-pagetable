@@ -5,6 +5,7 @@ import FetchArgs from '../FetchArgs';
 import fetchArgsToUrlParams from './fetchArgsToUrlParams';
 import ItemModel from '../ItemModel';
 import memoizeOne from 'memoize-one';
+import strToSort from '../sortable/strToSort';
 import urlParamsToFetchArgs from './urlParamsToFetchArgs';
 
 export type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'fetchArgs' | 'itemModel' | 'onFetchArgsChange'>;
@@ -12,6 +13,7 @@ export type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'fetch
 export type NewComponentProps<T> = {
   defaultPage?: number;
   defaultSize?: number;
+  defaultSort?: string;
   // optional now
   onFetchArgsChange?: ControlledPropsType<T>['onFetchArgsChange'];
   urlParamsPrefix?: string;
@@ -31,8 +33,8 @@ const withReactRouterImpl =
   } as unknown as Partial<InnerComponentProps<T, P>>;
 
   getDefaultFetchArgs = memoizeOne(
-    (defaultPage: number, defaultSize: number): FetchArgs =>
-      ({page: defaultPage, size: defaultSize})
+    (defaultPage: number, defaultSize: number, defaultSort: (string | string[])): FetchArgs =>
+      ({page: defaultPage, size: defaultSize, sort: strToSort(defaultSort)})
   );
 
   toFetchArgs = memoizeOne((
@@ -45,7 +47,7 @@ const withReactRouterImpl =
   );
 
   handleFetchArgsChange = (fetchArgs: FetchArgs): void => {
-    const {defaultPage, defaultSize, history, itemModel,
+    const {defaultPage, defaultSize, defaultSort, history, itemModel,
       location: {pathname, search}, onFetchArgsChange, urlParamsPrefix
     } = this.props;
 
@@ -54,7 +56,7 @@ const withReactRouterImpl =
     const newSearch: string = updated.toString();
 
     if (onFetchArgsChange) {
-      const defaultFetchArgs: FetchArgs = this.getDefaultFetchArgs(defaultPage, defaultSize);
+      const defaultFetchArgs: FetchArgs = this.getDefaultFetchArgs(defaultPage, defaultSize, defaultSort);
       const newFetchArgs: FetchArgs = this.toFetchArgs(defaultFetchArgs, itemModel, urlParamsPrefix, newSearch);
       onFetchArgsChange(newFetchArgs);
     }
@@ -64,10 +66,10 @@ const withReactRouterImpl =
 
   override render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "history|match|onFetchArgsChange" }] */
-    const {defaultPage, defaultSize, itemModel, history, location, match,
+    const {defaultPage, defaultSize, defaultSort, itemModel, history, location, match,
       onFetchArgsChange, urlParamsPrefix, ...etcProps} = this.props;
 
-    const defaultFetchArgs: FetchArgs = this.getDefaultFetchArgs(defaultPage, defaultSize);
+    const defaultFetchArgs: FetchArgs = this.getDefaultFetchArgs(defaultPage, defaultSize, defaultSort);
     const fetchArgs: FetchArgs = this.toFetchArgs(defaultFetchArgs, itemModel, urlParamsPrefix, location.search);
     return <Child
       fetchArgs={fetchArgs}

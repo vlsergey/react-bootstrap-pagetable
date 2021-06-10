@@ -2,14 +2,14 @@ import {assert} from 'chai';
 import fetchArgsToUrlParams from '../../src/reactRouter/fetchArgsToUrlParams';
 import {ItemModel} from '../../src';
 
-type TestItem = {id: string};
+describe('reactRouter', () => describe('fetchArgsToUrlParams', () => {
 
-const itemModel: ItemModel<TestItem> = {
-  idF: ({id}: TestItem) => id,
-  fields: [],
-};
+  type TestItem = {id: string};
 
-describe('reactRouter/fetchArgsToUrlParams', () => {
+  const itemModel: ItemModel<TestItem> = {
+    idF: ({id}: TestItem) => id,
+    fields: [],
+  };
 
   it('Correctly serialized second page as page=1', () => {
     assert.equal('page=2&size=10', fetchArgsToUrlParams(itemModel, null, '', {page: 1, size: 10}).toString());
@@ -19,4 +19,4 @@ describe('reactRouter/fetchArgsToUrlParams', () => {
     assert.equal('page=42&myPrefixpage=2&myPrefixsize=10', fetchArgsToUrlParams(itemModel, 'myPrefix', 'page=42', {page: 1, size: 10}).toString());
   });
 
-});
+}));
