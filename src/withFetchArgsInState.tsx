@@ -1,6 +1,7 @@
 import React, {PureComponent, ReactNode} from 'react';
 import {PropsType as ControlledPropsType} from './controlled';
 import FetchArgs from './FetchArgs';
+import strToSort from './sortable/strToSort';
 
 export type RequiredChildComponentProps<T> =
   Pick<ControlledPropsType<T>, 'fetchArgs' | 'onFetchArgsChange'>;
@@ -10,6 +11,7 @@ type StateType<T> = Pick<ControlledPropsType<T>, 'fetchArgs'>;
 export interface NewComponentProps<T> {
   defaultPage?: number;
   defaultSize?: number;
+  defaultSort?: string;
   // now optional
   onFetchArgsChange?: ControlledPropsType<T>['onFetchArgsChange'];
 }
@@ -30,10 +32,12 @@ const withFetchArgsInState = <T, P extends RequiredChildComponentProps<T>>(Child
   constructor (props: PropsType<T, P>) {
     super(props);
 
+    const sortBy = strToSort(props.defaultSort);
     this.state = {
       fetchArgs: {
         page: props.defaultPage,
         size: props.defaultSize,
+        sort: !sortBy ? undefined : [ sortBy ],
       }
     };
   }
