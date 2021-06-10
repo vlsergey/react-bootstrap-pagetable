@@ -62,7 +62,7 @@ const withReactRouterImpl =
     history.replace(`${pathname}?${newSearch}`);
   };
 
-  render (): ReactNode {
+  override render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "history|match|onFetchArgsChange" }] */
     const {defaultPage, defaultSize, itemModel, history, location, match,
       onFetchArgsChange, urlParamsPrefix, ...etcProps} = this.props;

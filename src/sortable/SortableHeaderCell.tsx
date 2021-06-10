@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import {css, jsx} from '@emotion/react';
 import FetchArgs, {Direction, SortBy} from '../FetchArgs';
-import React, {PureComponent, ReactNode} from 'react';
+import {PureComponent, ReactNode} from 'react';
 import FieldModel from '../FieldModel';
 
 export interface PropsType<I, V> {
@@ -30,7 +30,7 @@ export default class SortableHeaderCell<I, V> extends PureComponent<PropsType<I,
     });
   };
 
-  render (): ReactNode {
+  override render (): ReactNode {
     const {fetchArgs, field} = this.props;
 
     if (!field.sortable) {

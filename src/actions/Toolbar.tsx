@@ -36,7 +36,7 @@ export default class Toolbar<T> extends PureComponent<PropsType<T>> {
     }
   };
 
-  render (): ReactNode {
+  override render (): ReactNode {
     const {actions, buttonProps, selectedItems, size, toolbarProps} = this.props;
 
     const buttons: ReactNode[] = actions

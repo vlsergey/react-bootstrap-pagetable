@@ -9,6 +9,11 @@
     "lib": ["dom", "es5", "es6"],
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "./lib/",
     "target": "es5"
   },

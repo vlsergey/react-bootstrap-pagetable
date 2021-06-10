@@ -22,7 +22,7 @@ React.ComponentType<Omit<P, 'columnHeaderCell'>> =>
         key={field.key}
         onFetchArgsChange={this.props.onFetchArgsChange} />;
 
-    render (): ReactNode {
+    override render (): ReactNode {
       const {fetchArgs, itemModel, onFetchArgsChange, ...etcProps} = this.props;
 
       const tableSortable = itemModel.fields.some(({sortable}) => sortable);

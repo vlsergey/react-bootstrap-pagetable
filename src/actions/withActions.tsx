@@ -35,7 +35,7 @@ const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.C
 React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>> =>
     class WithActions extends PureComponent<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>, StateType> {
 
-  state = {
+  override state = {
     selectedIds: [] as string[],
   };
 
@@ -57,7 +57,7 @@ React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'sele
     }
   };
 
-  render (): ReactNode {
+  override render (): ReactNode {
     const {actions, selectable, ...etcProps} = this.props;
     const {selectedIds} = this.state;
 

@@ -10,7 +10,7 @@ import RoutedExample from './RoutedExample';
 import UncontrolledDemo from './UncontrolledDemo';
 
 export default class Application extends PureComponent<unknown> {
-  render (): ReactNode {
+  override render (): ReactNode {
     return <HashRouter>
       <Navbar expand="lg">
         <Navbar.Brand href="#">React Bootstrap Pagetable Demo</Navbar.Brand>

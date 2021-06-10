@@ -18,7 +18,7 @@ interface StateType {
 
 export default class ContolledDemo extends PureComponent<unknown, StateType> {
 
-  state: StateType = {
+  override state: StateType = {
     addAction: false,
     data: [ {id: 'A'}, {id: 'B'}, {id: 'C'} ],
     selectable: false,
@@ -33,7 +33,7 @@ export default class ContolledDemo extends PureComponent<unknown, StateType> {
     } as unknown as StateType);
   };
 
-  render (): ReactNode {
+  override render (): ReactNode {
     const {addAction, data, hasError, loading, selectable, smallSize} = this.state;
     type TestType = {id: string};
 

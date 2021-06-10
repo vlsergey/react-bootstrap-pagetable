@@ -90,7 +90,7 @@ function CustomRowsRenderer ({fieldsToRender, itemModel, items}: RowsRendererPro
 
 export default class CustomRowRendererDemo extends PureComponent<unknown, StateType> {
 
-  state: StateType = {
+  override state: StateType = {
     data: `[
   { "id": "1", "name": "Alice", "birthday": "2001-02-03" },
   { "id": "2", "name": "Bob", "birthday": "2002-03-04" },
@@ -107,21 +107,13 @@ export default class CustomRowRendererDemo extends PureComponent<unknown, StateT
     retryCounter: 0,
   };
 
-  private handleDataChange =
-    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): void =>
-      this.setState({data: value});
-
   private handleFetchArgsChange = (fetchArgs: FetchArgs) =>
     this.setState({fetchArgs});
-
-  private handleFetchArgsTextChange =
-    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
-      this.setState({fetchArgs: JSON.parse(value) as FetchArgs});
 
   private handleRetry = (): unknown =>
     this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1}));
 
-  render (): ReactNode {
+  override render (): ReactNode {
     return <Container>
       <p>This page displays custom row renderer example. To render rows react bootstrap CardDeck and Card are used. Filtering, pagination and sroting still works.</p>
       {this.renderResult()}

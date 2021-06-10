@@ -46,7 +46,7 @@ const withFetchArgsInState = <T, P extends RequiredChildComponentProps<T>>(Child
     }
   };
 
-  render (): ReactNode {
+  override render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "defaultPage|defaultSize|onFetchArgsChange" }] */
     const {onFetchArgsChange, defaultPage, defaultSize, ...etcProps} = this.props;
 

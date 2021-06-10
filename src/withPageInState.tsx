@@ -28,18 +28,18 @@ const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: Rea
   prevFetchArgs: FetchArgs = null;
   prevAbortController: AbortController = null;
 
-  state: StateType<T> = {
+  override state: StateType<T> = {
     error: null,
     hasError: false,
     loading: true,
     page: emptyPage<T>(),
   };
 
-  componentDidMount (): void {
+  override componentDidMount (): void {
     void this.refresh();
   }
 
-  componentDidUpdate (prevProps: {fetchArgs: FetchArgs}) {
+  override componentDidUpdate (prevProps: {fetchArgs: FetchArgs}) {
     if (this.props.fetchArgs !== prevProps.fetchArgs) {
       this.scheduleRefreshNow();
     }
@@ -91,7 +91,7 @@ const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: Rea
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   scheduleRefreshNow = (): unknown => setTimeout(this.refresh, 0);
 
-  render (): ReactNode {
+  override render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch|onFetchArgsChange" }] */
     const {fetch, ...etcProps} = this.props;
 

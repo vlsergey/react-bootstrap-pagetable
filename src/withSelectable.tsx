@@ -45,7 +45,7 @@ const withSelectable =
   selectableFieldGetter = (item: T): boolean =>
     this.getSelectedSet(this.props.selectedIds).has(this.props.itemModel.idF(item));
 
-  render (): ReactNode {
+  override render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "onSelectedIdsChange|selectedIds" }] */
     const {itemModel, onSelectedIdsChange, selectable, selectedIds,
       ...etcProps} = this.props;

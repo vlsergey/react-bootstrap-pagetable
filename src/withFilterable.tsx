@@ -26,7 +26,7 @@ const withFilterable = <T, P extends RequiredChildComponentProps<T>>(Child: Reac
     </>;
   };
 
-  render (): ReactNode {
+  override render (): ReactNode {
     const {fetchArgs, itemModel, onFetchArgsChange, ...etcProps} = this.props;
 
     const tableFilterable = itemModel.fields.some(({renderFilterCell}) => !!renderFilterCell);

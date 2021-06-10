@@ -36,7 +36,7 @@ const sourceDataArray: TestType[] =
 
 export default class UncontrolledDemo extends PureComponent<unknown, StateType> {
 
-  state: StateType = {
+  override state: StateType = {
     addAction: false,
     selectable: false,
     emulateError: false,
@@ -61,7 +61,7 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
     } as unknown as StateType);
   };
 
-  render (): ReactNode {
+  override render (): ReactNode {
     const {addAction, emulateError, emulateLongLoading, selectable, smallSize} = this.state;
 
     const actions = addAction ? [

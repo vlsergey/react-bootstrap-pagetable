@@ -20,7 +20,7 @@ export default class ActionButton<T> extends PureComponent<PropsType<T>> {
     return onAction(action);
   };
 
-  render (): ReactNode {
+  override render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "onAction|onClick" }] */
     const {action, onAction, disabled, onClick, ...etcProps} = this.props;
 

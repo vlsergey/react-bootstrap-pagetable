@@ -6,12 +6,10 @@ import DefaultHeaderFooter from './DefaultHeaderFooter';
 import DefaultItemFieldCellRenderer from './DefaultItemFieldCellRenderer';
 import FetchArgs from '../FetchArgs';
 import FieldModel from '../FieldModel';
-import Form from 'react-bootstrap/Form';
 import HeaderFooterPropsType from './HeaderFooterPropsType';
 import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 import ItemModel from '../ItemModel';
 import Page from '../Page';
-import Pagination from '@vlsergey/react-bootstrap-pagination';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Table from 'react-bootstrap/Table';
 
@@ -66,17 +64,7 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
   defaultCellHeaderRow = (fieldsToRender: FieldModel<T, unknown>[]): ReactNode =>
     <tr>{fieldsToRender.map(this.props.columnHeaderCell)}</tr>;
 
-  private handlePageChange = ({target: {value}}: {target: {value: number}}) => {
-    const {fetchArgs, onFetchArgsChange} = this.props;
-    onFetchArgsChange({...fetchArgs, page: value});
-  };
-
-  private handleSizeChange = ({target: {value}}: React.ChangeEvent<HTMLSelectElement>) => {
-    const {fetchArgs, onFetchArgsChange} = this.props;
-    onFetchArgsChange({...fetchArgs, size: Number(value)});
-  };
-
-  render (): ReactNode {
+  override render (): ReactNode {
     const {fetchArgs, footer, footerRenderer, itemFieldCellRenderer, itemModel,
       hasError, headerRenderer, loading, noContentRow, onFetchArgsChange, page,
       rowProps, size, tableProps} = this.props;
@@ -135,34 +123,5 @@ export default class ControlledBase<T> extends PureComponent<PropsType<T>> {
         </td>
       </tr> }
     </thead>;
-  }
-
-  private renderPageSizeControlRow (tableColumnsCount: number): ReactNode {
-    const {fetchArgs, page, size} = this.props;
-    return <tr>
-      <td colSpan={tableColumnsCount}>
-        <div style={{float: 'right'}}>
-          <Form.Control
-            as="select"
-            name="size"
-            onChange={this.handleSizeChange}
-            size={size}
-            value={fetchArgs.size}>
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-          </Form.Control>
-        </div>
-        <Pagination
-          name="page"
-          onChange={this.handlePageChange}
-          size={size}
-          style={{margin: 0}}
-          totalPages={page.totalPages}
-          value={fetchArgs.page} />
-      </td>
-    </tr>;
   }
 }

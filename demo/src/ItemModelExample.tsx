@@ -20,7 +20,7 @@ interface StateType {
 
 export default class ItemModelExample extends PureComponent<unknown, StateType> {
 
-  state: StateType = {
+  override state: StateType = {
     data: `[
   { "id": "1", "name": "Alice", "birthday": "2001-02-03" },
   { "id": "2", "name": "Bob", "birthday": "2002-03-04" },
@@ -69,7 +69,7 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
   private handleRetry = (): unknown =>
     this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1}));
 
-  render (): ReactNode {
+  override render (): ReactNode {
     const {data, fetchArgs, itemModel} = this.state;
 
     return <Container>
