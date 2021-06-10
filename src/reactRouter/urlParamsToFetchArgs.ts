@@ -18,7 +18,11 @@ export default function urlParamsToFetchArgs (
     }
   };
 
-  const result = {...defaultFetchArgs} as FetchArgs;
+  const result = {
+    ...defaultFetchArgs,
+    sort: [],
+    filter: {...defaultFetchArgs.filter},
+  } as FetchArgs;
   ifHave('page', page => result.page = Number(page) - 1);
   ifHave('size', size => result.size = Number(size));
 

@@ -13,7 +13,7 @@ export type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'fetch
 export type NewComponentProps<T> = {
   defaultPage?: number;
   defaultSize?: number;
-  defaultSort?: string;
+  defaultSort?: string | string[];
   // optional now
   onFetchArgsChange?: ControlledPropsType<T>['onFetchArgsChange'];
   urlParamsPrefix?: string;
@@ -33,8 +33,8 @@ const withReactRouterImpl =
   } as unknown as Partial<InnerComponentProps<T, P>>;
 
   getDefaultFetchArgs = memoizeOne(
-    (defaultPage: number, defaultSize: number, defaultSort: (string | string[])): FetchArgs =>
-      ({page: defaultPage, size: defaultSize, sort: strToSort(defaultSort)})
+    (defaultPage: number, defaultSize: number, defaultSort: (string | string[])): Readonly<FetchArgs> =>
+      Object.freeze({page: defaultPage, size: defaultSize, sort: strToSort(defaultSort)})
   );
 
   toFetchArgs = memoizeOne((

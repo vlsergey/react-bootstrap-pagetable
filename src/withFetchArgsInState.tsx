@@ -11,7 +11,7 @@ type StateType<T> = Pick<ControlledPropsType<T>, 'fetchArgs'>;
 export interface NewComponentProps<T> {
   defaultPage?: number;
   defaultSize?: number;
-  defaultSort?: string;
+  defaultSort?: string | string[];
   // now optional
   onFetchArgsChange?: ControlledPropsType<T>['onFetchArgsChange'];
 }

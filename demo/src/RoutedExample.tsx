@@ -195,6 +195,7 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
       <PageTable
         defaultPage={fetchArgs.page}
         defaultSize={fetchArgs.size}
+        defaultSort="name,ASC"
         itemModel={ITEM_MODEL}
         onFetchArgsChange={this.handleFetchArgsChange}
         page={fetchFromArray(ITEM_MODEL, parsedData, fetchArgs)} />
