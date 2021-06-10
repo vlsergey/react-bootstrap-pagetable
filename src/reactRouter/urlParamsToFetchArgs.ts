@@ -19,14 +19,15 @@ export default function urlParamsToFetchArgs (
   };
 
   const result = {
-    ...defaultFetchArgs,
-    sort: [],
-    filter: {...defaultFetchArgs.filter},
+    page: defaultFetchArgs.page,
+    size: defaultFetchArgs.size,
+    sort: defaultFetchArgs.sort,
   } as FetchArgs;
   ifHave('page', page => result.page = Number(page) - 1);
   ifHave('size', size => result.size = Number(size));
 
   if (params.has(prefix + 'sort')) {
+    const resultSort = [];
     for (const sortValue of params.getAll(prefix + 'sort')) {
       let field: string = sortValue;
       let direction: Direction = 'ASC';
@@ -37,11 +38,9 @@ export default function urlParamsToFetchArgs (
         direction = sortValue.substring(commaIndex).toUpperCase() === ',DESC' ? 'DESC' : 'ASC';
       }
 
-      if (!result.sort) {
-        result.sort = [];
-      }
-      result.sort.push({field, direction});
+      resultSort.push({field, direction});
     }
+    result.sort = resultSort;
   }
 
   itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown, unknown>) =>

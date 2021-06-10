@@ -27,6 +27,21 @@ describe('reactRouter', () => describe('urlParamsToFetchArgs', () => {
     assert.equal(41, urlParamsToFetchArgs(defaultFetchArgs, itemModel, 'myPrefix', new URLSearchParams('page=666&myPrefixpage=42')).page);
   });
 
+  it('Correctly initializes sort field', () => {
+    const defaultFetchArgs = {
+      page: 1,
+      size: 2,
+      sort: [ {field: 'name', direction: 'ASC'} ],
+    } as FetchArgs;
+
+    const actual = urlParamsToFetchArgs(defaultFetchArgs, itemModel,
+      undefined, new URLSearchParams(''));
+
+    assert.equal(1, actual.page);
+    assert.equal(2, actual.size);
+    assert.deepEqual([ {field: 'name', direction: 'ASC'} ], actual.sort);
+  });
+
   it('Correctly updates sort field', () => {
     const defaultFetchArgs = {
       page: 1,
