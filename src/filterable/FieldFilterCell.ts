@@ -1,15 +1,14 @@
-import FieldModel, {FilterCellRendererProps} from './FieldModel';
+import FieldModel, {FilterCellRendererProps} from '../FieldModel';
 import React, {useCallback} from 'react';
-import FetchArgs from './FetchArgs';
+import {useControlledContext} from '../controlled/ControlledContext';
 
 interface PropsType<ItemType, ValueType> {
   field: FieldModel<ItemType, ValueType>;
-  fetchArgs: FetchArgs;
-  onFetchArgsChange: (fetchArgs: FetchArgs) => unknown;
 }
 
 const FieldFilterCell =
-  <ItemType, ValueType, FilterValueType>({field, fetchArgs, onFetchArgsChange}: PropsType<ItemType, ValueType>): JSX.Element => {
+  <ItemType, ValueType, FilterValueType>({field}: PropsType<ItemType, ValueType>): JSX.Element => {
+    const {fetchArgs, onFetchArgsChange} = useControlledContext();
     const onFilterByChange: ((filterBy: FilterValueType) => unknown) =
       useCallback((newFilterBy: FilterValueType) => onFetchArgsChange({
         ...fetchArgs,
@@ -33,4 +32,4 @@ const FieldFilterCell =
     });
   };
 
-export default FieldFilterCell;
+export default React.memo(FieldFilterCell);

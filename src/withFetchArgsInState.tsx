@@ -1,5 +1,5 @@
 import React, {PureComponent, ReactNode} from 'react';
-import {PropsType as ControlledPropsType} from './controlled';
+import ControlledPropsType from './controlled/ControlledPropsType';
 import FetchArgs from './FetchArgs';
 import strToSort from './sortable/strToSort';
 

@@ -1,6 +1,6 @@
 import {FetchArgs, fetchFromArray, FieldModel,
   FilterCellRendererProps, FilterValueConverter, ItemFieldValue, ItemModel,
-  ControlledWithReactRouter as PageTable, RowsRendererPropsType}
+  ControlledWithReactRouter as PageTable, useControlledContext, useVisibleFields}
   from '@vlsergey/react-bootstrap-pagetable';
 import React, {PureComponent, ReactNode, useCallback} from 'react';
 import Alert from 'react-bootstrap/Alert';
@@ -66,14 +66,17 @@ const ITEM_MODEL: ItemModel<TestType> = {
   ]
 };
 
-function CustomRowsRenderer ({fieldsToRender, itemModel, items}: RowsRendererPropsType<TestType>): JSX.Element {
-  return <tr><td colSpan={fieldsToRender.length + 1}><CardDeck>
-    { items.map((item: TestType) => <Card key={itemModel.idF(item)} style={{width: 250, minWidth: 250, maxWidth: 250}}>
+function CustomRowsRenderer (): JSX.Element {
+  const {itemModel, page: {content}} = useControlledContext();
+  const visibleFields = useVisibleFields();
+
+  return <tr><td colSpan={visibleFields.length}><CardDeck>
+    { content.map((item: TestType) => <Card key={itemModel.idF(item)} style={{width: 250, minWidth: 250, maxWidth: 250}}>
       <Card.Img src={`https://picsum.photos/seed/${item.id}/250/200`} variant="top" />
       <Card.Body>
         <Card.Title>{item.name}</Card.Title>
         <ul>
-          { fieldsToRender.map((field: FieldModel<TestType, unknown>) =>
+          { visibleFields.map((field: FieldModel<TestType, unknown>) =>
             <li key={field.key}>
               <b>{field.title}</b>{': '}
               <ItemFieldValue field={field} item={item} itemModel={itemModel} />

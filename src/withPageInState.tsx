@@ -1,6 +1,6 @@
 import Page, {emptyPage} from './Page';
 import React, {PureComponent, ReactNode} from 'react';
-import {PropsType as ControlledPropsType} from './controlled';
+import ControlledPropsType from './controlled/ControlledPropsType';
 import FetchArgs from './FetchArgs';
 import {NewComponentProps as WithActionsPropsType} from './actions/withActions';
 
