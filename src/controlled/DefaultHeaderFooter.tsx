@@ -1,37 +1,25 @@
 /** @jsx jsx */
 import {css, jsx} from '@emotion/react';
-import React, {useCallback} from 'react';
-import HeaderFooterPropsType from './HeaderFooterPropsType';
+import PageIndexSelector from './PageIndexSelector';
 import PageSizeSelector from './PageSizeSelector';
-import Pagination from '@vlsergey/react-bootstrap-pagination';
+import React from 'react';
+import {useControlledContext} from './ControlledContext';
+import VisibleFieldsSettings from './VisibleFieldsSettings';
 
-function DefaultHeaderFooter<T> (
-    {fetchArgs, onFetchArgsChange, page, size}: HeaderFooterPropsType<T>
-): JSX.Element {
-
-  const handleSizeChange = useCallback((value: number) =>
-    onFetchArgsChange({...fetchArgs, size: value}), [ fetchArgs, onFetchArgsChange ]);
-
-  const handlePageChange = useCallback(({target: {value}}: {target: {value: number}}) =>
-    onFetchArgsChange({...fetchArgs, page: value}), [ fetchArgs, onFetchArgsChange ]);
+const DefaultHeaderFooter = (): JSX.Element => {
+  const {disableVisibleFieldsChange} = useControlledContext();
 
   return <div css={css('display: flex; flex-wrap: wrap; justify-content: space-between')}>
+    {!disableVisibleFieldsChange && <div>
+      <VisibleFieldsSettings />
+    </div>}
     <div>
-      <Pagination
-        name="page"
-        onChange={handlePageChange}
-        size={size}
-        totalPages={page.totalPages}
-        value={fetchArgs.page} />
+      <PageIndexSelector />
     </div>
     <div>
-      <PageSizeSelector
-        onChange={handleSizeChange}
-        size={size}
-        value={fetchArgs.size} />
+      <PageSizeSelector />
     </div>
   </div>;
-
-}
+};
 
 export default React.memo(DefaultHeaderFooter);

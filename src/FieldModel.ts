@@ -24,6 +24,7 @@ interface FieldModel<ItemType, ValueType> {
   key: string;
   title: ReactNode;
   description?: ReactNode;
+  hiddenByDefault?: boolean;
 
   sortable?: boolean;
   renderFilterCell?: (props: FilterCellRendererProps<ItemType, ValueType, unknown>) => ReactNode;

@@ -18,8 +18,8 @@ Main features:
 * [x] Server-side sorting (i.e. passing `sort` argument to server)
 * [x] Server-side filtering (allow to display filters and pass filter arguments to server)
 * [x] Integration with [react-router](https://reactrouter.com/) to support fetching arguments from URL and pushing changes back
+* [x] Allow user to change visibility and order of columns to be displayed
 * [ ] (TODO) Support standard renderers for date, time and other OpenAPI types
-* [ ] (TODO) Allow to change visibility and order of columns to be displayed
 * [ ] (TODO) Allow to customize what to display before and after the `Table`: page selection, page size selection, custom text, etc.
 
 Additional small features that nice to have:

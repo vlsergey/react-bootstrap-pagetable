@@ -1,6 +1,6 @@
 import React, {PureComponent, ReactNode} from 'react';
 import {RouteComponentProps, withRouter} from 'react-router';
-import {PropsType as ControlledPropsType} from '../controlled';
+import ControlledPropsType from '../controlled/ControlledPropsType';
 import FetchArgs from '../FetchArgs';
 import fetchArgsToUrlParams from './fetchArgsToUrlParams';
 import ItemModel from '../ItemModel';

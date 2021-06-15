@@ -51,6 +51,7 @@ describe('actions/withActions', () => {
 
     const rendered = renderIntoDocument(<PageTable
       actions={[ action ]}
+      disableVisibleFieldsChange
       fetchArgs={{page: 0, size: 10}}
       hasError={false}
       itemModel={testItemModel}
