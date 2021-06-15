@@ -10,13 +10,6 @@ interface PropsType<ItemType, ValueType> {
 
 const FieldFilterCell =
   <ItemType, ValueType, FilterValueType>({field, fetchArgs, onFetchArgsChange}: PropsType<ItemType, ValueType>): JSX.Element => {
-    if (!field.renderFilterCell) {
-      return React.createElement('td');
-    }
-
-    const filterCellRenderer = field.renderFilterCell as unknown as
-      React.FunctionComponent<FilterCellRendererProps<ItemType, ValueType, FilterValueType>>;
-
     const onFilterByChange: ((filterBy: FilterValueType) => unknown) =
       useCallback((newFilterBy: FilterValueType) => onFetchArgsChange({
         ...fetchArgs,
@@ -25,6 +18,13 @@ const FieldFilterCell =
           [ field.key ]: newFilterBy,
         }
       }), [ field, fetchArgs, onFetchArgsChange ]);
+
+    if (!field.renderFilterCell) {
+      return React.createElement('td');
+    }
+
+    const filterCellRenderer = field.renderFilterCell as unknown as
+      React.FunctionComponent<FilterCellRendererProps<ItemType, ValueType, FilterValueType>>;
 
     return React.createElement(filterCellRenderer, {
       field,

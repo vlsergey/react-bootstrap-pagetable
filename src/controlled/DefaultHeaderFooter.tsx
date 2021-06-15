@@ -10,10 +10,10 @@ function DefaultHeaderFooter<T> (
 ): JSX.Element {
 
   const handleSizeChange = useCallback((value: number) =>
-    onFetchArgsChange({...fetchArgs, size: value}), [ onFetchArgsChange ]);
+    onFetchArgsChange({...fetchArgs, size: value}), [ fetchArgs, onFetchArgsChange ]);
 
   const handlePageChange = useCallback(({target: {value}}: {target: {value: number}}) =>
-    onFetchArgsChange({...fetchArgs, page: value}), [ onFetchArgsChange ]);
+    onFetchArgsChange({...fetchArgs, page: value}), [ fetchArgs, onFetchArgsChange ]);
 
   return <div css={css('display: flex; flex-wrap: wrap; justify-content: space-between')}>
     <div>
