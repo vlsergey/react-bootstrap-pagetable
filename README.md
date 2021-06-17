@@ -25,7 +25,7 @@ Main features:
 Additional small features that nice to have:
 * [x] Abort `fetch()` request if next `fetch()` is called with new arguments
 * [x] Ignore results from old `fetch()` if new one is already called
-* [ ] (TODO) "Select all" checkbox
+* [x] "Select all" checkbox
 * [ ] (TODO) examples of custom field types with custom renderers (color)  
 
 ## API

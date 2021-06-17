@@ -1,10 +1,11 @@
 import FieldModel, {ValueRendererProps} from '../FieldModel';
-import React, {PureComponent, ReactNode} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import ControlledPropsType from '../controlled/ControlledPropsType';
+import Form from 'react-bootstrap/Form';
 import ItemModel from '../ItemModel';
-import memoizeOne from 'memoize-one';
+import SelectAllCheckbox from './SelectAllCheckbox';
 
-type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'itemModel' | 'rowProps'>;
+type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'itemModel' | 'page' | 'rowProps'>;
 
 export interface NewComponentProps {
   selectable?: boolean;
@@ -13,68 +14,76 @@ export interface NewComponentProps {
 }
 
 const renderCheckboxField = ({value}: ValueRendererProps<unknown, boolean>) =>
-  <input checked={value} readOnly type="checkbox" />;
+  <Form.Check checked={value} readOnly type="checkbox" />;
 
-const headerCellContent = (): JSX.Element => null;
+export default
+  <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>) =>
+  function WithSelectable ({
+    itemModel,
+    page,
+    selectable,
+    onSelectedIdsChange,
+    selectedIds,
+    ...etcProps
+  }: NewComponentProps & P): JSX.Element {
+    const idF = useMemo(() => itemModel.idF, [ itemModel ]);
+    const selectedIdsSet = useMemo(() => new Set(selectedIds), [ selectedIds ]);
 
-const withSelectable =
-  <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>): React.ComponentType<NewComponentProps & P> =>
-    class WithSelectable extends PureComponent<NewComponentProps & P> {
+    const headerCellContent = useCallback((): JSX.Element =>
+      <SelectAllCheckbox
+        content={page.content}
+        idF={idF}
+        onSelectedIdsChange={onSelectedIdsChange}
+        selectedIdsSet={selectedIdsSet} />,
+    [ idF, page, onSelectedIdsChange, selectedIdsSet ]);
 
-  getSelectedSet: ((selectedIds: string[]) => Set<string>) =
-    memoizeOne((selectedIds: string[]) => new Set(selectedIds)) ;
+    const handleTrigger = useCallback((item: T): unknown => {
+      const itemKey: string = idF(item);
 
-  handleTrigger (item: T): unknown {
-    const itemKey: string = this.props.itemModel.idF(item);
-    const {onSelectedIdsChange, selectedIds} = this.props;
+      const index = selectedIds.indexOf(itemKey);
+      if (index === -1) {
+        const newSelectedIds: string[] = [ ...selectedIds, itemKey ];
+        return onSelectedIdsChange(newSelectedIds);
+      }
 
-    const index = selectedIds.indexOf(itemKey);
-    if (index === -1) {
-      const newSelectedIds: string[] = [ ...selectedIds, itemKey ];
-      return onSelectedIdsChange(newSelectedIds);
-    }
+      const spliced = [ ...selectedIds ];
+      spliced.splice(index, 1);
+      return onSelectedIdsChange(spliced);
+    }, [ idF, onSelectedIdsChange, selectedIds ]);
 
-    const spliced = [ ...selectedIds ];
-    spliced.splice(index, 1);
-    return onSelectedIdsChange(spliced);
-  }
+    const rowProps = useCallback((item: T): Record<string, unknown> => ({
+      onClick: () => handleTrigger(item),
+      style: {cursor: 'pointer'},
+    }), [ handleTrigger ]);
 
-  rowProps: ((item: T) => Record<string, unknown>) = (item: T) => ({
-    onClick: () => this.handleTrigger(item),
-    style: {cursor: 'pointer'},
-  });
+    const selectableFieldGetter = useCallback((item: T): boolean =>
+      selectedIdsSet.has(idF(item)),
+    [ idF, selectedIdsSet ]);
 
-  selectableFieldGetter = (item: T): boolean =>
-    this.getSelectedSet(this.props.selectedIds).has(this.props.itemModel.idF(item));
-
-  override render (): ReactNode {
-    /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "onSelectedIdsChange|selectedIds" }] */
-    const {itemModel, onSelectedIdsChange, selectable, selectedIds,
-      ...etcProps} = this.props;
-
-    if (!selectable) {
-      return <Child itemModel={itemModel} {...etcProps as P} />;
-    }
-
-    const newItemModel: ItemModel<T> = {
+    const newItemModel: ItemModel<T> = useMemo(() => ({
       ...itemModel,
       fields: [
-        {
-          key: '$selectable',
-          getter: this.selectableFieldGetter,
-          render: renderCheckboxField,
-          title: '[item checkbox]',
-          headerCellContent,
-        } as FieldModel<T, boolean>,
-        ...itemModel.fields,
+          {
+            key: '$selectable',
+            getter: selectableFieldGetter,
+            render: renderCheckboxField,
+            title: '[item checkbox]',
+            headerCellContent,
+          } as FieldModel<T, boolean>,
+          ...itemModel.fields,
       ]
-    };
+    }), [ headerCellContent, itemModel, selectableFieldGetter ]);
+
+    if (!selectable) {
+      return <Child
+        {...etcProps as unknown as P}
+        itemModel={itemModel}
+        page={page} />;
+    }
 
     return <Child
-      {...etcProps as P}
+      {...etcProps as unknown as P}
       itemModel={newItemModel}
-      rowProps={this.rowProps} />;
-  }
-    };
-
-export default withSelectable;
+      page={page}
+      rowProps={rowProps} />;
+  };
