@@ -1,5 +1,6 @@
 import {HashRouter, Link, Route, Switch} from 'react-router-dom';
 import React, {PureComponent, ReactNode} from 'react';
+import ActionsDemo from './ActionsDemo';
 import ContolledDemo from './ContolledDemo';
 import CustomRowsRendererDemo from './CustomRowsRendererDemo';
 import FiltersExample from './FiltersExample';
@@ -23,6 +24,7 @@ export default class Application extends PureComponent<unknown> {
             <Nav.Link as={Link} key="filtersExample" to="/filtersExample">Filters example</Nav.Link>
             <Nav.Link as={Link} key="routedExample" to="/routedExample">PageTable with react-router</Nav.Link>
             <Nav.Link as={Link} key="customRowsRenderer" to="/customRowsRenderer">Custom rows renderer</Nav.Link>
+            <Nav.Link as={Link} key="actions" to="/actions">Actions Demo</Nav.Link>
           </Nav>
           <Navbar.Text>
             <a href="https://github.com/vlsergey/react-bootstrap-pagetable">GitHub</a>
@@ -36,6 +38,7 @@ export default class Application extends PureComponent<unknown> {
         <Route component={FiltersExample} exact key="/filtersExample" path="/filtersExample" />
         <Route component={RoutedExample} exact key="/routedExample" path="/routedExample" />
         <Route component={CustomRowsRendererDemo} exact key="/customRowsRenderer" path="/customRowsRenderer" />
+        <Route component={ActionsDemo} exact key="/actions" path="/actions" />
       </Switch>
     </HashRouter>;
   }

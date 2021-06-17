@@ -2,6 +2,7 @@ import {ReactNode} from 'react';
 
 interface Action<T> {
   enabled: (items: T[]) => boolean;
+  /** Unique action key */
   key: string;
   /** Execute action on specified items. Can return Promise */
   onAction: (items: T[]) => unknown;
