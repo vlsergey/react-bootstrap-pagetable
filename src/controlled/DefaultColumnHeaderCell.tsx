@@ -1,7 +1,7 @@
 import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
 import React from 'react';
 
-const DefaultColumnHeaderCell = ({field}: ColumnHeaderCellPropsType) => <th>
+const DefaultColumnHeaderCell = ({field}: ColumnHeaderCellPropsType) => <th {...field.headerCellProps}>
   {
     field.headerCellContent
       ? React.createElement(field.headerCellContent, {field})

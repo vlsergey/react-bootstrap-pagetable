@@ -40,7 +40,9 @@ function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
       : 'fas fa-sort-down';
   }
 
-  return <th css={css(`
+  return <th
+    {...field.headerCellProps}
+    css={css(`
       cursor : pointer;
       &:hover .fas {
         color: unset;
