@@ -3,7 +3,7 @@ import React, {useCallback, useMemo} from 'react';
 import ControlledPropsType from '../controlled/ControlledPropsType';
 import Form from 'react-bootstrap/Form';
 import ItemModel from '../ItemModel';
-import SelectAllCheckbox from './SelectAllCheckbox';
+import useSelectAllCheckbox from './useSelectAllCheckbox';
 
 type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'itemModel' | 'page' | 'rowProps'>;
 
@@ -29,14 +29,6 @@ export default
     const idF = useMemo(() => itemModel.idF, [ itemModel ]);
     const selectedIdsSet = useMemo(() => new Set(selectedIds), [ selectedIds ]);
 
-    const headerCellContent = useCallback((): JSX.Element =>
-      <SelectAllCheckbox
-        content={page.content}
-        idF={idF}
-        onSelectedIdsChange={onSelectedIdsChange}
-        selectedIdsSet={selectedIdsSet} />,
-    [ idF, page, onSelectedIdsChange, selectedIdsSet ]);
-
     const handleTrigger = useCallback((item: T): unknown => {
       const itemKey: string = idF(item);
 
@@ -60,6 +52,9 @@ export default
       selectedIdsSet.has(idF(item)),
     [ idF, selectedIdsSet ]);
 
+    const selectAllProps = useSelectAllCheckbox(page.content, idF,
+      onSelectedIdsChange, selectedIdsSet);
+
     const newItemModel: ItemModel<T> = useMemo(() => ({
       ...itemModel,
       fields: [
@@ -68,11 +63,11 @@ export default
             getter: selectableFieldGetter,
             render: renderCheckboxField,
             title: '[item checkbox]',
-            headerCellContent,
+            ...selectAllProps,
           } as FieldModel<T, boolean>,
           ...itemModel.fields,
       ]
-    }), [ headerCellContent, itemModel, selectableFieldGetter ]);
+    }), [ selectAllProps, itemModel, selectableFieldGetter ]);
 
     if (!selectable) {
       return <Child

@@ -33,6 +33,7 @@ interface FieldModel<ItemType, ValueType> {
   getter?: ValueGetter<ItemType, ValueType>;
   render?: (props: ValueRendererProps<ItemType, ValueType>) => ReactNode;
   headerCellContent?: (props: {field: FieldModel<ItemType, ValueType>}) => JSX.Element;
+  headerCellProps?: React.ComponentProps<'th'>;
   valueCellProps?: (value: ValueType, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>) => Record<string, unknown>;
 }
 
