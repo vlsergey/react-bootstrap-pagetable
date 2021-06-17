@@ -86,9 +86,9 @@ List of object properties that can be displayed in the table. Until version 1.0 
   it's used to provide `key` to React element array items. In future versions
   it will also be used to store 'shown/hidden' lists of column. Assumed to be
   safe to change from version to version (nothing really bad happens on change).
-  * `title` (`title: ReactNode`). What shall be shown as column title in header
-  cell or in the column list in settings dialog popup. Note: `string` can be
-  used as `ReactNode`, so feel free to provide just plain text.
+  * `title` (`title: string`). Field title text. Shown in table column header
+  cell. Title is string due to DOM limitations related to `<option>` tag
+  behavior (for example it's used in visible fields list dialog).
   * `description` (`description?: ReactNode`): Description of field. _Optional_.
   Currently unused.
   * `sortable` (`boolean`): is field sortable or not. _Optional_. Default `false`. Enabling this will render additional sorting icons in table header cell and will allow user to change sorting by clicking on header cell. Component _does not_ define a way to sort elements, only fills `sort` field in `FetchArgs` structure passed to `fetch()` function.
@@ -101,10 +101,9 @@ List of object properties that can be displayed in the table. Until version 1.0 
   using `JSON.stringify()`, `null` and `undefined` are returned as `null`.
   Feel free to use function, React functional component or React class component
   here. Props type is exported from library as `ValueRendererProps` interface.
-  * `headerCellProps` (`headerCellProps?: ( fieldModel: FieldModel<V> ) => Record<string, unknown>`).
-  _Optional_. Provides additional header cell react element (`<th>`) properties.
-  By default no additional properties are provided. Header cell is still styled
-  using default bootstrap styles of `<Table>` component.
+  * `headerCellContent` (`props: ( field: FieldModel<ItemModel, FieldValueType> ) => JSX.Element`).
+  _Optional_. Allow to change default header cell react element (`<th>`) content.
+  By default cell title is renderer with additional icons if field is sortable.
   * `valueCellProps` (`valueCellProps?: ( value: V, item: unknown, fieldModel: FieldModel<V> ) => Record<string, unknown>`).
   _Optional_. Provides additional value cell react element (`<td>`) properties.
 

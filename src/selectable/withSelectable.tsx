@@ -15,6 +15,8 @@ export interface NewComponentProps {
 const renderCheckboxField = ({value}: ValueRendererProps<unknown, boolean>) =>
   <input checked={value} readOnly type="checkbox" />;
 
+const headerCellContent = (): JSX.Element => null;
+
 const withSelectable =
   <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>): React.ComponentType<NewComponentProps & P> =>
     class WithSelectable extends PureComponent<NewComponentProps & P> {
@@ -61,8 +63,8 @@ const withSelectable =
           key: '$selectable',
           getter: this.selectableFieldGetter,
           render: renderCheckboxField,
-          // TODO: add check-all checkbox
-          title: <div />,
+          title: '[item checkbox]',
+          headerCellContent,
         } as FieldModel<T, boolean>,
         ...itemModel.fields,
       ]

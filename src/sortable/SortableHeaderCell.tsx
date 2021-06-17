@@ -3,6 +3,7 @@ import {css, jsx} from '@emotion/react';
 import {Direction, SortBy} from '../FetchArgs';
 import React, {useCallback, useContext} from 'react';
 import ControlledContext from '../controlled/ControlledContext';
+import DefaultColumnHeaderCell from '../controlled/DefaultColumnHeaderCell';
 import FieldModel from '../FieldModel';
 
 export interface PropsType<I, V> {
@@ -26,7 +27,7 @@ function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
   }, [ fetchArgs, field.key, onFetchArgsChange ]);
 
   if (!field.sortable) {
-    return <th>{field.title}</th>;
+    return <DefaultColumnHeaderCell field={field} />;
   }
 
   const fieldSort: SortBy = (fetchArgs.sort || [])
@@ -46,11 +47,14 @@ function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
       }
     `)} onClick={handleClick}>
     <div css={css(`
-        cursor : pointer;
         display: flex;
         justify-content: space-between;
       `)}>
-      <div>{field.title}</div>
+      <div>{
+        field.headerCellContent
+          ? React.createElement(field.headerCellContent, {field})
+          : field.title
+      }</div>
       <i className={iconClassName} css={css(`
         color: lightgray;
         line-height: unset;

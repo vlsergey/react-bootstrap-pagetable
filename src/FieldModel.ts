@@ -22,7 +22,7 @@ export interface ValueRendererProps<ItemType, ValueType> {
 
 interface FieldModel<ItemType, ValueType> {
   key: string;
-  title: ReactNode;
+  title: string;
   description?: ReactNode;
   hiddenByDefault?: boolean;
 
@@ -32,7 +32,7 @@ interface FieldModel<ItemType, ValueType> {
 
   getter?: ValueGetter<ItemType, ValueType>;
   render?: (props: ValueRendererProps<ItemType, ValueType>) => ReactNode;
-  headerCellProps?: (fieldModel: FieldModel<ItemType, ValueType>) => Record<string, unknown>;
+  headerCellContent?: (props: {field: FieldModel<ItemType, ValueType>}) => JSX.Element;
   valueCellProps?: (value: ValueType, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>) => Record<string, unknown>;
 }
 

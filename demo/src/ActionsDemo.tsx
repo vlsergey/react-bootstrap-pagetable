@@ -23,7 +23,7 @@ export default function ActionsDemo (): JSX.Element {
     visible: () => true,
   } as Action<ExampleItemType> ], []);
 
-  const handleFetch = React.useCallback((fetchArgs : FetchArgs) =>
+  const handleFetch = React.useCallback((fetchArgs: FetchArgs) =>
     fetchFromArray(ExampleItemModel, ExampleData, fetchArgs), []);
 
   return <Container>
