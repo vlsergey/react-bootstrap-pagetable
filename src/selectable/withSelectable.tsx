@@ -1,7 +1,7 @@
-import FieldModel, {ValueRendererProps} from './FieldModel';
+import FieldModel, {ValueRendererProps} from '../FieldModel';
 import React, {PureComponent, ReactNode} from 'react';
-import ControlledPropsType from './controlled/ControlledPropsType';
-import ItemModel from './ItemModel';
+import ControlledPropsType from '../controlled/ControlledPropsType';
+import ItemModel from '../ItemModel';
 import memoizeOne from 'memoize-one';
 
 type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'itemModel' | 'rowProps'>;

@@ -28,7 +28,7 @@ import withFetchArgsInState from './withFetchArgsInState';
 import withFilterable from './filterable/withFilterable';
 import withPageInState from './withPageInState';
 import withReactRouter from './reactRouter/withReactRouter';
-import withSelectable from './withSelectable';
+import withSelectable from './selectable/withSelectable';
 import withSortable from './sortable';
 
 export {

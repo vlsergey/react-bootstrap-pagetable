@@ -2,7 +2,7 @@ import React, {PureComponent, ReactNode} from 'react';
 import Action from './Action';
 import ControlledPropsType from '../controlled/ControlledPropsType';
 import ItemModel from '../ItemModel';
-import {NewComponentProps as SelectablePropsType} from '../withSelectable';
+import {NewComponentProps as SelectablePropsType} from '../selectable/withSelectable';
 import Toolbar from './Toolbar';
 
 export type RequiredChildComponentProps<T> =
