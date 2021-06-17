@@ -1,12 +1,10 @@
-import React, {PureComponent, ReactNode} from 'react';
 import ControlledPropsType from './controlled/ControlledPropsType';
 import FetchArgs from './FetchArgs';
+import React from 'react';
 import strToSort from './sortable/strToSort';
 
 export type RequiredChildComponentProps<T> =
   Pick<ControlledPropsType<T>, 'fetchArgs' | 'onFetchArgsChange'>;
-
-type StateType<T> = Pick<ControlledPropsType<T>, 'fetchArgs'>;
 
 export interface NewComponentProps<T> {
   defaultPage?: number;
@@ -19,45 +17,33 @@ export interface NewComponentProps<T> {
 type PropsType<T, P extends RequiredChildComponentProps<T>> =
   NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>;
 
-const withFetchArgsInState = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>):
-  React.ComponentType<NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>> =>
-    class WithFetchArgsInState extends PureComponent<PropsType<T, P>, StateType<T>> {
+const withFetchArgsInState =
+  <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>) =>
+    function WithFetchArgsInState ({
+      defaultPage = 0,
+      defaultSize = 10,
+      defaultSort,
+      onFetchArgsChange,
+      ...etcProps
+    }: PropsType<T, P>): JSX.Element {
 
-  static defaultProps = {
-    ...Child.defaultProps,
-    defaultPage: 0,
-    defaultSize: 10,
-  } as Partial<NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>>;
+      const [ fetchArgs, setFetchArgs ] = React.useState<FetchArgs>(() => ({
+        page: defaultPage,
+        size: defaultSize,
+        sort: strToSort(defaultSort),
+      }));
 
-  constructor (props: PropsType<T, P>) {
-    super(props);
-    this.state = {
-      fetchArgs: {
-        page: props.defaultPage,
-        size: props.defaultSize,
-        sort: strToSort(props.defaultSort),
-      }
-    };
-  }
+      const handleFetchArgsChange = React.useCallback((fetchArgs: FetchArgs) => {
+        setFetchArgs(fetchArgs);
+        if (onFetchArgsChange) {
+          return onFetchArgsChange(fetchArgs);
+        }
+      }, [ onFetchArgsChange, setFetchArgs ]);
 
-  handleFetchArgsChange = (fetchArgs: FetchArgs): void => {
-    const {onFetchArgsChange} = this.props;
-    this.setState({fetchArgs});
-    if (onFetchArgsChange) {
-      onFetchArgsChange(fetchArgs);
-    }
-  };
-
-  override render (): ReactNode {
-    /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "defaultPage|defaultSize|onFetchArgsChange" }] */
-    const {onFetchArgsChange, defaultPage, defaultSize, ...etcProps} = this.props;
-
-    return <Child
-      onFetchArgsChange={this.handleFetchArgsChange}
-      {...etcProps as unknown as P}
-      {...this.state} />;
-  }
-
+      return <Child
+        {...etcProps as unknown as P}
+        fetchArgs={fetchArgs}
+        onFetchArgsChange={handleFetchArgsChange} />;
     };
 
 export default withFetchArgsInState;
