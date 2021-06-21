@@ -102,14 +102,14 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
         {renderCheckbox(emulateError, 'emulateError', 'Emulate error on loading')}
         {renderCheckbox(emulateLongLoading, 'emulateLongLoading', 'Emulate long loading (add 1 second pause to fetch function)')}
         {renderCheckbox(selectable, 'selectable', <>Set <code>selectable</code> flag</>)}
-        <Form.Group controlId="size" className="form-inline">
-          <Form.Label style={{paddingRight: "1em"}}>Size:</Form.Label>
-          <Form.Control as="select" value={size || ""} onChange={this.handleSelectChange} name="size" size="sm">
+        <Form.Group className="form-inline" controlId="size">
+          <Form.Label style={{paddingRight: '1em'}}>Size:</Form.Label>
+          <Form.Control as="select" name="size" onChange={this.handleSelectChange} size="sm" value={size || ''}>
             <option value="sm">sm</option>
             <option value="" />
             <option value="lg">lg</option>
-           </Form.Control>
-         </Form.Group>
+          </Form.Control>
+        </Form.Group>
       </Form>
       <h2>Result</h2>
       {pageTable}

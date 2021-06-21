@@ -1,10 +1,10 @@
 import ControlledContext, {ControlledContextType, useControlledContext}
   from './ControlledContext';
+import {DefaultFooter, DefaultHeader} from './DefaultHeaderFooter';
 import Alert from 'react-bootstrap/Alert';
 import ControlledPropsType from './ControlledPropsType';
 import DefaultColumnHeaderCell from './DefaultColumnHeaderCell';
 import DefaultColumnHeaderRow from './DefaultColumnHeaderRow';
-import {DefaultHeader, DefaultFooter} from './DefaultHeaderFooter';
 import DefaultItemFieldCellRenderer from './DefaultItemFieldCellRenderer';
 import DefaultNoContentRow from './DefaultNoContentRow';
 import DefaultRowsRenderer from './DefaultRowsRenderer';
@@ -22,10 +22,10 @@ export default function ControlledBase<T> ({
   columnHeaderRow = DefaultColumnHeaderRow,
   disableVisibleFieldsChange = false,
   footer,
-  footerElements = [[VisibleFieldsSettings, PageIndexSelector], [], [PageSizeSelector]],
+  footerElements = [ [ VisibleFieldsSettings, PageIndexSelector ], [], [ PageSizeSelector ] ],
   footerRenderer = DefaultFooter,
   hasError = false,
-  headerElements = [[VisibleFieldsSettings, PageIndexSelector], [], [PageSizeSelector]],
+  headerElements = [ [ VisibleFieldsSettings, PageIndexSelector ], [], [ PageSizeSelector ] ],
   headerRenderer = DefaultHeader,
   idPrefix,
   itemFieldCellRenderer = DefaultItemFieldCellRenderer,

@@ -1,6 +1,6 @@
 import {Action, ControlledPageTable, Page, singlePage}
   from '@vlsergey/react-bootstrap-pagetable';
-import {ExampleData, ExampleItemModel, ExampleItemType} from "./ExampleData";
+import {ExampleData, ExampleItemModel, ExampleItemType} from './ExampleData';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import React from 'react';
@@ -10,13 +10,13 @@ import useSizeOption from './useSizeOption';
 
 const NOOP = (): unknown => undefined;
 
-export default function ContolledDemo(): JSX.Element {
+export default function ContolledDemo (): JSX.Element {
 
-  const [addAction, addActionFormElement] = useBooleanOption('addAction', 'Include simple action (\'alert the ID\')');
-  const [hasError, hasErrorFormElement] = useBooleanOption('hasError', <>Set <code>hasError</code> flag</>);
-  const [loading, loadingFormElement] = useBooleanOption('loading', <>Set <code>loading</code> flag</>);
-  const [selectable, selectableFormElement] = useBooleanOption('selectable', <>Set <code>selectable</code> flag</>);
-  const [size, sizeFormElement] = useSizeOption();
+  const [ addAction, addActionFormElement ] = useBooleanOption('addAction', 'Include simple action (\'alert the ID\')');
+  const [ hasError, hasErrorFormElement ] = useBooleanOption('hasError', <>Set <code>hasError</code> flag</>);
+  const [ loading, loadingFormElement ] = useBooleanOption('loading', <>Set <code>loading</code> flag</>);
+  const [ selectable, selectableFormElement ] = useBooleanOption('selectable', <>Set <code>selectable</code> flag</>);
+  const [ size, sizeFormElement ] = useSizeOption();
 
   const page: Page<ExampleItemType> = singlePage(ExampleData);
 

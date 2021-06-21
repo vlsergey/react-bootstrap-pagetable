@@ -7,45 +7,87 @@ type ResultType = [
   (newVisibleFields: string[]) => unknown
 ];
 
+function useLocalStorage (
+    idPrefix: string,
+    key: string,
+    defaultValues: string[]
+): ResultType {
+  const [ valuesReact, setValuesReact ] = useState<string[]>(() => {
+    if (!!idPrefix && !!localStorage) {
+      try {
+        const json = localStorage.getItem(idPrefix + '_useVisibleFieldsState_' + key);
+        if (json) {
+          const result = JSON.parse(json) as string[];
+          if (result.length > 0) {
+            return result;
+          }
+        }
+      } catch (error: unknown) {
+        console.warn('Unable to load ' + key + ' from localStorage');
+        console.warn(error);
+      }
+    }
+    return defaultValues;
+  });
+
+  const setValues = useCallback((newValues: string[]) => {
+    setValuesReact(newValues);
+    try {
+      if (!!idPrefix && !!localStorage) {
+        localStorage.setItem(idPrefix + '_useVisibleFieldsState' + key, JSON.stringify(newValues));
+      }
+    } catch (error: unknown) {
+      console.warn('Unable to save ' + key + ' state to localStorage');
+      console.warn(error);
+    }
+  }, [ idPrefix, key, setValuesReact ]);
+
+  return [ valuesReact, setValues ];
+}
+
 export default function useStateOfVisibleFields (
     disableVisibleFieldsChange: boolean,
     idPrefix: string,
     itemModel: ItemModel<unknown>
 ): ResultType {
 
-  const [ visibleFields, setVisibleFieldsImpl ] = useState<string[]>(() => {
-    if (!!idPrefix && !!localStorage) {
-      try {
-        const json = localStorage.getItem(idPrefix + '_useVisibleFieldsState');
-        if (json) {
-          const keys = JSON.parse(json) as string[];
-          if (keys.length > 0) {
-            return keys;
-          }
-        }
-      } catch (error: unknown) {
-        console.warn('Unable to load visible columns state from localStorage');
-        console.warn(error);
-      }
-    }
+  const defaultKeysOrder: string[] = useMemo(() => itemModel
+    .fields
+    .filter(({hiddenByDefault}: FieldModel<unknown, unknown>) => !hiddenByDefault)
+    .map(({key}: FieldModel<unknown, unknown>) => key), [ itemModel ]);
 
-    return itemModel
-      .fields
-      .filter(({hiddenByDefault}: FieldModel<unknown, unknown>) => !hiddenByDefault)
-      .map(({key}: FieldModel<unknown, unknown>) => key);
-  });
+  const defaultHidden = [] as string[];
+
+  const [ hidden, setHidden ] = useLocalStorage(idPrefix, 'hidden', defaultHidden);
+  const [ order, setOrder ] = useLocalStorage(idPrefix, 'order', defaultKeysOrder);
+
+  const visibleFields = useMemo(() => {
+    const result = order.filter((key: string) => !hidden.includes(key));
+    const invisibleBecauseNotInConfig =
+      defaultKeysOrder.filter(key => !order.includes(key) && !hidden.includes(key));
+
+    // need to include invisible-because-unknown-before fields into result
+    invisibleBecauseNotInConfig.forEach(fieldKey => {
+      const insertAfterIndex: number = defaultKeysOrder.indexOf(fieldKey);
+      while (insertAfterIndex > 0) {
+        const fieldKeyAtIndex = defaultKeysOrder[ insertAfterIndex ];
+        const currentIndex = result.indexOf(fieldKeyAtIndex);
+        if (currentIndex !== -1) {
+          result.splice(currentIndex + 1, 0, fieldKey);
+          return;
+        }
+      }
+      result.splice(0, 0, fieldKey);
+    });
+
+    return result;
+  }, [ defaultKeysOrder, order, hidden ]);
 
   const setVisibleFields = useCallback((newVisibleFields: string[]) => {
-    setVisibleFieldsImpl(newVisibleFields);
-    try {
-      if (!!idPrefix && !!localStorage) {
-        localStorage.setItem(idPrefix + '_useVisibleFieldsState', JSON.stringify(newVisibleFields));
-      }
-    } catch (error: unknown) {
-      console.warn('Unable to save visible columns state to localStorage');
-      console.warn(error);
-    }
-  }, [ idPrefix, setVisibleFieldsImpl ]);
+    const newHiddenFields = defaultKeysOrder.filter(key => !newVisibleFields.includes(key));
+    setHidden(newHiddenFields);
+    setOrder(newVisibleFields);
+  }, [ defaultKeysOrder, setHidden, setOrder ]);
 
   const mockVisibleFields = useMemo<string[]>(() => itemModel
     .fields
