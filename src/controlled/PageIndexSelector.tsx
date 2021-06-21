@@ -11,6 +11,7 @@ const PageIndexSelector = () => {
   return <Pagination
     onChange={handlePageChange}
     size={size}
+    style={{margin: 0}}
     totalPages={page.totalPages}
     value={fetchArgs.page} />;
 };

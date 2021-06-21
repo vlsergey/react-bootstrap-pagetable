@@ -10,7 +10,7 @@ interface StateType {
   emulateError: boolean;
   emulateLongLoading: boolean;
   selectable: boolean;
-  smallSize: boolean;
+  size?: 'lg' | 'sm';
 }
 
 function sleep (ms: number): Promise< unknown > {
@@ -41,7 +41,7 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
     selectable: false,
     emulateError: false,
     emulateLongLoading: false,
-    smallSize: false,
+    size: undefined,
   };
 
   private fetchData = async (fetchArgs: FetchArgs): Promise<Page<TestType>> => {
@@ -61,8 +61,14 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
     } as unknown as StateType);
   };
 
+  private handleSelectChange = ({currentTarget: {name, value}}: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      [ name ]: value || undefined,
+    } as unknown as StateType);
+  };
+
   override render (): ReactNode {
-    const {addAction, emulateError, emulateLongLoading, selectable, smallSize} = this.state;
+    const {addAction, emulateError, emulateLongLoading, selectable, size} = this.state;
 
     const actions = addAction ? [
       {
@@ -78,7 +84,7 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
       fetch={this.fetchData}
       itemModel={itemModel}
       selectable={selectable}
-      size={smallSize ? 'sm' : undefined} />;
+      size={size} />;
 
     const renderCheckbox = (checked: boolean, key: string, label: ReactNode) =>
       <Form.Check
@@ -96,7 +102,14 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
         {renderCheckbox(emulateError, 'emulateError', 'Emulate error on loading')}
         {renderCheckbox(emulateLongLoading, 'emulateLongLoading', 'Emulate long loading (add 1 second pause to fetch function)')}
         {renderCheckbox(selectable, 'selectable', <>Set <code>selectable</code> flag</>)}
-        {renderCheckbox(smallSize, 'smallSize', <>Set <code>{'size="sm"'}</code></>)}
+        <Form.Group controlId="size" className="form-inline">
+          <Form.Label style={{paddingRight: "1em"}}>Size:</Form.Label>
+          <Form.Control as="select" value={size || ""} onChange={this.handleSelectChange} name="size" size="sm">
+            <option value="sm">sm</option>
+            <option value="" />
+            <option value="lg">lg</option>
+           </Form.Control>
+         </Form.Group>
       </Form>
       <h2>Result</h2>
       {pageTable}

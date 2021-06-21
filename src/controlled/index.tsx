@@ -4,24 +4,29 @@ import Alert from 'react-bootstrap/Alert';
 import ControlledPropsType from './ControlledPropsType';
 import DefaultColumnHeaderCell from './DefaultColumnHeaderCell';
 import DefaultColumnHeaderRow from './DefaultColumnHeaderRow';
-import DefaultHeaderFooter from './DefaultHeaderFooter';
+import {DefaultHeader, DefaultFooter} from './DefaultHeaderFooter';
 import DefaultItemFieldCellRenderer from './DefaultItemFieldCellRenderer';
 import DefaultNoContentRow from './DefaultNoContentRow';
 import DefaultRowsRenderer from './DefaultRowsRenderer';
+import PageIndexSelector from './PageIndexSelector';
+import PageSizeSelector from './PageSizeSelector';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import useStateOfVisibleFields from './useStateOfVisibleFields';
 import useVisibleFields from './useVisibleFields';
+import VisibleFieldsSettings from './VisibleFieldsSettings';
 
 export default function ControlledBase<T> ({
   columnHeaderCell = DefaultColumnHeaderCell,
   columnHeaderRow = DefaultColumnHeaderRow,
   disableVisibleFieldsChange = false,
   footer,
-  footerRenderer = DefaultHeaderFooter,
+  footerElements = [[VisibleFieldsSettings, PageIndexSelector], [], [PageSizeSelector]],
+  footerRenderer = DefaultFooter,
   hasError = false,
-  headerRenderer = DefaultHeaderFooter,
+  headerElements = [[VisibleFieldsSettings, PageIndexSelector], [], [PageSizeSelector]],
+  headerRenderer = DefaultHeader,
   idPrefix,
   itemFieldCellRenderer = DefaultItemFieldCellRenderer,
   itemModel,
@@ -58,8 +63,10 @@ export default function ControlledBase<T> ({
     columnHeaderRow,
     disableVisibleFieldsChange,
     footer,
+    footerElements,
     footerRenderer,
     hasError,
+    headerElements,
     headerRenderer,
     idPrefix,
     itemFieldCellRenderer,

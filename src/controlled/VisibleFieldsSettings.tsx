@@ -23,8 +23,6 @@ const FieldsListControl = ({
   selected,
 }: FieldsListControlPropsType) => {
 
-  const {size} = useControlledContext();
-
   const handleSelectChange = useCallback(({currentTarget}: React.ChangeEvent<HTMLSelectElement>) =>
     onSelectedChange([ ...(currentTarget.options as unknown as []) ]
       .filter(({selected}) => selected).map(({value}) => value)), [ onSelectedChange ]);
@@ -36,7 +34,6 @@ const FieldsListControl = ({
     htmlSize={10}
     multiple
     onChange={handleSelectChange}
-    size={size}
     style={{height: options.length === 0 ? '15em' : undefined}}>
     {options.length === 0 && <option disabled key="" style={{whiteSpace: 'break-spaces'}} value="">
       {placeholder}
@@ -53,8 +50,10 @@ const FieldsListControl = ({
 };
 
 const VisibleFieldsSettings = (): JSX.Element => {
-  const {itemModel,
+  const {disableVisibleFieldsChange,
+    itemModel,
     onVisibleFieldsChange,
+    size,
     visibleFields} = useControlledContext();
   const [ show, setShow ] = useState(false);
 
@@ -105,8 +104,12 @@ const VisibleFieldsSettings = (): JSX.Element => {
     setVisibleSelected([]);
   }, [ itemModel, onVisibleFieldsChange, setAvailableSelected, setVisibleSelected ]);
 
+  if (disableVisibleFieldsChange) {
+    return null;
+  }
+
   return <>
-    <Button onClick={handleShow} variant="light">
+    <Button onClick={handleShow} size={size} variant="light">
       <i className="fas fa-cog" />
     </Button>
     <Modal onHide={handleHide} show={show}>

@@ -1,5 +1,6 @@
 import ControlledContext, {ControlledContextType, useControlledContext}
   from './controlled/ControlledContext';
+import {DefaultFooter, DefaultHeader} from './controlled/DefaultHeaderFooter';
 import DefaultItemFieldCellRenderer,
 {PropsType as DefaultItemFieldCellRendererPropsType}
   from './controlled/DefaultItemFieldCellRenderer';
@@ -8,7 +9,6 @@ import FieldModel, {FilterCellRendererProps, FilterValueConverter,
 import Page, {emptyPage, singlePage} from './Page';
 import Action from './actions/Action';
 import ControlledBase from './controlled';
-import DefaultHeaderFooter from './controlled/DefaultHeaderFooter';
 import DefaultRowsRenderer from './controlled/DefaultRowsRenderer';
 import FetchArgs from './FetchArgs';
 import fetchFromArray from './fetchFromArray';
@@ -66,8 +66,9 @@ export {
 
   // customization
   ControlledContext, ControlledContextType, useControlledContext, useVisibleFields,
+  DefaultFooter, DefaultHeader,
   ItemFieldCellRendererPropsType, DefaultItemFieldCellRenderer, DefaultItemFieldCellRendererPropsType,
-  DefaultRowsRenderer, DefaultHeaderFooter, PageIndexSelector, PageSizeSelector, VisibleFieldsSettings,
+  DefaultRowsRenderer, PageIndexSelector, PageSizeSelector, VisibleFieldsSettings,
 };
 
 // Main mixins (what user is advised to use)
