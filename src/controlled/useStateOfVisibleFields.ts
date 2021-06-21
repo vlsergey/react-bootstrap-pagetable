@@ -34,10 +34,11 @@ function useLocalStorage (
     setValuesReact(newValues);
     try {
       if (!!idPrefix && !!localStorage) {
-        localStorage.setItem(idPrefix + '_useVisibleFieldsState' + key, JSON.stringify(newValues));
+        localStorage.setItem(idPrefix + '_useVisibleFieldsState_' + key,
+          JSON.stringify(newValues));
       }
     } catch (error: unknown) {
-      console.warn('Unable to save ' + key + ' state to localStorage');
+      console.warn('Unable to save ' + key + ' to localStorage');
       console.warn(error);
     }
   }, [ idPrefix, key, setValuesReact ]);
