@@ -19,8 +19,8 @@ Main features:
 * [x] Server-side filtering (allow to display filters and pass filter arguments to server)
 * [x] Integration with [react-router](https://reactrouter.com/) to support fetching arguments from URL and pushing changes back
 * [x] Allow user to change visibility and order of columns to be displayed
+* [x] Allow to customize what to display before and after the `Table`: page selection, page size selection, custom text, etc.
 * [ ] (TODO) Support standard renderers for date, time and other OpenAPI types
-* [ ] (TODO) Allow to customize what to display before and after the `Table`: page selection, page size selection, custom text, etc.
 
 Additional small features that nice to have:
 * [x] Abort `fetch()` request if next `fetch()` is called with new arguments
@@ -62,8 +62,10 @@ import {UncontrolledWithReactRouter as PageTable} from '@vlsergey/react-bootstra
 | `defaultPage`           | `number`                                       | `0`           | Default page to display (0-based) |
 | `defaultSize`           | `number`                                       | `10`          | Default page size to display |
 | `defaultSort`           | `string`                                       |                       | Default page sort. One can specify only field name like `name` or field name and direction like `name,ASC` / `name,DESC`. |
-| `footerRenderer`        | `( props: HeaderFooterPropsType )`             | `DefaultHeaderFooter` | Component (function) used to render table footer with pagination and page size selector |
-| `headerRenderer`        | `( props: HeaderFooterPropsType )`             | `DefaultHeaderFooter` | Component (function) used to render table header with pagination and page size selector |
+| `footerElements`        | `(() => JSX.Element)[][]`                      |                       | Elements to be rendered by `DefaultFooter` before page at the left (0), center (1), and right side (2). By default it's visible fields settings button and page index at the left and page size at the right.
+| `footerRenderer`        | `( props: HeaderFooterPropsType )`             | `DefaultFooter`       | Component (function) used to render table footer with pagination and page size selector |
+| `headerElements`        | `(() => JSX.Element)[][]`                      |                       | Elements to be rendered by `DefaultHeader` before page at the left (0), center (1), and right side (2). By default it's visible fields settings button and page index at the left and page size at the right.
+| `headerRenderer`        | `( props: HeaderFooterPropsType )`             | `DefaultHeader`       | Component (function) used to render table header with pagination and page size selector |
 | `itemFieldCellRenderer` | `( props: ItemFieldCellRendererProps ) => JSX.Element` | `DefaultItemFieldCellRenderer` | Allows to override default item cell renderer (including selection checkbox cell). |
 | `noContentRow`          | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
 | `rowsRenderer`          | `( props: RowsRendererProps ) => JSX.Element`  | `DefaultRowsRenderer` | Allows to override default rows renderer. |
