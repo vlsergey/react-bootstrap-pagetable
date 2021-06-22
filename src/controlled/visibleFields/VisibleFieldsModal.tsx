@@ -7,6 +7,7 @@ import FieldModel from '../../FieldModel';
 import FieldsListControl from './FieldsListControl';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
+import SortableFieldsListControl from './SortableFieldsListControl';
 import {useControlledContext} from '../ControlledContext';
 
 interface PropsType {
@@ -98,13 +99,12 @@ const VisibleFieldsModal = ({onHide, show}: PropsType): JSX.Element => {
                 <i className="fa fa-angle-double-left" />
               </Button>
             </Col>
-            <Col>
-              <FieldsListControl
-                onSelectedChange={setVisibleSelected}
-                options={visible}
-                placeholder="Move fields here to show their columns."
-                selected={visibleSelected} />
-            </Col>
+            <SortableFieldsListControl
+              onOptionsChange={onVisibleFieldsChange}
+              onSelectedChange={setVisibleSelected}
+              options={visible}
+              placeholder="Move fields here to show their columns."
+              selected={visibleSelected} />
           </Row>
         </Container>
       </Modal.Body>

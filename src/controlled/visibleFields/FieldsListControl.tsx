@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback} from 'react';
 import FieldModel from '../../FieldModel';
 import Form from 'react-bootstrap/Form';
 
@@ -20,21 +20,19 @@ const FieldsListControl = ({
     onSelectedChange([ ...(currentTarget.options as unknown as []) ]
       .filter(({selected}) => selected).map(({value}) => value)), [ onSelectedChange ]);
 
-  const selectedSet: Set<string> = useMemo(() => new Set(selected), [ selected ]);
-
   return <Form.Control
     as="select"
     htmlSize={10}
     multiple
     onChange={handleSelectChange}
-    style={{height: options.length === 0 ? '15em' : undefined}}>
+    style={{height: options.length === 0 ? '15em' : undefined}}
+    value={selected}>
     {options.length === 0 && <option disabled key="" style={{whiteSpace: 'break-spaces'}} value="">
       {placeholder}
     </option>}
     {options.map(field =>
       <option
         key={field.key}
-        selected={selectedSet.has(field.key)}
         value={field.key}>
         {field.title}
       </option>
