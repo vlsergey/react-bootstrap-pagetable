@@ -21,8 +21,8 @@ import ItemModel from './ItemModel';
 import PageIndexSelector from './controlled/PageIndexSelector';
 import PageSizeSelector from './controlled/PageSizeSelector';
 import springDataRestResponseToPage from './springDataRestResponseToPage';
-import useVisibleFields from './controlled/useVisibleFields';
-import VisibleFieldsSettings from './controlled/VisibleFieldsSettings';
+import useVisibleFields from './controlled/visibleFields/useVisibleFields';
+import VisibleFieldsButton from './controlled/visibleFields/VisibleFieldsButton';
 import withActions from './actions/withActions';
 import withFetchArgsInState from './withFetchArgsInState';
 import withFilterable from './filterable/withFilterable';
@@ -68,7 +68,7 @@ export {
   ControlledContext, ControlledContextType, useControlledContext, useVisibleFields,
   DefaultFooter, DefaultHeader,
   ItemFieldCellRendererPropsType, DefaultItemFieldCellRenderer, DefaultItemFieldCellRendererPropsType,
-  DefaultRowsRenderer, PageIndexSelector, PageSizeSelector, VisibleFieldsSettings,
+  DefaultRowsRenderer, PageIndexSelector, PageSizeSelector, VisibleFieldsButton,
 };
 
 // Main mixins (what user is advised to use)

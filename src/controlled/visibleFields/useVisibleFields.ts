@@ -1,5 +1,5 @@
-import FieldModel from '../FieldModel';
-import {useControlledContext} from './ControlledContext';
+import FieldModel from '../../FieldModel';
+import {useControlledContext} from '../ControlledContext';
 import {useMemo} from 'react';
 
 export default function useVisibleFields<T> (): FieldModel<T, unknown>[] {

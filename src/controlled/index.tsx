@@ -13,19 +13,19 @@ import PageSizeSelector from './PageSizeSelector';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import React from 'react';
 import Table from 'react-bootstrap/Table';
-import useStateOfVisibleFields from './useStateOfVisibleFields';
-import useVisibleFields from './useVisibleFields';
-import VisibleFieldsSettings from './VisibleFieldsSettings';
+import useStateOfVisibleFields from './visibleFields/useStateOfVisibleFields';
+import useVisibleFields from './visibleFields/useVisibleFields';
+import VisibleFieldsButton from './visibleFields/VisibleFieldsButton';
 
 export default function ControlledBase<T> ({
   columnHeaderCell = DefaultColumnHeaderCell,
   columnHeaderRow = DefaultColumnHeaderRow,
   disableVisibleFieldsChange = false,
   footer,
-  footerElements = [ [ VisibleFieldsSettings, PageIndexSelector ], [], [ PageSizeSelector ] ],
+  footerElements = [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ],
   footerRenderer = DefaultFooter,
   hasError = false,
-  headerElements = [ [ VisibleFieldsSettings, PageIndexSelector ], [], [ PageSizeSelector ] ],
+  headerElements = [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ],
   headerRenderer = DefaultHeader,
   idPrefix,
   itemFieldCellRenderer = DefaultItemFieldCellRenderer,

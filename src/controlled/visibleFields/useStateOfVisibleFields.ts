@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useState} from 'react';
-import FieldModel from '../FieldModel';
-import ItemModel from '../ItemModel';
+import FieldModel from '../../FieldModel';
+import ItemModel from '../../ItemModel';
 
 type ResultType = [
   string[],

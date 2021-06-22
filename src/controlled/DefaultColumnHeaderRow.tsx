@@ -1,7 +1,7 @@
 import FieldModel from '../FieldModel';
 import React from 'react';
 import {useControlledContext} from './ControlledContext';
-import useVisibleFields from './useVisibleFields';
+import useVisibleFields from './visibleFields/useVisibleFields';
 
 function DefaultColumnHeaderRow<T> (): JSX.Element {
   const {columnHeaderCell} = useControlledContext();

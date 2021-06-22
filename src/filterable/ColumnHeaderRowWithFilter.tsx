@@ -3,7 +3,7 @@ import DefaultColumnHeaderRow from '../controlled/DefaultColumnHeaderRow';
 import FieldFilterCell from './FieldFilterCell';
 import FieldModel from '../FieldModel';
 import React from 'react';
-import useVisibleFields from '../controlled/useVisibleFields';
+import useVisibleFields from '../controlled/visibleFields/useVisibleFields';
 
 const ColumnHeaderRowWithFilterImpl = (
   {columnHeaderRow}: Pick<ControlledPropsType<unknown>, 'columnHeaderRow'>

@@ -1,7 +1,7 @@
 import FieldModel from '../FieldModel';
 import React from 'react';
 import {useControlledContext} from './ControlledContext';
-import useVisibleFields from './useVisibleFields';
+import useVisibleFields from './visibleFields/useVisibleFields';
 
 function DefaultRowsRenderer<T> (): JSX.Element {
   const {itemFieldCellRenderer, itemModel, page, rowProps} = useControlledContext();

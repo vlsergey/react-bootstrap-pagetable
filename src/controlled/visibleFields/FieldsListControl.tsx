@@ -1,0 +1,45 @@
+import React, {useCallback, useMemo} from 'react';
+import FieldModel from '../../FieldModel';
+import Form from 'react-bootstrap/Form';
+
+interface PropsType {
+  options: FieldModel<unknown, unknown>[];
+  placeholder: string;
+  selected: string[];
+  onSelectedChange: (selected: string[]) => unknown;
+}
+
+const FieldsListControl = ({
+  onSelectedChange,
+  options,
+  placeholder,
+  selected,
+}: PropsType) => {
+
+  const handleSelectChange = useCallback(({currentTarget}: React.ChangeEvent<HTMLSelectElement>) =>
+    onSelectedChange([ ...(currentTarget.options as unknown as []) ]
+      .filter(({selected}) => selected).map(({value}) => value)), [ onSelectedChange ]);
+
+  const selectedSet: Set<string> = useMemo(() => new Set(selected), [ selected ]);
+
+  return <Form.Control
+    as="select"
+    htmlSize={10}
+    multiple
+    onChange={handleSelectChange}
+    style={{height: options.length === 0 ? '15em' : undefined}}>
+    {options.length === 0 && <option disabled key="" style={{whiteSpace: 'break-spaces'}} value="">
+      {placeholder}
+    </option>}
+    {options.map(field =>
+      <option
+        key={field.key}
+        selected={selectedSet.has(field.key)}
+        value={field.key}>
+        {field.title}
+      </option>
+    )}
+  </Form.Control>;
+};
+
+export default React.memo(FieldsListControl);
