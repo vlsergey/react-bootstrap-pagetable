@@ -21,11 +21,10 @@ export default function ControlledBase<T> ({
   columnHeaderCell = DefaultColumnHeaderCell,
   columnHeaderRow = DefaultColumnHeaderRow,
   disableVisibleFieldsChange = false,
-  footer,
-  footerElements = [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ],
+  footerElements = [ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ],
   footerRenderer = DefaultFooter,
   hasError = false,
-  headerElements = [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ],
+  headerElements = [ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ],
   headerRenderer = DefaultHeader,
   idPrefix,
   itemFieldCellRenderer = DefaultItemFieldCellRenderer,
@@ -48,7 +47,6 @@ export default function ControlledBase<T> ({
 
   const [ visibleFields, onVisibleFieldsChange ] =
     useStateOfVisibleFields(disableVisibleFieldsChange, idPrefix, itemModel);
-  const fieldsCount: number = visibleFields.length;
 
   // memoize?
   const actualTableProps: Record<string, unknown> = {
@@ -62,7 +60,6 @@ export default function ControlledBase<T> ({
     columnHeaderCell,
     columnHeaderRow,
     disableVisibleFieldsChange,
-    footer,
     footerElements,
     footerRenderer,
     hasError,
@@ -92,9 +89,6 @@ export default function ControlledBase<T> ({
         { !loading && !hasError && page.content.length == 0 && React.createElement(noContentRow) }
         {React.createElement(rowsRenderer)}
       </tbody>
-      <tfoot>
-        {footer && footer(fieldsCount)}
-      </tfoot>
     </Table>
     {React.createElement(footerRenderer)}
   </ControlledContext.Provider>;
@@ -120,4 +114,9 @@ const TableHead = () => {
       </td>
     </tr> }
   </thead>;
+};
+
+ControlledBase.defaultProps = {
+  footerElements: [ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ],
+  headerElements: [ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ],
 };

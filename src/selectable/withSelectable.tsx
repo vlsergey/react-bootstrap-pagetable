@@ -17,47 +17,49 @@ const renderCheckboxField = ({value}: ValueRendererProps<unknown, boolean>) =>
   <Form.Check checked={value} readOnly type="checkbox" />;
 
 export default
-  <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>) =>
-  function WithSelectable ({
-    itemModel,
-    page,
-    selectable,
-    onSelectedIdsChange,
-    selectedIds,
-    ...etcProps
-  }: NewComponentProps & P): JSX.Element {
-    const idF = useMemo(() => itemModel.idF, [ itemModel ]);
-    const selectedIdsSet = useMemo(() => new Set(selectedIds), [ selectedIds ]);
+  <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>):
+  ((props: NewComponentProps & P) => JSX.Element) => {
 
-    const handleTrigger = useCallback((item: T): unknown => {
-      const itemKey: string = idF(item);
+    const WithSelectable = ({
+      itemModel,
+      page,
+      selectable,
+      onSelectedIdsChange,
+      selectedIds,
+      ...etcProps
+    }: NewComponentProps & P): JSX.Element => {
+      const idF = useMemo(() => itemModel.idF, [ itemModel ]);
+      const selectedIdsSet = useMemo(() => new Set(selectedIds), [ selectedIds ]);
 
-      const index = selectedIds.indexOf(itemKey);
-      if (index === -1) {
-        const newSelectedIds: string[] = [ ...selectedIds, itemKey ];
-        return onSelectedIdsChange(newSelectedIds);
-      }
+      const handleTrigger = useCallback((item: T): unknown => {
+        const itemKey: string = idF(item);
 
-      const spliced = [ ...selectedIds ];
-      spliced.splice(index, 1);
-      return onSelectedIdsChange(spliced);
-    }, [ idF, onSelectedIdsChange, selectedIds ]);
+        const index = selectedIds.indexOf(itemKey);
+        if (index === -1) {
+          const newSelectedIds: string[] = [ ...selectedIds, itemKey ];
+          return onSelectedIdsChange(newSelectedIds);
+        }
 
-    const rowProps = useCallback((item: T): Record<string, unknown> => ({
-      onClick: () => handleTrigger(item),
-      style: {cursor: 'pointer'},
-    }), [ handleTrigger ]);
+        const spliced = [ ...selectedIds ];
+        spliced.splice(index, 1);
+        return onSelectedIdsChange(spliced);
+      }, [ idF, onSelectedIdsChange, selectedIds ]);
 
-    const selectableFieldGetter = useCallback((item: T): boolean =>
-      selectedIdsSet.has(idF(item)),
-    [ idF, selectedIdsSet ]);
+      const rowProps = useCallback((item: T): Record<string, unknown> => ({
+        onClick: () => handleTrigger(item),
+        style: {cursor: 'pointer'},
+      }), [ handleTrigger ]);
 
-    const selectAllProps = useSelectAllCheckbox(page.content, idF,
-      onSelectedIdsChange, selectedIdsSet);
+      const selectableFieldGetter = useCallback((item: T): boolean =>
+        selectedIdsSet.has(idF(item)),
+      [ idF, selectedIdsSet ]);
 
-    const newItemModel: ItemModel<T> = useMemo(() => ({
-      ...itemModel,
-      fields: [
+      const selectAllProps = useSelectAllCheckbox(page.content, idF,
+        onSelectedIdsChange, selectedIdsSet);
+
+      const newItemModel: ItemModel<T> = useMemo(() => ({
+        ...itemModel,
+        fields: [
           {
             key: '$selectable',
             getter: selectableFieldGetter,
@@ -66,19 +68,22 @@ export default
             ...selectAllProps,
           } as FieldModel<T, boolean>,
           ...itemModel.fields,
-      ]
-    }), [ selectAllProps, itemModel, selectableFieldGetter ]);
+        ]
+      }), [ selectAllProps, itemModel, selectableFieldGetter ]);
 
-    if (!selectable) {
+      if (!selectable) {
+        return <Child
+          {...etcProps as unknown as P}
+          itemModel={itemModel}
+          page={page} />;
+      }
+
       return <Child
         {...etcProps as unknown as P}
-        itemModel={itemModel}
-        page={page} />;
-    }
-
-    return <Child
-      {...etcProps as unknown as P}
-      itemModel={newItemModel}
-      page={page}
-      rowProps={rowProps} />;
+        itemModel={newItemModel}
+        page={page}
+        rowProps={rowProps} />;
+    };
+    WithSelectable.defaultProps = Child.defaultProps;
+    return WithSelectable;
   };

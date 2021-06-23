@@ -9,6 +9,8 @@ const withSortable = <T, P extends RequiredChildComponentProps<T>>(Child: React.
 React.ComponentType<Omit<P, 'columnHeaderCell'>> =>
     class WithSortable extends PureComponent<Omit<P, 'columnHeaderCell'>> {
 
+      static defaultProps = Child.defaultProps;
+
       override render (): ReactNode {
         const {fetchArgs, itemModel, onFetchArgsChange, ...etcProps} = this.props;
 

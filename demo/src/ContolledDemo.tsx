@@ -12,7 +12,9 @@ const NOOP = (): unknown => undefined;
 
 export default function ContolledDemo (): JSX.Element {
 
-  const [ addAction, addActionFormElement ] = useBooleanOption('addAction', 'Include simple action (\'alert the ID\')');
+  const [ addAction, addActionFormElement ] = useBooleanOption('addAction', 'Include simple action');
+  const [ disableVisibleFieldsChange, disableVisibleFieldsChangeFormElement ] =
+    useBooleanOption('disableVisibleFieldsChange', <>Set <code>disableVisibleFieldsChange</code> flag</>);
   const [ hasError, hasErrorFormElement ] = useBooleanOption('hasError', <>Set <code>hasError</code> flag</>);
   const [ loading, loadingFormElement ] = useBooleanOption('loading', <>Set <code>loading</code> flag</>);
   const [ selectable, selectableFormElement ] = useBooleanOption('selectable', <>Set <code>selectable</code> flag</>);
@@ -30,6 +32,7 @@ export default function ContolledDemo (): JSX.Element {
 
   const pageTable = <ControlledPageTable
     actions={actions}
+    disableVisibleFieldsChange={disableVisibleFieldsChange}
     error={null}
     fetchArgs={{size: 10, page: 0}}
     hasError={hasError}
@@ -45,6 +48,7 @@ export default function ContolledDemo (): JSX.Element {
     <h2>Options</h2>
     <Form>
       {addActionFormElement}
+      {disableVisibleFieldsChangeFormElement}
       {hasErrorFormElement}
       {loadingFormElement}
       {selectableFormElement}

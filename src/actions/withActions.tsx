@@ -1,13 +1,13 @@
 import React, {PureComponent, ReactNode} from 'react';
 import Action from './Action';
+import ActionsContext from './ActionsContext';
+import ActionsToolbar from './ActionsToolbar';
 import ControlledPropsType from '../controlled/ControlledPropsType';
-import ItemModel from '../ItemModel';
 import {NewComponentProps as SelectablePropsType} from '../selectable/withSelectable';
-import Toolbar from './Toolbar';
 
 export type RequiredChildComponentProps<T> =
   Pick<SelectablePropsType, 'onSelectedIdsChange' | 'selectable' | 'selectedIds'> &
-  Pick<ControlledPropsType<T>, 'footer' | 'itemModel' | 'page' | 'size'>;
+  Pick<ControlledPropsType<T>, 'footerElements' | 'headerElements' | 'itemModel' | 'page' | 'size'>;
 
 export interface NewComponentProps<T> {
   actions?: Action<T>[];
@@ -22,18 +22,11 @@ export type StateType = {
   selectedIds: string[];
 };
 
-function filterItemsByIdsImpl<T> (
-    itemModel: ItemModel<T>,
-    items: T[],
-    ids: string[]): T[] {
-  const item2Id: (item: T) => string = itemModel.idF;
-  const idsSet: Set< string > = new Set(ids);
-  return items.filter(item => idsSet.has(item2Id(item)));
-}
-
 const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>):
 React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>> =>
     class WithActions extends PureComponent<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>, StateType> {
+
+  static defaultProps = Child.defaultProps;
 
   override state = {
     selectedIds: [] as string[],
@@ -58,42 +51,37 @@ React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'sele
   };
 
   override render (): ReactNode {
-    const {actions, selectable, ...etcProps} = this.props;
+    const {actions, buttonProps, footerElements, onAfterAction,
+      onRefreshRequired, selectable, ...etcProps} = this.props;
     const {selectedIds} = this.state;
 
-    if (!actions || actions.length === 0) {
-      return <Child
-        {...etcProps as unknown as P}
-        onSelectedIdsChange={this.handleSelectedIdsChange}
-        selectable={selectable}
-        selectedIds={selectedIds} />;
-    }
+    return <ActionsContext.Provider value={{
+      actions,
+      buttonProps,
+      onAfterAction,
+      onRefreshRequired,
+      selectedIds,
+    }}>
+      {!actions || actions.length === 0
+        ? <Child
+          {...etcProps as unknown as P}
+          footerElements={footerElements}
+          onSelectedIdsChange={this.handleSelectedIdsChange}
+          selectable={selectable}
+          selectedIds={selectedIds} />
 
-    return <Child
-      {...etcProps as unknown as P}
-      footer={this.renderFooter}
-      onSelectedIdsChange={this.handleSelectedIdsChange}
-      selectable
-      selectedIds={selectedIds} />;
+        : <Child
+          {...etcProps as unknown as P}
+          footerElements={[
+            ...footerElements || [],
+            [ [ ActionsToolbar ] ],
+          ]}
+          onSelectedIdsChange={this.handleSelectedIdsChange}
+          selectable
+          selectedIds={selectedIds} />
+      }</ActionsContext.Provider>;
   }
 
-  renderFooter = (tableColumnsCount: number): ReactNode => {
-    const {actions, footer, itemModel, page, size} = this.props;
-    const {selectedIds} = this.state;
-
-    return <>
-      <tr>
-        <td colSpan={tableColumnsCount}>
-          <Toolbar
-            actions={actions}
-            onAfterAction={this.handleAfterAction}
-            selectedItems={filterItemsByIdsImpl(itemModel, page.content, selectedIds)}
-            size={size} />
-        </td>
-      </tr>
-      {footer && footer(tableColumnsCount)}
-    </>;
-  };
     };
 
 export default withActions;

@@ -9,8 +9,8 @@ export interface ControlledContextType<T>
 
   // mark all props as required
   columnHeaderCell: (props: ColumnHeaderCellPropsType) => JSX.Element;
-  footerElements: ((props: unknown) => JSX.Element)[][];
-  headerElements: ((props: unknown) => JSX.Element)[][];
+  footerElements: ((props: unknown) => JSX.Element)[][][];
+  headerElements: ((props: unknown) => JSX.Element)[][][];
   noContentRow: (props: unknown) => JSX.Element;
 
   // additional context props

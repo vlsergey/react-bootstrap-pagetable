@@ -11,14 +11,13 @@ interface ControlledPropsType<T> {
   disableVisibleFieldsChange?: boolean;
   error?: unknown & {message?: string};
   fetchArgs: FetchArgs;
-  footer?: (tableColumnsCount: number) => JSX.Element;
-  footerElements?: ((props: unknown) => JSX.Element)[][];
+  footerElements?: ((props: unknown) => JSX.Element)[][][];
   footerRenderer?: (props: unknown) => JSX.Element;
   idPrefix?: string;
   itemModel: ItemModel<T>;
   itemFieldCellRenderer?: (props: ItemFieldCellRendererPropsType<T, unknown>) => JSX.Element;
   hasError?: boolean;
-  headerElements?: ((props: unknown) => JSX.Element)[][];
+  headerElements?: ((props: unknown) => JSX.Element)[][][];
   headerRenderer?: (props: unknown) => JSX.Element;
   loading?: boolean;
   noContentRow?: (props: unknown) => JSX.Element;

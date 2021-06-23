@@ -9,6 +9,8 @@ const withFilterable = <T, P extends RequiredChildComponentProps<T>>(Child: Reac
 React.ComponentType<P> =>
     class WithFilterable extends PureComponent<P> {
 
+      static defaultProps = Child.defaultProps;
+
       BindedColumnHeaderRowWithFilter = (): JSX.Element =>
         <ColumnHeaderRowWithFilter columnHeaderRow={this.props.columnHeaderRow} />;
 
