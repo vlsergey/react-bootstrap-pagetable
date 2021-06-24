@@ -1,4 +1,5 @@
 import {useCallback, useMemo, useState} from 'react';
+import calcFieldsOrderWithNewOnes from './calcFieldsOrderWithNewOnes';
 import FieldModel from '../../FieldModel';
 import ItemModel from '../../ItemModel';
 
@@ -46,12 +47,12 @@ function useLocalStorage (
   return [ valuesReact, setValues ];
 }
 
+
 export default function useStateOfVisibleFields (
     disableVisibleFieldsChange: boolean,
     idPrefix: string,
     itemModel: ItemModel<unknown>
 ): ResultType {
-
   const defaultKeysOrder: string[] = useMemo(() => itemModel
     .fields
     .filter(({hiddenByDefault}: FieldModel<unknown, unknown>) => !hiddenByDefault)
@@ -62,27 +63,9 @@ export default function useStateOfVisibleFields (
   const [ hidden, setHidden ] = useLocalStorage(idPrefix, 'hidden', defaultHidden);
   const [ order, setOrder ] = useLocalStorage(idPrefix, 'order', defaultKeysOrder);
 
-  const visibleFields = useMemo(() => {
-    const result = order.filter((key: string) => !hidden.includes(key));
-    const invisibleBecauseNotInConfig =
-      defaultKeysOrder.filter(key => !order.includes(key) && !hidden.includes(key));
-
-    // need to include invisible-because-unknown-before fields into result
-    invisibleBecauseNotInConfig.forEach(fieldKey => {
-      const insertAfterIndex: number = defaultKeysOrder.indexOf(fieldKey);
-      while (insertAfterIndex > 0) {
-        const fieldKeyAtIndex = defaultKeysOrder[ insertAfterIndex ];
-        const currentIndex = result.indexOf(fieldKeyAtIndex);
-        if (currentIndex !== -1) {
-          result.splice(currentIndex + 1, 0, fieldKey);
-          return;
-        }
-      }
-      result.splice(0, 0, fieldKey);
-    });
-
-    return result;
-  }, [ defaultKeysOrder, order, hidden ]);
+  const visibleFields = useMemo(() =>
+    calcFieldsOrderWithNewOnes(defaultKeysOrder, order, hidden)
+  , [ defaultKeysOrder, order, hidden ]);
 
   const setVisibleFields = useCallback((newVisibleFields: string[]) => {
     const newHiddenFields = defaultKeysOrder.filter(key => !newVisibleFields.includes(key));

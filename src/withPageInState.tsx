@@ -95,7 +95,7 @@ const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: Rea
   };
 
   scheduleRefreshNow = (reason: FetchReason): unknown =>
-    setTimeout(() => void this.refresh(reason), 0);
+    setTimeout((): void => void this.refresh(reason), 0);
 
   override render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch|onFetchArgsChange" }] */
