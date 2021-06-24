@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import {css, jsx} from '@emotion/react';
+import DivHideIfEmpty from './DivHideIfEmpty';
 import React from 'react';
 import {useControlledContext} from './ControlledContext';
 
@@ -8,7 +9,7 @@ interface PropsType {
 }
 
 const DefaultHeaderFooter = ({elements}: PropsType): JSX.Element =>
-  <div css={css(`& > div {
+  <DivHideIfEmpty css={css(`& > div {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
@@ -24,6 +25,12 @@ const DefaultHeaderFooter = ({elements}: PropsType): JSX.Element =>
     padding-left: .5em;
     padding-right: .5em;
   }
+  & > div:empty {
+    display: none;
+  }
+  & > div > div:empty {
+    display: none;
+  }
   & > div > div > div:empty {
     display: none;
   }
@@ -33,14 +40,14 @@ const DefaultHeaderFooter = ({elements}: PropsType): JSX.Element =>
   & > div > div > div:last-child {
     padding-right: 0;
   }
-  `)}>{ elements.map((line, index1) => <div key={index1}>
-      { line.map((column, columnIndex) => <div key={columnIndex}>
+  `)}>{ elements.map((line, index1) => <DivHideIfEmpty key={index1}>
+      { line.map((column, columnIndex) => <DivHideIfEmpty key={columnIndex}>
         { column.map((child, index) =>
-          <div key={index}>{React.createElement(child)}</div>)
+          <DivHideIfEmpty key={index}>{React.createElement(child)}</DivHideIfEmpty>)
         }
-      </div>) }
-    </div>) }
-  </div>;
+      </DivHideIfEmpty>) }
+    </DivHideIfEmpty>) }
+  </DivHideIfEmpty>;
 
 export const DefaultHeader = (): JSX.Element => {
   const {headerElements} = useControlledContext();

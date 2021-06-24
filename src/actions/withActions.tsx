@@ -26,7 +26,13 @@ const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.C
 React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>> =>
     class WithActions extends PureComponent<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>, StateType> {
 
-  static defaultProps = Child.defaultProps;
+  static defaultProps = {
+    ...Child.defaultProps,
+    footerElements: [
+      ...Child.defaultProps.footerElements,
+      [ [ ActionsToolbar ] ],
+    ],
+  };
 
   override state = {
     selectedIds: [] as string[],
@@ -51,8 +57,8 @@ React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'sele
   };
 
   override render (): ReactNode {
-    const {actions, buttonProps, footerElements, onAfterAction,
-      onRefreshRequired, selectable, ...etcProps} = this.props;
+    const {actions, buttonProps, onAfterAction, onRefreshRequired,
+      selectable, ...etcProps} = this.props;
     const {selectedIds} = this.state;
 
     return <ActionsContext.Provider value={{
@@ -62,24 +68,12 @@ React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'sele
       onRefreshRequired,
       selectedIds,
     }}>
-      {!actions || actions.length === 0
-        ? <Child
-          {...etcProps as unknown as P}
-          footerElements={footerElements}
-          onSelectedIdsChange={this.handleSelectedIdsChange}
-          selectable={selectable}
-          selectedIds={selectedIds} />
-
-        : <Child
-          {...etcProps as unknown as P}
-          footerElements={[
-            ...footerElements || [],
-            [ [ ActionsToolbar ] ],
-          ]}
-          onSelectedIdsChange={this.handleSelectedIdsChange}
-          selectable
-          selectedIds={selectedIds} />
-      }</ActionsContext.Provider>;
+      <Child
+        {...etcProps as unknown as P}
+        onSelectedIdsChange={this.handleSelectedIdsChange}
+        selectable={selectable}
+        selectedIds={selectedIds} />
+    </ActionsContext.Provider>;
   }
 
     };

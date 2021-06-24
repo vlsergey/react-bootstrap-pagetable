@@ -28,6 +28,10 @@ function ActionsToolbar<T> (): JSX.Element {
     }
   }, [ onAfterAction, onRefreshRequired ]);
 
+  if (!actions) {
+    return null;
+  }
+
   return <Toolbar
     actions={actions}
     onAfterAction={handleAfterAction}
