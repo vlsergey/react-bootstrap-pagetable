@@ -8,6 +8,7 @@ import FieldModel, {FilterCellRendererProps, FilterValueConverter,
   ValueGetter, ValueRendererProps} from './FieldModel';
 import Page, {emptyPage, singlePage} from './Page';
 import Action from './actions/Action';
+import ActionsToolbar from './actions/ActionsToolbar';
 import ControlledBase from './controlled';
 import DefaultRowsRenderer from './controlled/DefaultRowsRenderer';
 import FetchArgs from './FetchArgs';
@@ -66,9 +67,12 @@ export {
 
   // customization
   ControlledContext, ControlledContextType, useControlledContext, useVisibleFields,
-  DefaultFooter, DefaultHeader,
   ItemFieldCellRendererPropsType, DefaultItemFieldCellRenderer, DefaultItemFieldCellRendererPropsType,
-  DefaultRowsRenderer, PageIndexSelector, PageSizeSelector, VisibleFieldsButton,
+  DefaultRowsRenderer,
+
+  // header-footer customization
+  DefaultFooter, DefaultHeader,
+  ActionsToolbar, PageIndexSelector, PageSizeSelector, VisibleFieldsButton,
 };
 
 // Main mixins (what user is advised to use)
