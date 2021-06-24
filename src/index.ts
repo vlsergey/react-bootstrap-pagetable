@@ -8,6 +8,7 @@ import FieldModel, {FilterCellRendererProps, FilterValueConverter,
   ValueGetter, ValueRendererProps} from './FieldModel';
 import Page, {emptyPage, singlePage} from './Page';
 import Action from './actions/Action';
+import ActionButtonPropsType from './actions/ActionButtonPropsType';
 import ActionsToolbar from './actions/ActionsToolbar';
 import ControlledBase from './controlled';
 import DefaultRowsRenderer from './controlled/DefaultRowsRenderer';
@@ -35,6 +36,7 @@ import withSortable from './sortable';
 export {
   // API interfaces and models
   Action,
+  ActionButtonPropsType,
   FetchArgs,
   FilterCellRendererProps,
   FilterValueConverter,

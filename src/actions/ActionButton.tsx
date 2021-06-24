@@ -1,36 +1,36 @@
-import Button, {PropsType as ButtonPropsType}
-  from '@vlsergey/react-bootstrap-button-with-spinner';
-import React, {PureComponent, ReactNode} from 'react';
+import React, {useCallback} from 'react';
 import Action from './Action';
+import Button from '@vlsergey/react-bootstrap-button-with-spinner';
+import {ButtonProps} from 'react-bootstrap/Button';
 
-export interface PropsType<T> extends ButtonPropsType {
+export interface PropsType<T> {
   action: Action<T>;
   disabled: boolean;
-  onAction: (action: Action<T>) => unknown;
-  onClick?: (event: React.MouseEvent<HTMLElement>) => unknown;
+  onAction: (action: Action<T>, ...etc: unknown[]) => unknown;
+  size: ButtonProps['size'];
 }
 
-export default class ActionButton<T> extends PureComponent<PropsType<T>> {
+function ActionButton<T> ({
+  action,
+  disabled,
+  onAction,
+  size,
+  ...etcProps
+}: PropsType<T>) {
 
-  handleClick = async (event: React.MouseEvent<HTMLElement>): Promise<unknown> => {
-    const {action, onAction, onClick} = this.props;
-    if (onClick) {
-      await onClick(event);
-    }
-    return onAction(action);
-  };
+  const handleClick = useCallback((...etc: unknown[]) => onAction(action, ...etc), [ action, onAction ]);
 
-  override render (): ReactNode {
-    /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "onAction|onClick" }] */
-    const {action, onAction, disabled, onClick, ...etcProps} = this.props;
+  const ActionButtonComponent = action.buttonComponent || Button;
 
-    return <Button
-      className={'mr-2'}
-      disabled={disabled}
-      onClick={this.handleClick}
-      variant={action.variant}
-      {...etcProps}>
-      {action.title}
-    </Button>;
-  }
+  return <ActionButtonComponent
+    className={'mr-2'}
+    disabled={disabled}
+    onClick={handleClick}
+    size={size}
+    variant={action.variant}
+    {...etcProps}>
+    {action.title}
+  </ActionButtonComponent>;
 }
+
+export default React.memo(ActionButton);

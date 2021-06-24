@@ -25,10 +25,10 @@ export default class Toolbar<T> extends PureComponent<PropsType<T>> {
     onAfterAction: (): void => { /* NOOP */ },
   };
 
-  handleAction = async (action: Action<T>): Promise< unknown > => {
+  handleAction = async (action: Action<T>, ...etc: unknown[]): Promise< unknown > => {
     const {onAfterAction, selectedItems} = this.props;
     try {
-      return await action.onAction(selectedItems);
+      return await action.onAction(selectedItems, ...etc);
     } finally {
       if (onAfterAction) {
         await onAfterAction(action, selectedItems);

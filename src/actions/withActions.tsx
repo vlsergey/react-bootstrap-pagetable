@@ -71,7 +71,7 @@ React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'sele
       <Child
         {...etcProps as unknown as P}
         onSelectedIdsChange={this.handleSelectedIdsChange}
-        selectable={selectable}
+        selectable={selectable || !!actions}
         selectedIds={selectedIds} />
     </ActionsContext.Provider>;
   }
