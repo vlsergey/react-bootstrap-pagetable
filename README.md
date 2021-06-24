@@ -183,6 +183,20 @@ interface Page<T> {
 Provides a way to get items to display. User shall not think about bouncing/scheduling/etc,
 just provide data fetch implementation. `page` field is 0-based.
 
+### Header and footer customization
+First of all there are `headerRenderer` and `footerRenderer` props of `PageTable` that allow to override header and footer rendering completely. Default implementation uses ControlledContext (and yours can too) to get access to controllable component props (such as current page and others).
+
+Additionally there is `headerElements` and `footerElements` props that allows to pass array of elements to be drawn in header and footer. This is array of lines, line is array of columns, column is array of component classes (functions) that shall be rendered in header and footer. Default values are:
+* For header: `[ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ]`
+* For footer: `[ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ], [ [ ActionsToolbar ] ] ]`
+
+Parts of header and footer are exported as:
+* `DefaultFooter` and `DefaultHeader` -- default implementation of header and footer
+* `ActionsToolbar` -- action buttons toolbar (button toolbar)
+* `PageIndexSelector` -- pagination control
+* `PageSizeSelector` -- page size select control
+* `VisibleFieldsButton` -- button to show visible fields dialog
+
 ### Utility functions
 
 #### fetchFromArray
