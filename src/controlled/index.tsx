@@ -21,10 +21,10 @@ export default function ControlledBase<T> ({
   columnHeaderCell = DefaultColumnHeaderCell,
   columnHeaderRow = DefaultColumnHeaderRow,
   disableVisibleFieldsChange = false,
-  footerElements = [ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ],
+  footerElements,
   footerRenderer = DefaultFooter,
   hasError = false,
-  headerElements = [ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ],
+  headerElements,
   headerRenderer = DefaultHeader,
   idPrefix,
   itemFieldCellRenderer = DefaultItemFieldCellRenderer,
@@ -117,6 +117,6 @@ const TableHead = () => {
 };
 
 ControlledBase.defaultProps = {
-  footerElements: [ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ],
-  headerElements: [ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ],
+  footerElements: [ [ [ VisibleFieldsButton, PageIndexSelector ], [ PageSizeSelector ] ] ],
+  headerElements: [ [ [ VisibleFieldsButton, PageIndexSelector ], [ PageSizeSelector ] ] ],
 };

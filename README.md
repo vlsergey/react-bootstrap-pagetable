@@ -187,8 +187,8 @@ just provide data fetch implementation. `page` field is 0-based.
 First of all there are `headerRenderer` and `footerRenderer` props of `PageTable` that allow to override header and footer rendering completely. Default implementation uses ControlledContext (and yours can too) to get access to controllable component props (such as current page and others).
 
 Additionally there is `headerElements` and `footerElements` props that allows to pass array of elements to be drawn in header and footer. This is array of lines, line is array of columns, column is array of component classes (functions) that shall be rendered in header and footer. Default values are:
-* For header: `[ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ] ]`
-* For footer: `[ [ [ VisibleFieldsButton, PageIndexSelector ], [], [ PageSizeSelector ] ], [ [ ActionsToolbar ] ] ]`
+* For header: `[ [ [ VisibleFieldsButton, PageIndexSelector ], [ PageSizeSelector ] ] ]`
+* For footer: `[ [ [ VisibleFieldsButton, PageIndexSelector ], [ PageSizeSelector ] ], [ [ ActionsToolbar ] ] ]`
 
 Parts of header and footer are exported as:
 * `DefaultFooter` and `DefaultHeader` -- default implementation of header and footer
