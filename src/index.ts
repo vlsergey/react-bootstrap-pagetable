@@ -7,6 +7,7 @@ import DefaultItemFieldCellRenderer,
 import FieldModel, {FilterCellRendererProps, FilterValueConverter,
   ValueGetter, ValueRendererProps} from './FieldModel';
 import Page, {emptyPage, singlePage} from './Page';
+import withPageInState, {FetchReason} from './withPageInState';
 import Action from './actions/Action';
 import ActionButtonPropsType from './actions/ActionButtonPropsType';
 import ActionsToolbar from './actions/ActionsToolbar';
@@ -28,7 +29,6 @@ import VisibleFieldsButton from './controlled/visibleFields/VisibleFieldsButton'
 import withActions from './actions/withActions';
 import withFetchArgsInState from './withFetchArgsInState';
 import withFilterable from './filterable/withFilterable';
-import withPageInState from './withPageInState';
 import withReactRouter from './reactRouter/withReactRouter';
 import withSelectable from './selectable/withSelectable';
 import withSortable from './sortable';
@@ -38,6 +38,7 @@ export {
   Action,
   ActionButtonPropsType,
   FetchArgs,
+  FetchReason,
   FilterCellRendererProps,
   FilterValueConverter,
   FieldModel,

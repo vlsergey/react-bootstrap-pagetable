@@ -147,7 +147,7 @@ const itemModel = {
 ### fetch()
 
 ```TypeScript
-fetch: ( fetchArgs: FetchArgs, fetchOptions: FetchOptions ) => Promise<Page<T>>
+fetch: ( fetchArgs: FetchArgs, fetchOptions: FetchOptions, fetchReason: FetchReason ) => Promise<Page<T>>
 
 interface FetchArgs {
   /** 0-based page to fetch */
@@ -167,6 +167,12 @@ interface FetchArgs {
 interface FetchOptions {
   // value of new AbortController().signal to pass to fetch
   signal?: AbortSignal,
+}
+
+export enum FetchReason {
+  FIRST_TIME_FETCH,
+  FETCH_ARGS_CHANGE,
+  REFRESH_REQUIRED,
 }
 
 /**

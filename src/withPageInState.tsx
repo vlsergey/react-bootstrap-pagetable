@@ -9,11 +9,17 @@ export type RequiredChildComponentProps<T> =
   Pick<WithActionsPropsType<T>, 'onRefreshRequired'>;
 
 export interface NewComponentProps<T> {
-  fetch: (fetchArgs: FetchArgs, fetchOptions: FetchOptions) => Promise<Page<T>> | Page<T>;
+  fetch: (fetchArgs: FetchArgs, fetchOptions: FetchOptions, reason: FetchReason) => Promise<Page<T>> | Page<T>;
 }
 
 export interface FetchOptions {
   signal?: AbortSignal;
+}
+
+export enum FetchReason {
+  FIRST_TIME_FETCH,
+  FETCH_ARGS_CHANGE,
+  REFRESH_REQUIRED
 }
 
 type StateType<T> = Pick<ControlledPropsType<T>,
@@ -36,22 +42,22 @@ const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: Rea
   };
 
   override componentDidMount (): void {
-    void this.refresh();
+    void this.refresh(FetchReason.FIRST_TIME_FETCH);
   }
 
   override componentDidUpdate (prevProps: {fetchArgs: FetchArgs}) {
     if (this.props.fetchArgs !== prevProps.fetchArgs) {
-      this.scheduleRefreshNow();
+      this.scheduleRefreshNow(FetchReason.FETCH_ARGS_CHANGE);
     }
   }
 
   handleRefreshRequired = (): void => {
-    this.scheduleRefreshNow();
+    this.scheduleRefreshNow(FetchReason.REFRESH_REQUIRED);
   };
 
-  refresh = async (): Promise<void> => {
+  refresh = async (fetchReason: FetchReason): Promise<void> => {
     const {fetch, fetchArgs} = this.props;
-    if (fetchArgs === this.prevFetchArgs) {
+    if (fetchArgs === this.prevFetchArgs && fetchReason !== FetchReason.REFRESH_REQUIRED) {
       return;
     }
 
@@ -74,7 +80,7 @@ const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: Rea
       const newAbortController = this.prevAbortController = window.AbortController ? new AbortController() : null;
 
       const fetchOptions: FetchOptions = newAbortController != null ? {signal: newAbortController.signal} : {};
-      const page: Page<T> = await fetch(fetchArgs, fetchOptions);
+      const page: Page<T> = await fetch(fetchArgs, fetchOptions, fetchReason);
 
       // ...to compare query here
       if (this.prevFetchArgs === fetchArgs) {
@@ -88,8 +94,8 @@ const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: Rea
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  scheduleRefreshNow = (): unknown => setTimeout(this.refresh, 0);
+  scheduleRefreshNow = (reason: FetchReason): unknown =>
+    setTimeout(() => void this.refresh(reason), 0);
 
   override render (): ReactNode {
     /* eslint @typescript-eslint/no-unused-vars: ["error", { "varsIgnorePattern": "fetch|onFetchArgsChange" }] */
