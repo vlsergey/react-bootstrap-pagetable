@@ -4,12 +4,13 @@
 user customizes his table columns order
 */
 export default function calcFieldsOrderWithNewOnes (
+    allAllowedKeys: string[],
     defaultKeysOrder: string[],
     orderedByConfig: string[],
     hiddenByConfig: string[]
 ): string[] {
   const result = orderedByConfig.filter((key: string) =>
-    defaultKeysOrder.includes(key) && !hiddenByConfig.includes(key));
+    allAllowedKeys.includes(key) && !hiddenByConfig.includes(key));
   const invisibleBecauseNotInConfig =
     defaultKeysOrder.filter(key => !orderedByConfig.includes(key) && !hiddenByConfig.includes(key));
 

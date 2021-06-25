@@ -53,10 +53,12 @@ export default function useStateOfVisibleFields (
     idPrefix: string,
     itemModel: ItemModel<unknown>
 ): ResultType {
+  const allAllowedKeys: string[] = useMemo(() =>
+    itemModel.fields.map(({key}) => key), [ itemModel.fields ]);
   const defaultKeysOrder: string[] = useMemo(() => itemModel
     .fields
     .filter(({hiddenByDefault}: FieldModel<unknown, unknown>) => !hiddenByDefault)
-    .map(({key}: FieldModel<unknown, unknown>) => key), [ itemModel ]);
+    .map(({key}: FieldModel<unknown, unknown>) => key), [ itemModel.fields ]);
 
   const defaultHidden = [] as string[];
 
@@ -64,8 +66,8 @@ export default function useStateOfVisibleFields (
   const [ order, setOrder ] = useLocalStorage(idPrefix, 'order', defaultKeysOrder);
 
   const visibleFields = useMemo(() =>
-    calcFieldsOrderWithNewOnes(defaultKeysOrder, order, hidden)
-  , [ defaultKeysOrder, order, hidden ]);
+    calcFieldsOrderWithNewOnes(allAllowedKeys, defaultKeysOrder, order, hidden)
+  , [ allAllowedKeys, defaultKeysOrder, order, hidden ]);
 
   const setVisibleFields = useCallback((newVisibleFields: string[]) => {
     const newHiddenFields = defaultKeysOrder.filter(key => !newVisibleFields.includes(key));

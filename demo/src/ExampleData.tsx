@@ -47,6 +47,14 @@ export const ExampleItemModel: ItemModel<ExampleItemType> = {
       getter: ({birthday}: ExampleItemType) => new Date(Date.parse(birthday)).getFullYear(),
       sortable: true,
     },
+    {
+      key: 'age',
+      title: 'Age',
+      hiddenByDefault: true,
+      getter: ({birthday}: ExampleItemType) =>
+        Math.floor((Date.now() - Date.parse(birthday)) / (365.25 * 24 * 3600 * 1000)),
+      sortable: true,
+    },
   ]
 };
 
