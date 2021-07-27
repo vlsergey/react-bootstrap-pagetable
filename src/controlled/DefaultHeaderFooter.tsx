@@ -34,10 +34,10 @@ const DefaultHeaderFooter = ({elements}: PropsType): JSX.Element =>
   & > div > div > div:empty {
     display: none;
   }
-  & > div > div > div:first-child {
+  & > div > div > div:first-of-type {
     padding-left: 0;
   }
-  & > div > div > div:last-child {
+  & > div > div > div:last-of-type {
     padding-right: 0;
   }
   `)}>{ elements.map((line, index1) => <DivHideIfEmpty key={index1}>
