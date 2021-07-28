@@ -1,9 +1,9 @@
 export type Direction = 'ASC' | 'DESC';
 
-export type SortBy = {
+export interface SortBy {
   field: string;
   direction?: Direction;
-};
+}
 
 interface FetchArgs {
   /** 0-based page to fetch */

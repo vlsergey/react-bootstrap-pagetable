@@ -1,5 +1,6 @@
-import FieldModel from '../FieldModel';
 import React from 'react';
+
+import FieldModel from '../FieldModel';
 import {useControlledContext} from './ControlledContext';
 import useVisibleFields from './visibleFields/useVisibleFields';
 

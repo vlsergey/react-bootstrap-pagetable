@@ -1,5 +1,6 @@
-import ControlledPropsType from '../controlled/ControlledPropsType';
 import React from 'react';
+
+import ControlledPropsType from '../controlled/ControlledPropsType';
 import SortableHeaderCell from './SortableHeaderCell';
 
 export type RequiredChildComponentProps<T> =

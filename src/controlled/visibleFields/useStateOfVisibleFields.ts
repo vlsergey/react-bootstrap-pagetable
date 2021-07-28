@@ -1,7 +1,8 @@
 import {useCallback, useMemo, useState} from 'react';
-import calcFieldsOrderWithNewOnes from './calcFieldsOrderWithNewOnes';
+
 import FieldModel from '../../FieldModel';
 import ItemModel from '../../ItemModel';
+import calcFieldsOrderWithNewOnes from './calcFieldsOrderWithNewOnes';
 
 type ResultType = [
   string[],
@@ -13,7 +14,7 @@ function useLocalStorage (
     key: string,
     defaultValues: string[]
 ): ResultType {
-  const [ valuesReact, setValuesReact ] = useState<string[]>(() => {
+  const [valuesReact, setValuesReact] = useState<string[]>(() => {
     if (!!idPrefix && !!localStorage) {
       try {
         const json = localStorage.getItem(idPrefix + '_useVisibleFieldsState_' + key);
@@ -42,9 +43,9 @@ function useLocalStorage (
       console.warn('Unable to save ' + key + ' to localStorage');
       console.warn(error);
     }
-  }, [ idPrefix, key, setValuesReact ]);
+  }, [idPrefix, key, setValuesReact]);
 
-  return [ valuesReact, setValues ];
+  return [valuesReact, setValues];
 }
 
 
@@ -54,38 +55,38 @@ export default function useStateOfVisibleFields (
     itemModel: ItemModel<unknown>
 ): ResultType {
   const allAllowedKeys: string[] = useMemo(() =>
-    itemModel.fields.map(({key}) => key), [ itemModel.fields ]);
+    itemModel.fields.map(({key}) => key), [itemModel.fields]);
   const defaultKeysOrder: string[] = useMemo(() => itemModel
     .fields
     .filter(({hiddenByDefault}: FieldModel<unknown, unknown>) => !hiddenByDefault)
-    .map(({key}: FieldModel<unknown, unknown>) => key), [ itemModel.fields ]);
+    .map(({key}: FieldModel<unknown, unknown>) => key), [itemModel.fields]);
 
   const defaultHidden = [] as string[];
 
-  const [ hidden, setHidden ] = useLocalStorage(idPrefix, 'hidden', defaultHidden);
-  const [ order, setOrder ] = useLocalStorage(idPrefix, 'order', defaultKeysOrder);
+  const [hidden, setHidden] = useLocalStorage(idPrefix, 'hidden', defaultHidden);
+  const [order, setOrder] = useLocalStorage(idPrefix, 'order', defaultKeysOrder);
 
   const visibleFields = useMemo(() =>
     calcFieldsOrderWithNewOnes(allAllowedKeys, defaultKeysOrder, order, hidden)
-  , [ allAllowedKeys, defaultKeysOrder, order, hidden ]);
+  , [allAllowedKeys, defaultKeysOrder, order, hidden]);
 
   const setVisibleFields = useCallback((newVisibleFields: string[]) => {
     const newHiddenFields = defaultKeysOrder.filter(key => !newVisibleFields.includes(key));
     setHidden(newHiddenFields);
     setOrder(newVisibleFields);
-  }, [ defaultKeysOrder, setHidden, setOrder ]);
+  }, [defaultKeysOrder, setHidden, setOrder]);
 
   const mockVisibleFields = useMemo<string[]>(() => itemModel
     .fields
     .filter(({hiddenByDefault}: FieldModel<unknown, unknown>) => !hiddenByDefault)
-    .map(({key}: FieldModel<unknown, unknown>) => key), [ itemModel ]);
+    .map(({key}: FieldModel<unknown, unknown>) => key), [itemModel]);
   const setMockVisibleFields = useCallback(() => {
     throw new Error('Visible fields changing feature is disabled');
   }, []);
 
   if (disableVisibleFieldsChange) {
-    return [ mockVisibleFields, setMockVisibleFields as (value: string[]) => unknown ];
+    return [mockVisibleFields, setMockVisibleFields as (value: string[]) => unknown];
   }
 
-  return [ visibleFields, setVisibleFields ];
+  return [visibleFields, setVisibleFields];
 }

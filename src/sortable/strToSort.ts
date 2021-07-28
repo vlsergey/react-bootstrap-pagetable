@@ -6,7 +6,7 @@ export default function strToSort (str: (string | string[])): SortBy[] {
   if (typeof str === 'string') {
     const sortBy: SortBy = strToSortBy(str);
     if (!sortBy) return null;
-    return [ sortBy ];
+    return [sortBy];
   }
 
   const strAsArray = str;

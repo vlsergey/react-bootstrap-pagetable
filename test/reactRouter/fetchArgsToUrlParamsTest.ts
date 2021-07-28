@@ -1,10 +1,11 @@
 import {assert} from 'chai';
-import fetchArgsToUrlParams from '../../src/reactRouter/fetchArgsToUrlParams';
+
 import {ItemModel} from '../../src';
+import fetchArgsToUrlParams from '../../src/reactRouter/fetchArgsToUrlParams';
 
 describe('reactRouter', () => describe('fetchArgsToUrlParams', () => {
 
-  type TestItem = {id: string};
+  interface TestItem {id: string}
 
   const itemModel: ItemModel<TestItem> = {
     idF: ({id}: TestItem) => id,

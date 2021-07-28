@@ -1,9 +1,10 @@
-import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
+import Table from 'react-bootstrap/Table';
+
 import FetchArgs from '../FetchArgs';
-import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 import ItemModel from '../ItemModel';
 import Page from '../Page';
-import Table from 'react-bootstrap/Table';
+import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
+import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 
 interface ControlledPropsType<T> {
   columnHeaderCell?: (props: ColumnHeaderCellPropsType) => JSX.Element;

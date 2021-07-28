@@ -1,10 +1,11 @@
 import {Action, ControlledPageTable, Page, singlePage}
   from '@vlsergey/react-bootstrap-pagetable';
-import {ExampleData, ExampleItemModel, ExampleItemType} from './ExampleData';
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import React from 'react';
 import reactElementToJSXString from 'react-element-to-jsx-string';
+
+import {ExampleData, ExampleItemModel, ExampleItemType} from './ExampleData';
 import useBooleanOption from './useBooleanOption';
 import useSizeOption from './useSizeOption';
 
@@ -12,13 +13,13 @@ const NOOP = (): unknown => undefined;
 
 export default function ContolledDemo (): JSX.Element {
 
-  const [ addAction, addActionFormElement ] = useBooleanOption('addAction', 'Include simple action');
-  const [ disableVisibleFieldsChange, disableVisibleFieldsChangeFormElement ] =
+  const [addAction, addActionFormElement] = useBooleanOption('addAction', 'Include simple action');
+  const [disableVisibleFieldsChange, disableVisibleFieldsChangeFormElement] =
     useBooleanOption('disableVisibleFieldsChange', <>Set <code>disableVisibleFieldsChange</code> flag</>);
-  const [ hasError, hasErrorFormElement ] = useBooleanOption('hasError', <>Set <code>hasError</code> flag</>);
-  const [ loading, loadingFormElement ] = useBooleanOption('loading', <>Set <code>loading</code> flag</>);
-  const [ selectable, selectableFormElement ] = useBooleanOption('selectable', <>Set <code>selectable</code> flag</>);
-  const [ size, sizeFormElement ] = useSizeOption();
+  const [hasError, hasErrorFormElement] = useBooleanOption('hasError', <>Set <code>hasError</code> flag</>);
+  const [loading, loadingFormElement] = useBooleanOption('loading', <>Set <code>loading</code> flag</>);
+  const [selectable, selectableFormElement] = useBooleanOption('selectable', <>Set <code>selectable</code> flag</>);
+  const [size, sizeFormElement] = useSizeOption();
 
   const page: Page<ExampleItemType> = singlePage(ExampleData);
 
@@ -26,7 +27,7 @@ export default function ContolledDemo (): JSX.Element {
     {
       key: 'stringify',
       title: 'JSON.stringify',
-      onAction: (items: ExampleItemType[]) => alert(JSON.stringify(items)),
+      onAction: (items: ExampleItemType[]) => { alert(JSON.stringify(items)); },
     } as Action<ExampleItemType>,
   ] as Action<ExampleItemType>[] : [];
 

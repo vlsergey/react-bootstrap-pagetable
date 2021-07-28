@@ -1,11 +1,11 @@
-import {FetchArgs, fetchFromArray, ItemModel, ControlledPageTable as PageTable}
+import Button from '@vlsergey/react-bootstrap-button-with-spinner';
+import ErrorBoundary from '@vlsergey/react-bootstrap-error-boundary';
+import {ControlledPageTable as PageTable, FetchArgs, fetchFromArray, ItemModel}
   from '@vlsergey/react-bootstrap-pagetable';
 import React, {PureComponent, ReactNode} from 'react';
 import Alert from 'react-bootstrap/Alert';
-import Button from '@vlsergey/react-bootstrap-button-with-spinner';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import ErrorBoundary from '@vlsergey/react-bootstrap-error-boundary';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
@@ -51,23 +51,23 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
     retryCounter: 0,
   };
 
-  private handleDataChange =
+  private readonly handleDataChange =
     ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): void =>
-      this.setState({data: value});
+    { this.setState({data: value}); };
 
-  private handleFetchArgsChange = (fetchArgs: FetchArgs): void =>
-    this.setState({fetchArgs});
+  private readonly handleFetchArgsChange = (fetchArgs: FetchArgs): void =>
+  { this.setState({fetchArgs}); };
 
-  private handleFetchArgsTextChange =
+  private readonly handleFetchArgsTextChange =
     ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
-      this.setState({fetchArgs: JSON.parse(value) as FetchArgs});
+    { this.setState({fetchArgs: JSON.parse(value) as FetchArgs}); };
 
-  private handleItemModelChange =
+  private readonly handleItemModelChange =
     ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): unknown =>
-      this.setState({itemModel: value});
+    { this.setState({itemModel: value}); };
 
-  private handleRetry = (): unknown =>
-    this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1}));
+  private readonly handleRetry = (): unknown =>
+  { this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1})); };
 
   override render (): ReactNode {
     const {data, fetchArgs, itemModel} = this.state;

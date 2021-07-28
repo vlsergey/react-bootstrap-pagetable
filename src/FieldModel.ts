@@ -1,5 +1,6 @@
-import ItemModel from './ItemModel';
 import {ReactNode} from 'react';
+
+import ItemModel from './ItemModel';
 
 export type ValueGetter<ItemType, ValueType> =
   ((item: ItemType, fieldModel: FieldModel<ItemType, ValueType>, itemType: ItemModel<ItemType>) => ValueType);
@@ -39,7 +40,7 @@ interface FieldModel<ItemType, ValueType> {
 
 export const defaultGetter =
   <I, V>(item: I, fieldModel: FieldModel<I, V>): V =>
-    (item as Record<string, unknown>)[ fieldModel.key ] as V;
+    (item as Record<string, unknown>)[fieldModel.key] as V;
 
 export function defaultFilterValueConverter (): FilterValueConverter<unknown> {
   return {

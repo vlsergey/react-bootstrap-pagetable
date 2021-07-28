@@ -1,6 +1,7 @@
+import React from 'react';
+
 import FieldModel, {defaultGetter, defaultRender, ValueRendererProps} from './FieldModel';
 import ItemModel from './ItemModel';
-import React from 'react';
 
 interface PropsType<ItemType, ValueType> {
   itemModel: ItemModel<ItemType>;

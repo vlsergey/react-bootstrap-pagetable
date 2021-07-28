@@ -1,9 +1,10 @@
 import React, {useMemo} from 'react';
-import Action from './Action';
-import ItemModel from '../ItemModel';
-import Toolbar from './Toolbar';
-import {useActionsContext} from './ActionsContext';
+
 import {useControlledContext} from '../controlled/ControlledContext';
+import ItemModel from '../ItemModel';
+import Action from './Action';
+import {useActionsContext} from './ActionsContext';
+import Toolbar from './Toolbar';
 
 function filterItemsByIdsImpl<T> (
     itemModel: ItemModel<T>,
@@ -26,7 +27,7 @@ function ActionsToolbar<T> (): JSX.Element {
     if (action.refreshAfterAction && onRefreshRequired) {
       await onRefreshRequired();
     }
-  }, [ onAfterAction, onRefreshRequired ]);
+  }, [onAfterAction, onRefreshRequired]);
 
   if (!actions) {
     return null;

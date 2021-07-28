@@ -1,9 +1,10 @@
 import React, {PureComponent, ReactNode} from 'react';
+
+import ControlledPropsType from '../controlled/ControlledPropsType';
+import {NewComponentProps as SelectablePropsType} from '../selectable/withSelectable';
 import Action from './Action';
 import ActionsContext from './ActionsContext';
 import ActionsToolbar from './ActionsToolbar';
-import ControlledPropsType from '../controlled/ControlledPropsType';
-import {NewComponentProps as SelectablePropsType} from '../selectable/withSelectable';
 
 export type RequiredChildComponentProps<T> =
   Pick<SelectablePropsType, 'onSelectedIdsChange' | 'selectable' | 'selectedIds'> &
@@ -18,9 +19,9 @@ export interface NewComponentProps<T> {
   onSelectedIdsChange?: SelectablePropsType['onSelectedIdsChange'];
 }
 
-export type StateType = {
+export interface StateType {
   selectedIds: string[];
-};
+}
 
 const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>):
 React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>> =>
@@ -30,7 +31,7 @@ React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'sele
     ...Child.defaultProps,
     footerElements: [
       ...Child.defaultProps.footerElements,
-      [ [ ActionsToolbar ] ],
+      [[ActionsToolbar]],
     ],
   };
 

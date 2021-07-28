@@ -50,7 +50,7 @@
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/react-router": "^5.1.15",
     "@types/react-router-dom": "^5.1.7",
-    "@vlsergey/js-config": "^5.0.0",
+    "@vlsergey/js-config": "^7.0.0",
     "eslint-watch": "^7.0.0",
     "eslint-webpack-plugin": "^2.5.4",
     "react": "^17.0.2",

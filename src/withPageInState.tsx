@@ -1,8 +1,9 @@
-import Page, {emptyPage} from './Page';
 import React, {PureComponent, ReactNode} from 'react';
+
+import {NewComponentProps as WithActionsPropsType} from './actions/withActions';
 import ControlledPropsType from './controlled/ControlledPropsType';
 import FetchArgs from './FetchArgs';
-import {NewComponentProps as WithActionsPropsType} from './actions/withActions';
+import Page, {emptyPage} from './Page';
 
 export type RequiredChildComponentProps<T> =
   Pick<ControlledPropsType<T>, 'fetchArgs' | 'error' | 'hasError' | 'itemModel' | 'loading' | 'onFetchArgsChange' | 'page'> &

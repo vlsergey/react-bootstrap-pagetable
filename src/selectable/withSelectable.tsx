@@ -1,7 +1,8 @@
-import FieldModel, {ValueRendererProps} from '../FieldModel';
 import React, {useCallback, useMemo} from 'react';
-import ControlledPropsType from '../controlled/ControlledPropsType';
 import Form from 'react-bootstrap/Form';
+
+import ControlledPropsType from '../controlled/ControlledPropsType';
+import FieldModel, {ValueRendererProps} from '../FieldModel';
 import ItemModel from '../ItemModel';
 import useSelectAllCheckbox from './useSelectAllCheckbox';
 
@@ -28,31 +29,31 @@ export default
       selectedIds,
       ...etcProps
     }: NewComponentProps & P): JSX.Element => {
-      const idF = useMemo(() => itemModel.idF, [ itemModel ]);
-      const selectedIdsSet = useMemo(() => new Set(selectedIds), [ selectedIds ]);
+      const idF = useMemo(() => itemModel.idF, [itemModel]);
+      const selectedIdsSet = useMemo(() => new Set(selectedIds), [selectedIds]);
 
       const handleTrigger = useCallback((item: T): unknown => {
         const itemKey: string = idF(item);
 
         const index = selectedIds.indexOf(itemKey);
         if (index === -1) {
-          const newSelectedIds: string[] = [ ...selectedIds, itemKey ];
+          const newSelectedIds: string[] = [...selectedIds, itemKey];
           return onSelectedIdsChange(newSelectedIds);
         }
 
-        const spliced = [ ...selectedIds ];
+        const spliced = [...selectedIds];
         spliced.splice(index, 1);
         return onSelectedIdsChange(spliced);
-      }, [ idF, onSelectedIdsChange, selectedIds ]);
+      }, [idF, onSelectedIdsChange, selectedIds]);
 
       const rowProps = useCallback((item: T): Record<string, unknown> => ({
         onClick: () => handleTrigger(item),
         style: {cursor: 'pointer'},
-      }), [ handleTrigger ]);
+      }), [handleTrigger]);
 
       const selectableFieldGetter = useCallback((item: T): boolean =>
         selectedIdsSet.has(idF(item)),
-      [ idF, selectedIdsSet ]);
+      [idF, selectedIdsSet]);
 
       const selectAllProps = useSelectAllCheckbox(page.content, idF,
         onSelectedIdsChange, selectedIdsSet);
@@ -69,7 +70,7 @@ export default
           } as FieldModel<T, boolean>,
           ...itemModel.fields,
         ]
-      }), [ selectAllProps, itemModel, selectableFieldGetter ]);
+      }), [selectAllProps, itemModel, selectableFieldGetter]);
 
       if (!selectable) {
         return <Child

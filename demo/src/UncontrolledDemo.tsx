@@ -17,7 +17,7 @@ function sleep (ms: number): Promise< unknown > {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-type TestType = {id: string};
+interface TestType {id: string}
 
 const itemModel: ItemModel<TestType> = {
   idF: ({id}: TestType) => id,
@@ -31,7 +31,7 @@ const itemModel: ItemModel<TestType> = {
 };
 
 const sourceDataArray: TestType[] =
-  ([ ...(Array(10000) as unknown[]).keys() ] as number[])
+  ([...(Array(10000) as unknown[]).keys()] as number[])
     .map((key: number) => ({id: String(key)}));
 
 export default class UncontrolledDemo extends PureComponent<unknown, StateType> {
@@ -44,7 +44,7 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
     size: undefined,
   };
 
-  private fetchData = async (fetchArgs: FetchArgs): Promise<Page<TestType>> => {
+  private readonly fetchData = async (fetchArgs: FetchArgs): Promise<Page<TestType>> => {
     const {emulateError, emulateLongLoading} = this.state;
     if (emulateLongLoading) {
       await sleep(1000);
@@ -55,15 +55,15 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
     return fetchFromArray(itemModel, sourceDataArray, fetchArgs);
   };
 
-  private handleCheckboxChange = ({currentTarget: {checked, name}}: React.ChangeEvent<HTMLInputElement>) => {
+  private readonly handleCheckboxChange = ({currentTarget: {checked, name}}: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      [ name ]: !!checked,
+      [name]: !!checked,
     } as unknown as StateType);
   };
 
-  private handleSelectChange = ({currentTarget: {name, value}}: React.ChangeEvent<HTMLInputElement>) => {
+  private readonly handleSelectChange = ({currentTarget: {name, value}}: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      [ name ]: value || undefined,
+      [name]: value || undefined,
     } as unknown as StateType);
   };
 
@@ -75,7 +75,7 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
         key: 'alert',
         title: 'Alert',
         enabled: (items: TestType[]) => items.length == 1,
-        onAction: (items: TestType[]) => alert(items[ 0 ].id),
+        onAction: (items: TestType[]) => { alert(items[0].id); },
       } as Action<TestType>,
     ] as Action<TestType>[] : [];
 

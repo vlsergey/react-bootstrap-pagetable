@@ -45,13 +45,13 @@ export default function urlParamsToFetchArgs (
 
   const defConverter: FilterValueConverter<unknown> = defaultFilterValueConverter();
   itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown, unknown>) =>
-    ifHave(key, filterStringValue => {
-      if (!result.filter) {
-        result.filter = {};
-      }
-      const converter: FilterValueConverter<unknown> = filterValueConverter || defConverter;
-      result.filter[ key ] = converter.fromString(filterStringValue);
-    })
+  { ifHave(key, filterStringValue => {
+    if (!result.filter) {
+      result.filter = {};
+    }
+    const converter: FilterValueConverter<unknown> = filterValueConverter || defConverter;
+    result.filter[key] = converter.fromString(filterStringValue);
+  }); }
   );
   return result;
 }

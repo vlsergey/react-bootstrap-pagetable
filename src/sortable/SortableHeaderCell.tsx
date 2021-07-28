@@ -1,9 +1,10 @@
 /** @jsx jsx */
 import {css, jsx} from '@emotion/react';
-import {Direction, SortBy} from '../FetchArgs';
 import React, {useCallback, useContext} from 'react';
+
 import ControlledContext from '../controlled/ControlledContext';
 import DefaultColumnHeaderCell from '../controlled/DefaultColumnHeaderCell';
+import {Direction, SortBy} from '../FetchArgs';
 import FieldModel from '../FieldModel';
 
 export interface PropsType<I, V> {
@@ -22,9 +23,9 @@ function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
 
     onFetchArgsChange({
       ...fetchArgs,
-      sort: [ {field: field.key, direction: newDirection} ],
+      sort: [{field: field.key, direction: newDirection}],
     });
-  }, [ fetchArgs, field.key, onFetchArgsChange ]);
+  }, [fetchArgs, field.key, onFetchArgsChange]);
 
   if (!field.sortable) {
     return <DefaultColumnHeaderCell field={field} />;

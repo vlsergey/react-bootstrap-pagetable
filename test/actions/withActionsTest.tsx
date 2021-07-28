@@ -1,9 +1,10 @@
-import {ControlledBase, emptyPage, ItemModel, withActions, withSelectable}
-  from '../../src';
+import {assert} from 'chai';
+import React, {Component} from 'react';
 import {findRenderedDOMComponentWithTag, renderIntoDocument, Simulate}
   from 'react-dom/test-utils';
-import React, {Component} from 'react';
-import {assert} from 'chai';
+
+import {ControlledBase, emptyPage, ItemModel, withActions, withSelectable}
+  from '../../src';
 
 const NOOP = () => { /* NOOP */ };
 const sleep = async (ms: number): Promise< unknown > => new Promise(resolve => setTimeout(resolve, ms));
@@ -11,10 +12,10 @@ const sleep = async (ms: number): Promise< unknown > => new Promise(resolve => s
 describe('actions/withActions', () => {
   const PageTable = withActions(withSelectable(ControlledBase));
 
-  type TestItem = {id: string};
+  interface TestItem {id: string}
   const testItemModel = {
     idF: ({id}: TestItem) => id,
-    fields: [ {key: 'id', title: 'Id', sortable: true} ]
+    fields: [{key: 'id', title: 'Id', sortable: true}]
   } as ItemModel<TestItem>;
 
   it('result can be used as JSX element', () => {
@@ -50,7 +51,7 @@ describe('actions/withActions', () => {
     let onAfterActionCounter = 0;
 
     const rendered = renderIntoDocument(<PageTable
-      actions={[ action ]}
+      actions={[action]}
       disableVisibleFieldsChange
       fetchArgs={{page: 0, size: 10}}
       hasError={false}

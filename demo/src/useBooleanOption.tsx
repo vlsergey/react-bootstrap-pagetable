@@ -7,11 +7,11 @@ export default function useBooleanOption (
     key: string,
     label: ReactNode
 ): ReturnType {
-  const [ checked, setChecked ] = useState<boolean>(false);
+  const [checked, setChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = useCallback(({currentTarget: {checked}}: React.ChangeEvent<HTMLInputElement>) =>
-    setChecked(!!checked)
-  , [ setChecked ]);
+  { setChecked(!!checked); }
+  , [setChecked]);
 
   const element = <Form.Check
     checked={checked}
@@ -21,5 +21,5 @@ export default function useBooleanOption (
     onChange={handleCheckboxChange}
     type="checkbox" />;
 
-  return [ checked, element ];
+  return [checked, element];
 }

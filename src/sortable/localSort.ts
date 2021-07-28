@@ -9,9 +9,9 @@ export default function localSort<T> (
 ): T[] {
   if (!sort) return data;
 
-  const result: T[] = [ ...data ];
+  const result: T[] = [...data];
 
-  const actualSortBy: SortBy[] = [ ...sort ];
+  const actualSortBy: SortBy[] = [...sort];
   actualSortBy.reverse();
 
   actualSortBy.forEach(({field, direction}: SortBy) => {

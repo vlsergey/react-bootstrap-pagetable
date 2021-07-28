@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react';
-import FieldModel from '../../FieldModel';
 import Form from 'react-bootstrap/Form';
+
+import FieldModel from '../../FieldModel';
 
 interface PropsType {
   options: FieldModel<unknown, unknown>[];
@@ -17,8 +18,8 @@ const FieldsListControl = ({
 }: PropsType) => {
 
   const handleSelectChange = useCallback(({currentTarget}: React.ChangeEvent<HTMLSelectElement>) =>
-    onSelectedChange([ ...(currentTarget.options as unknown as []) ]
-      .filter(({selected}) => selected).map(({value}) => value)), [ onSelectedChange ]);
+    onSelectedChange([...(currentTarget.options as unknown as [])]
+      .filter(({selected}) => selected).map(({value}) => value)), [onSelectedChange]);
 
   return <Form.Control
     as="select"

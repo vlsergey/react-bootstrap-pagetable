@@ -1,8 +1,9 @@
 import React, {PureComponent, ReactNode} from 'react';
-import Action from './Action';
-import ActionButton from './ActionButton';
 import {ButtonProps} from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+
+import Action from './Action';
+import ActionButton from './ActionButton';
 
 interface PropsType<T> {
   actions: Action<T>[];

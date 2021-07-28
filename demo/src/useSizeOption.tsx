@@ -4,11 +4,11 @@ import Form from 'react-bootstrap/Form';
 type ReturnType = [ 'lg' | 'sm', JSX.Element ];
 
 export default function useSizeOption (): ReturnType {
-  const [ size, setSize ] = useState<'lg' | 'sm'>(null);
+  const [size, setSize] = useState<'lg' | 'sm'>(null);
 
   const handleChange = useCallback(({currentTarget: {value}}: React.ChangeEvent<HTMLSelectElement>) =>
-    setSize((value || null) as ('lg' | 'sm'))
-  , [ setSize ]);
+  { setSize((value || null) as ('lg' | 'sm')); }
+  , [setSize]);
 
   const element = <Form.Group className="form-inline" controlId="size">
     <Form.Label style={{paddingRight: '1em'}}>Size:</Form.Label>
@@ -19,5 +19,5 @@ export default function useSizeOption (): ReturnType {
     </Form.Control>
   </Form.Group>;
 
-  return [ size, element ];
+  return [size, element];
 }

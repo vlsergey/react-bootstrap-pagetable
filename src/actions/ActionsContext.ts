@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+
 import {NewComponentProps} from './withActions';
 
 export interface ActionsContextType<T> {

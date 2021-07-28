@@ -1,8 +1,9 @@
 import 'core-js';
 
-import Application from './Application';
 import React from 'react';
 import ReactDom from 'react-dom';
+
+import Application from './Application';
 
 require('@fortawesome/fontawesome-free/css/all.css');
 require('bootstrap/dist/css/bootstrap.min.css');

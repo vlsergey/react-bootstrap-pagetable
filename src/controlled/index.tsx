@@ -1,18 +1,19 @@
+import React from 'react';
+import Alert from 'react-bootstrap/Alert';
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import Table from 'react-bootstrap/Table';
+
 import ControlledContext, {ControlledContextType, useControlledContext}
   from './ControlledContext';
-import {DefaultFooter, DefaultHeader} from './DefaultHeaderFooter';
-import Alert from 'react-bootstrap/Alert';
 import ControlledPropsType from './ControlledPropsType';
 import DefaultColumnHeaderCell from './DefaultColumnHeaderCell';
 import DefaultColumnHeaderRow from './DefaultColumnHeaderRow';
+import {DefaultFooter, DefaultHeader} from './DefaultHeaderFooter';
 import DefaultItemFieldCellRenderer from './DefaultItemFieldCellRenderer';
 import DefaultNoContentRow from './DefaultNoContentRow';
 import DefaultRowsRenderer from './DefaultRowsRenderer';
 import PageIndexSelector from './PageIndexSelector';
 import PageSizeSelector from './PageSizeSelector';
-import ProgressBar from 'react-bootstrap/ProgressBar';
-import React from 'react';
-import Table from 'react-bootstrap/Table';
 import useStateOfVisibleFields from './visibleFields/useStateOfVisibleFields';
 import useVisibleFields from './visibleFields/useVisibleFields';
 import VisibleFieldsButton from './visibleFields/VisibleFieldsButton';
@@ -45,7 +46,7 @@ export default function ControlledBase<T> ({
   ...etcProps
 }: ControlledPropsType<T>): JSX.Element {
 
-  const [ visibleFields, onVisibleFieldsChange ] =
+  const [visibleFields, onVisibleFieldsChange] =
     useStateOfVisibleFields(disableVisibleFieldsChange, idPrefix, itemModel);
 
   // memoize?
@@ -117,6 +118,6 @@ const TableHead = () => {
 };
 
 ControlledBase.defaultProps = {
-  footerElements: [ [ [ VisibleFieldsButton, PageIndexSelector ], [ PageSizeSelector ] ] ],
-  headerElements: [ [ [ VisibleFieldsButton, PageIndexSelector ], [ PageSizeSelector ] ] ],
+  footerElements: [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]],
+  headerElements: [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]],
 };

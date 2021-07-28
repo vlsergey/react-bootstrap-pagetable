@@ -1,7 +1,8 @@
-import React, {useCallback} from 'react';
-import Action from './Action';
 import Button from '@vlsergey/react-bootstrap-button-with-spinner';
+import React, {useCallback} from 'react';
 import {ButtonProps} from 'react-bootstrap/Button';
+
+import Action from './Action';
 
 export interface PropsType<T> {
   action: Action<T>;
@@ -18,7 +19,7 @@ function ActionButton<T> ({
   ...etcProps
 }: PropsType<T>) {
 
-  const handleClick = useCallback((...etc: unknown[]) => onAction(action, ...etc), [ action, onAction ]);
+  const handleClick = useCallback((...etc: unknown[]) => onAction(action, ...etc), [action, onAction]);
 
   const ActionButtonComponent = action.buttonComponent || Button;
 

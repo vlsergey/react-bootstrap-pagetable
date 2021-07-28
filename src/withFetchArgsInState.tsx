@@ -1,6 +1,7 @@
+import React from 'react';
+
 import ControlledPropsType from './controlled/ControlledPropsType';
 import FetchArgs from './FetchArgs';
-import React from 'react';
 import strToSort from './sortable/strToSort';
 
 export type RequiredChildComponentProps<T> =
@@ -27,7 +28,7 @@ const withFetchArgsInState =
       ...etcProps
     }: PropsType<T, P>): JSX.Element {
 
-      const [ fetchArgs, setFetchArgs ] = React.useState<FetchArgs>(() => ({
+      const [fetchArgs, setFetchArgs] = React.useState<FetchArgs>(() => ({
         page: defaultPage,
         size: defaultSize,
         sort: strToSort(defaultSort),
@@ -38,7 +39,7 @@ const withFetchArgsInState =
         if (onFetchArgsChange) {
           return onFetchArgsChange(fetchArgs);
         }
-      }, [ onFetchArgsChange, setFetchArgs ]);
+      }, [onFetchArgsChange, setFetchArgs]);
 
       return <Child
         {...etcProps as unknown as P}

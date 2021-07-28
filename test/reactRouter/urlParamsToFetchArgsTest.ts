@@ -1,10 +1,11 @@
-import {FetchArgs, ItemModel} from '../../src';
 import {assert} from 'chai';
+
+import {FetchArgs, ItemModel} from '../../src';
 import urlParamsToFetchArgs from '../../src/reactRouter/urlParamsToFetchArgs';
 
 describe('reactRouter', () => describe('urlParamsToFetchArgs', () => {
 
-  type TestItem = {id: string};
+  interface TestItem {id: string}
 
   const itemModel: ItemModel<TestItem> = {
     idF: ({id}: TestItem) => id,
@@ -31,7 +32,7 @@ describe('reactRouter', () => describe('urlParamsToFetchArgs', () => {
     const defaultFetchArgs = {
       page: 1,
       size: 2,
-      sort: [ {field: 'name', direction: 'ASC'} ],
+      sort: [{field: 'name', direction: 'ASC'}],
     } as FetchArgs;
 
     const actual = urlParamsToFetchArgs(defaultFetchArgs, itemModel,
@@ -39,14 +40,14 @@ describe('reactRouter', () => describe('urlParamsToFetchArgs', () => {
 
     assert.equal(1, actual.page);
     assert.equal(2, actual.size);
-    assert.deepEqual([ {field: 'name', direction: 'ASC'} ], actual.sort);
+    assert.deepEqual([{field: 'name', direction: 'ASC'}], actual.sort);
   });
 
   it('Correctly updates sort field', () => {
     const defaultFetchArgs = {
       page: 1,
       size: 2,
-      sort: [ {field: 'name', direction: 'ASC'} ],
+      sort: [{field: 'name', direction: 'ASC'}],
     } as FetchArgs;
 
     const actual = urlParamsToFetchArgs(defaultFetchArgs, itemModel,
@@ -54,7 +55,7 @@ describe('reactRouter', () => describe('urlParamsToFetchArgs', () => {
 
     assert.equal(2, actual.page);
     assert.equal(4, actual.size);
-    assert.deepEqual([ {field: 'name', direction: 'DESC'} ], actual.sort);
+    assert.deepEqual([{field: 'name', direction: 'DESC'}], actual.sort);
   });
 
 }));

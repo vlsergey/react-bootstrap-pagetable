@@ -11,6 +11,7 @@ module.exports = {
   },
   rules: {
     "react/jsx-no-bind": 0,
+    "@typescript-eslint/no-confusing-void-expression": 0,
   },
   plugins: [ 'promise' ],
 };

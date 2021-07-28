@@ -19,7 +19,7 @@ export default async function fetchFromSpringDataRest<T> (
   args.append('size', String(size));
 
   if (filter) {
-    for (const [ fieldKey, filterValue ] of Object.entries(filter)) {
+    for (const [fieldKey, filterValue] of Object.entries(filter)) {
       if (typeof filterValue === 'string' || typeof filterValue === 'number') {
         args.append(fieldKey, String(filterValue));
       } else {

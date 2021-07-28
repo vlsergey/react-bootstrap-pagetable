@@ -18,7 +18,7 @@ export default function calcFieldsOrderWithNewOnes (
   invisibleBecauseNotInConfig.forEach(fieldKey => {
     let insertAfterIndex: number = defaultKeysOrder.indexOf(fieldKey);
     while (insertAfterIndex > -1) {
-      const fieldKeyAtIndex = defaultKeysOrder[ insertAfterIndex ];
+      const fieldKeyAtIndex = defaultKeysOrder[insertAfterIndex];
       const currentIndex = result.indexOf(fieldKeyAtIndex);
       if (currentIndex !== -1) {
         result.splice(currentIndex + 1, 0, fieldKey);

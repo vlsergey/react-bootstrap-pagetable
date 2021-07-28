@@ -1,18 +1,19 @@
-import {ExampleData, ExampleItemModel, ExampleItemType} from './ExampleData';
 import PageTable, {Action, ActionButtonPropsType, FetchArgs, fetchFromArray}
   from '@vlsergey/react-bootstrap-pagetable';
+import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Dropdown from 'react-bootstrap/Dropdown';
-import React from 'react';
 import Row from 'react-bootstrap/Row';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
+import {ExampleData, ExampleItemModel, ExampleItemType} from './ExampleData';
+
 const DropdownActionButton = ({children, onClick, variant, ...etcProps}: ActionButtonPropsType): JSX.Element => {
 
-  const handleClick0 = React.useCallback(() => onClick(0), [ onClick ]);
-  const handleClick2 = React.useCallback(() => onClick(2), [ onClick ]);
-  const handleClick8 = React.useCallback(() => onClick(8), [ onClick ]);
+  const handleClick0 = React.useCallback(() => onClick(0), [onClick]);
+  const handleClick2 = React.useCallback(() => onClick(2), [onClick]);
+  const handleClick8 = React.useCallback(() => onClick(8), [onClick]);
 
   return <Dropdown id="dropdown-basic-button" {...etcProps}>
     <Dropdown.Toggle id="dropdown-basic" variant={variant}>
@@ -29,20 +30,20 @@ const DropdownActionButton = ({children, onClick, variant, ...etcProps}: ActionB
 
 export default function ActionsDemo (): JSX.Element {
 
-  const actions = React.useMemo(() => [ {
+  const actions = React.useMemo(() => [{
     key: 'show-json',
-    onAction: (items: ExampleItemType[]) => alert(JSON.stringify(items, undefined, 2)),
+    onAction: (items: ExampleItemType[]) => { alert(JSON.stringify(items, undefined, 2)); },
     refreshAfterAction: false,
     title: 'Show JSON',
     variant: 'primary',
   }, {
     key: 'json-dropdown',
-    onAction: (items: ExampleItemType[], indent: number) => alert(JSON.stringify(items, undefined, indent)),
+    onAction: (items: ExampleItemType[], indent: number) => { alert(JSON.stringify(items, undefined, indent)); },
     refreshAfterAction: false,
     buttonComponent: DropdownActionButton,
     title: 'Dropdown Example',
     variant: 'primary',
-  } ] as Action<ExampleItemType>[], []);
+  }] as Action<ExampleItemType>[], []);
 
   const handleFetch = React.useCallback((fetchArgs: FetchArgs) =>
     fetchFromArray(ExampleItemModel, ExampleData, fetchArgs), []);

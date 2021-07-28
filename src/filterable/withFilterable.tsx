@@ -1,6 +1,7 @@
 import React, {PureComponent, ReactNode} from 'react';
-import ColumnHeaderRowWithFilter from './ColumnHeaderRowWithFilter';
+
 import ControlledPropsType from '../controlled/ControlledPropsType';
+import ColumnHeaderRowWithFilter from './ColumnHeaderRowWithFilter';
 
 type RequiredChildComponentProps<T> =
   Pick<ControlledPropsType<T>, 'columnHeaderCell' | 'columnHeaderRow' | 'fetchArgs' | 'itemModel' | 'onFetchArgsChange'>;

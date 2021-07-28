@@ -1,9 +1,10 @@
+import React from 'react';
+
 import ControlledPropsType from '../controlled/ControlledPropsType';
 import DefaultColumnHeaderRow from '../controlled/DefaultColumnHeaderRow';
-import FieldFilterCell from './FieldFilterCell';
-import FieldModel from '../FieldModel';
-import React from 'react';
 import useVisibleFields from '../controlled/visibleFields/useVisibleFields';
+import FieldModel from '../FieldModel';
+import FieldFilterCell from './FieldFilterCell';
 
 const ColumnHeaderRowWithFilterImpl = (
   {columnHeaderRow}: Pick<ControlledPropsType<unknown>, 'columnHeaderRow'>

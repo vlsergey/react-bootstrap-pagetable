@@ -1,5 +1,6 @@
-import ActionButtonPropsType from './ActionButtonPropsType';
 import {ReactNode} from 'react';
+
+import ActionButtonPropsType from './ActionButtonPropsType';
 
 interface Action<T> {
   enabled: (items: T[]) => boolean;

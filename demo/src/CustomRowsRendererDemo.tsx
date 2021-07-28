@@ -1,13 +1,14 @@
-import {ExampleData, ExampleItemModel, ExampleItemType} from './ExampleData';
-import {FetchArgs, fetchFromArray, FieldModel, ItemFieldValue,
-  ControlledWithReactRouter as PageTable, useControlledContext, useVisibleFields}
+import Button from '@vlsergey/react-bootstrap-button-with-spinner';
+import ErrorBoundary from '@vlsergey/react-bootstrap-error-boundary';
+import {ControlledWithReactRouter as PageTable, FetchArgs, fetchFromArray, FieldModel, ItemFieldValue,
+  useControlledContext, useVisibleFields}
   from '@vlsergey/react-bootstrap-pagetable';
 import React, {PureComponent, ReactNode} from 'react';
-import Button from '@vlsergey/react-bootstrap-button-with-spinner';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import Container from 'react-bootstrap/Container';
-import ErrorBoundary from '@vlsergey/react-bootstrap-error-boundary';
+
+import {ExampleData, ExampleItemModel, ExampleItemType} from './ExampleData';
 
 interface StateType {
   fetchArgs: FetchArgs;
@@ -49,11 +50,11 @@ export default class CustomRowRendererDemo extends PureComponent<unknown, StateT
     retryCounter: 0,
   };
 
-  private handleFetchArgsChange = (fetchArgs: FetchArgs) =>
-    this.setState({fetchArgs});
+  private readonly handleFetchArgsChange = (fetchArgs: FetchArgs) =>
+  { this.setState({fetchArgs}); };
 
-  private handleRetry = (): unknown =>
-    this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1}));
+  private readonly handleRetry = (): unknown =>
+  { this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1})); };
 
   override render (): ReactNode {
     return <Container>

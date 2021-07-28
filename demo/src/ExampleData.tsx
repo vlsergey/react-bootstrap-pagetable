@@ -14,7 +14,7 @@ const FilterCell = ({filterBy, onFilterByChange}: FilterCellRendererProps<Exampl
     <Form.Control
       onChange={useCallback(
         ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) => onFilterByChange(value)
-        , [ onFilterByChange ])}
+        , [onFilterByChange])}
       placeholder="value to filter by (show values that contains entered text)"
       type="text"
       value={filterBy || ''} />

@@ -1,5 +1,6 @@
-import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
 import React from 'react';
+
+import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
 
 const DefaultColumnHeaderCell = ({field}: ColumnHeaderCellPropsType) => <th {...field.headerCellProps}>
   {

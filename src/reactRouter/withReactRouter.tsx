@@ -1,23 +1,24 @@
+import memoizeOne from 'memoize-one';
 import React, {PureComponent, ReactNode} from 'react';
 import {RouteComponentProps, withRouter} from 'react-router';
+
 import ControlledPropsType from '../controlled/ControlledPropsType';
 import FetchArgs from '../FetchArgs';
-import fetchArgsToUrlParams from './fetchArgsToUrlParams';
 import ItemModel from '../ItemModel';
-import memoizeOne from 'memoize-one';
 import strToSort from '../sortable/strToSort';
+import fetchArgsToUrlParams from './fetchArgsToUrlParams';
 import urlParamsToFetchArgs from './urlParamsToFetchArgs';
 
 export type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'fetchArgs' | 'itemModel' | 'onFetchArgsChange'>;
 
-export type NewComponentProps<T> = {
+export interface NewComponentProps<T> {
   defaultPage?: number;
   defaultSize?: number;
   defaultSort?: string | string[];
   // optional now
   onFetchArgsChange?: ControlledPropsType<T>['onFetchArgsChange'];
   urlParamsPrefix?: string;
-};
+}
 
 type InnerComponentProps<T, P extends RequiredChildComponentProps<T>>
   = RouteComponentProps<unknown> & NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>;

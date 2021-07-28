@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react';
 import Form from 'react-bootstrap/Form';
+
 import {useControlledContext} from './ControlledContext';
 
 export type PropsType = Omit<React.ComponentProps<'select'>, 'onChange' | 'ref' | 'size' | 'value'>;
@@ -8,7 +9,7 @@ const PageSizeSelector = ({name = 'size', ...etc}: PropsType) => {
   const {fetchArgs, onFetchArgsChange, size} = useControlledContext();
 
   const handleChange = useCallback(({currentTarget}: React.ChangeEvent<HTMLSelectElement>) =>
-    onFetchArgsChange({...fetchArgs, size: Number(currentTarget.value)}), [ fetchArgs, onFetchArgsChange ]);
+    onFetchArgsChange({...fetchArgs, size: Number(currentTarget.value)}), [fetchArgs, onFetchArgsChange]);
 
   return <Form.Control
     {...etc}

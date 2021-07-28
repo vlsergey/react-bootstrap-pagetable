@@ -1,6 +1,7 @@
-import FieldModel, {FilterCellRendererProps} from '../FieldModel';
 import React, {useCallback} from 'react';
+
 import {useControlledContext} from '../controlled/ControlledContext';
+import FieldModel, {FilterCellRendererProps} from '../FieldModel';
 
 interface PropsType<ItemType, ValueType> {
   field: FieldModel<ItemType, ValueType>;
@@ -14,9 +15,9 @@ const FieldFilterCell =
         ...fetchArgs,
         filter: {
           ...fetchArgs.filter,
-          [ field.key ]: newFilterBy,
+          [field.key]: newFilterBy,
         }
-      }), [ field, fetchArgs, onFetchArgsChange ]);
+      }), [field, fetchArgs, onFetchArgsChange]);
 
     if (!field.renderFilterCell) {
       return React.createElement('td');
@@ -27,7 +28,7 @@ const FieldFilterCell =
 
     return React.createElement(filterCellRenderer, {
       field,
-      filterBy: ((fetchArgs.filter || {})[ field.key ] || null) as FilterValueType,
+      filterBy: ((fetchArgs.filter || {})[field.key] || null) as FilterValueType,
       onFilterByChange,
     });
   };

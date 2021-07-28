@@ -24,7 +24,7 @@ export default function fetchArgsToUrlParams (
   }
 
   itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown, unknown>) => {
-    const filterValue = (fetchArgs.filter || {})[ key ];
+    const filterValue = (fetchArgs.filter || {})[key];
     if (filterValue !== undefined) {
       const converter: FilterValueConverter<unknown> = filterValueConverter || defaultFilterValueConverter();
       params.set(prefix + key, converter.toString(filterValue));

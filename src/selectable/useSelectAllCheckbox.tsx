@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import FieldModel from '../FieldModel';
 import Form from 'react-bootstrap/Form';
+
+import FieldModel from '../FieldModel';
 import ItemModel from '../ItemModel';
 
 export default function useSelectAllCheckbox<T> (
@@ -9,12 +10,12 @@ export default function useSelectAllCheckbox<T> (
     onSelectedIdsChange: (selectedIds: string[]) => unknown,
     selectedIdsSet: Set<string>
 ): Pick<FieldModel<T, unknown>, 'headerCellContent' | 'headerCellProps'> {
-  const allPageIds: string[] = useMemo(() => content.map(idF), [ idF, content ]);
+  const allPageIds: string[] = useMemo(() => content.map(idF), [idF, content]);
 
   const allChecked = useMemo(() => allPageIds.every(id => selectedIdsSet.has(id)),
-    [ allPageIds, selectedIdsSet ]);
+    [allPageIds, selectedIdsSet]);
   const allUnchecked = useMemo(() => allPageIds.every(id => !selectedIdsSet.has(id)),
-    [ allPageIds, selectedIdsSet ]);
+    [allPageIds, selectedIdsSet]);
   const allIndeterminate = !allChecked && !allUnchecked;
 
   const ref = useRef<HTMLInputElement>(null);
@@ -22,11 +23,11 @@ export default function useSelectAllCheckbox<T> (
   useEffect(() => {
     if (ref.current)
       ref.current.indeterminate = allIndeterminate;
-  }, [ allIndeterminate ]);
+  }, [allIndeterminate]);
 
   const handleTriggerAll = useCallback(({currentTarget: {checked}}: React.ChangeEvent<HTMLInputElement>) => {
     onSelectedIdsChange(checked ? allPageIds : []);
-  }, [ allPageIds, onSelectedIdsChange ]);
+  }, [allPageIds, onSelectedIdsChange]);
 
   const handleCheckboxClick = useCallback((e: React.MouseEvent<HTMLInputElement>) => {
     e.stopPropagation();
@@ -46,7 +47,7 @@ export default function useSelectAllCheckbox<T> (
       ref={ref}
       type="checkbox" />;
     return SelectAllCheckbox;
-  }, [ allChecked, allUnchecked, handleTriggerAll, handleCheckboxClick, ref ]);
+  }, [allChecked, allUnchecked, handleTriggerAll, handleCheckboxClick, ref]);
 
   return useMemo(() => ({
     headerCellContent: selectAllCheckbox,
@@ -56,5 +57,5 @@ export default function useSelectAllCheckbox<T> (
         cursor: 'pointer',
       },
     },
-  }), [ selectAllCheckbox, handleCellClick ]);
+  }), [selectAllCheckbox, handleCellClick]);
 }

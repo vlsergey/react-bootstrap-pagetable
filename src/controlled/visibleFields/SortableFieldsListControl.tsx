@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Col from 'react-bootstrap/Col';
+
 import FieldModel from '../../FieldModel';
 import FieldsListControl from './FieldsListControl';
 
@@ -22,32 +23,32 @@ const SortableFieldsListControl = ({
 }: PropsType) => {
 
   const handleTop = useCallback(() =>
-    onOptionsChange([ ...selected, ...options.map(({key}) => key).filter(key => !selected.includes(key)) ]),
-  [ onOptionsChange, options, selected ]);
+    onOptionsChange([...selected, ...options.map(({key}) => key).filter(key => !selected.includes(key))]),
+  [onOptionsChange, options, selected]);
 
   const handleUp = useCallback(() => {
     const newResult = options.map(({key}) => key);
     for (let i = 1; i < newResult.length; i++) {
-      if (selected.includes(newResult[ i ])) {
-        [ newResult[ i - 1 ], newResult[ i ] ] = [ newResult[ i ], newResult[ i - 1 ] ];
+      if (selected.includes(newResult[i])) {
+        [newResult[i - 1], newResult[i]] = [newResult[i], newResult[i - 1]];
       }
     }
     return onOptionsChange(newResult);
-  }, [ onOptionsChange, options, selected ]);
+  }, [onOptionsChange, options, selected]);
 
   const handleDown = useCallback(() => {
     const newResult = options.map(({key}) => key);
     for (let i = newResult.length - 2; i >= 0; i--) {
-      if (selected.includes(newResult[ i ])) {
-        [ newResult[ i ], newResult[ i + 1 ] ] = [ newResult[ i + 1 ], newResult[ i ] ];
+      if (selected.includes(newResult[i])) {
+        [newResult[i], newResult[i + 1]] = [newResult[i + 1], newResult[i]];
       }
     }
     return onOptionsChange(newResult);
-  }, [ onOptionsChange, options, selected ]);
+  }, [onOptionsChange, options, selected]);
 
   const handleBottom = useCallback(() =>
-    onOptionsChange([ ...options.map(({key}) => key).filter(key => !selected.includes(key)), ...selected ]),
-  [ onOptionsChange, options, selected ]);
+    onOptionsChange([...options.map(({key}) => key).filter(key => !selected.includes(key)), ...selected]),
+  [onOptionsChange, options, selected]);
 
   return <>
     <Col>

@@ -3,12 +3,13 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import FieldModel from '../../FieldModel';
-import FieldsListControl from './FieldsListControl';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
-import SortableFieldsListControl from './SortableFieldsListControl';
+
+import FieldModel from '../../FieldModel';
 import {useControlledContext} from '../ControlledContext';
+import FieldsListControl from './FieldsListControl';
+import SortableFieldsListControl from './SortableFieldsListControl';
 
 interface PropsType {
   show: boolean;
@@ -22,40 +23,40 @@ const VisibleFieldsModal = ({onHide, show}: PropsType): JSX.Element => {
     visibleFields} = useControlledContext();
 
   const fieldsMap: Map<string, FieldModel<unknown, unknown>> = useMemo(() =>
-    new Map(itemModel.fields.map(field => [ field.key, field ])), [ itemModel.fields ]);
+    new Map(itemModel.fields.map(field => [field.key, field])), [itemModel.fields]);
 
   const visibleFieldsSet: Set<string> = useMemo(() => new Set(visibleFields),
-    [ visibleFields ]);
+    [visibleFields]);
 
   const available = useMemo(() =>
-    itemModel.fields.filter(({key}) => !visibleFieldsSet.has(key)), [ itemModel, visibleFieldsSet ]);
+    itemModel.fields.filter(({key}) => !visibleFieldsSet.has(key)), [itemModel, visibleFieldsSet]);
 
   const visible = useMemo(() =>
     visibleFields.map(fieldKey => fieldsMap.get(fieldKey)).filter(field => !!field),
-  [ visibleFields, fieldsMap ]);
+  [visibleFields, fieldsMap]);
 
-  const [ availableSelected, setAvailableSelected ] = useState<string[]>([]);
-  const [ visibleSelected, setVisibleSelected ] = useState<string[]>([]);
+  const [availableSelected, setAvailableSelected] = useState<string[]>([]);
+  const [visibleSelected, setVisibleSelected] = useState<string[]>([]);
 
   const handleAllToRight = useCallback(() => {
-    onVisibleFieldsChange([ ...visibleFields, ...available.map(({key}) => key) ]);
+    onVisibleFieldsChange([...visibleFields, ...available.map(({key}) => key)]);
     setAvailableSelected([]);
-  }, [ available, onVisibleFieldsChange, visibleFields ]);
+  }, [available, onVisibleFieldsChange, visibleFields]);
 
   const handleToRight = useCallback(() => {
-    onVisibleFieldsChange([ ...visibleFields, ...availableSelected ]);
+    onVisibleFieldsChange([...visibleFields, ...availableSelected]);
     setAvailableSelected([]);
-  }, [ onVisibleFieldsChange, setAvailableSelected, visibleFields, availableSelected ]);
+  }, [onVisibleFieldsChange, setAvailableSelected, visibleFields, availableSelected]);
 
   const handleToLeft = useCallback(() => {
     onVisibleFieldsChange(visibleFields.filter(fieldKey => !visibleSelected.includes(fieldKey)));
     setVisibleSelected([]);
-  }, [ onVisibleFieldsChange, visibleFields, visibleSelected, setVisibleSelected ]);
+  }, [onVisibleFieldsChange, visibleFields, visibleSelected, setVisibleSelected]);
 
   const handleAllToLeft = useCallback(() => {
     onVisibleFieldsChange([]);
     setVisibleSelected([]);
-  }, [ onVisibleFieldsChange, setVisibleSelected ]);
+  }, [onVisibleFieldsChange, setVisibleSelected]);
 
   const handleReset = useCallback(() => {
     const defaultFields = itemModel.fields
@@ -63,7 +64,7 @@ const VisibleFieldsModal = ({onHide, show}: PropsType): JSX.Element => {
     onVisibleFieldsChange(defaultFields);
     setAvailableSelected([]);
     setVisibleSelected([]);
-  }, [ itemModel, onVisibleFieldsChange, setAvailableSelected, setVisibleSelected ]);
+  }, [itemModel, onVisibleFieldsChange, setAvailableSelected, setVisibleSelected]);
 
   if (disableVisibleFieldsChange) {
     return null;
