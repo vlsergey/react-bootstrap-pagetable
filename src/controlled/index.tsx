@@ -44,7 +44,8 @@ export default function ControlledBase<T> ({
     hover: true,
     striped: true,
     style: {
-      width: 'auto !important'
+      height: 'fit-content', // so hyperlink will occupie whole cell
+      width: 'auto !important',
     }
   },
   ...etcProps

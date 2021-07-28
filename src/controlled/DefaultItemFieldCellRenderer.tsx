@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {css, jsx} from '@emotion/react';
 import React, {useMemo} from 'react';
 
 import ItemFieldValue from '../ItemFieldValue';
@@ -26,7 +28,7 @@ function DefaultItemFieldCellRenderer<ItemType, ValueType> (
     }, children);
   }
 
-  return <td {...etc}>
+  return <td css={css('height: inherit;')} {...etc}>
     {children}
   </td>;
 }

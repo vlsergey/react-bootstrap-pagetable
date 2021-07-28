@@ -11,18 +11,17 @@ function DefaultItemFieldCellLinkWrapper ({
   return <a css={css(`
 & {
 display: block;
+height: 100%;
 }
 .table & {
 margin: -0.75rem;
 padding: 0.75rem;
+height: calc(100% + 2 * 0.75rem);
 }
 .table-sm & {
 margin: -0.3rem;
 padding: 0.3rem;
-}
-.table-lg & {
-margin: -0.75rem;
-padding: 0.75rem;
+height: calc(100% + 2 * 0.3rem);
 }
 `)} href={hyperlink}>{children}</a>;
 }
