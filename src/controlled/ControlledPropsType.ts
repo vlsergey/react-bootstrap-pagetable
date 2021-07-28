@@ -1,6 +1,7 @@
 import Table from 'react-bootstrap/Table';
 
 import FetchArgs from '../FetchArgs';
+import FieldModel from '../FieldModel';
 import ItemModel from '../ItemModel';
 import Page from '../Page';
 import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
@@ -16,6 +17,7 @@ interface ControlledPropsType<T> {
   footerRenderer?: (props: unknown) => JSX.Element;
   idPrefix?: string;
   itemModel: ItemModel<T>;
+  itemFieldCellHyperlink?: (item: T, field: FieldModel<T, unknown>) => string;
   itemFieldCellRenderer?: (props: ItemFieldCellRendererPropsType<T, unknown>) => JSX.Element;
   hasError?: boolean;
   headerElements?: ((props: unknown) => JSX.Element)[][][];

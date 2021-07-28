@@ -6,7 +6,8 @@ import FieldModel, {ValueRendererProps} from '../FieldModel';
 import ItemModel from '../ItemModel';
 import useSelectAllCheckbox from './useSelectAllCheckbox';
 
-type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'itemModel' | 'page' | 'rowProps'>;
+type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>,
+  'itemFieldCellHyperlink' | 'itemModel' | 'page' | 'rowProps'>;
 
 export interface NewComponentProps {
   selectable?: boolean;
@@ -22,6 +23,7 @@ export default
   ((props: NewComponentProps & P) => JSX.Element) => {
 
     const WithSelectable = ({
+      itemFieldCellHyperlink,
       itemModel,
       page,
       selectable,
@@ -72,15 +74,28 @@ export default
         ]
       }), [selectAllProps, itemModel, selectableFieldGetter]);
 
+      const hasSelectedIds = selectedIds.length > 0;
+      const newItemFieldCellHyperlink = useMemo(() => {
+        if (!itemFieldCellHyperlink) return itemFieldCellHyperlink;
+        return (item: T, field: FieldModel<T, unknown>): string => {
+          if (field.key === '$selectable' || hasSelectedIds) {
+            return null;
+          }
+          return itemFieldCellHyperlink(item, field);
+        };
+      }, [itemFieldCellHyperlink, hasSelectedIds]);
+
       if (!selectable) {
         return <Child
           {...etcProps as unknown as P}
+          itemFieldCellHyperlink={itemFieldCellHyperlink}
           itemModel={itemModel}
           page={page} />;
       }
 
       return <Child
         {...etcProps as unknown as P}
+        itemFieldCellHyperlink={newItemFieldCellHyperlink}
         itemModel={newItemModel}
         page={page}
         rowProps={rowProps} />;

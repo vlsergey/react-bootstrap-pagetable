@@ -1,7 +1,9 @@
 import React, {useContext} from 'react';
 
+import FieldModel from '../FieldModel';
 import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
 import ControlledPropsType from './ControlledPropsType';
+import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 
 // TODO: split
 
@@ -12,6 +14,8 @@ export interface ControlledContextType<T>
   columnHeaderCell: (props: ColumnHeaderCellPropsType) => JSX.Element;
   footerElements: ((props: unknown) => JSX.Element)[][][];
   headerElements: ((props: unknown) => JSX.Element)[][][];
+  itemFieldCellHyperlink: (item: T, field: FieldModel<T, unknown>) => string;
+  itemFieldCellRenderer: (props: ItemFieldCellRendererPropsType<T, unknown>) => JSX.Element;
   noContentRow: (props: unknown) => JSX.Element;
 
   // additional context props

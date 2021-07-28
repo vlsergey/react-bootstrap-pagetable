@@ -54,25 +54,26 @@ To enable [react-router](https://reactrouter.com/) integration import another va
 import {UncontrolledWithReactRouter as PageTable} from '@vlsergey/react-bootstrap-pagetable';
 ```
 
-| Property                | Data type                                      | Default value | Description |
-| ----------------------- | ---------------------------------------------- | ------------- | ----------- |
-| **`fetch`**             | `( fetchArgs: FetchArgs ) => Promise<Page<T>>` | **required**  | See below   |
-| **`itemModel`**         | `ItemModel<T>`                                 | **required**  | See below   |
-| `actions`               | `Action[]`                                     | `0`           | Allows to display buttons at the bottom of page table and use them to execute actions over single or multiple elements from single page of the table. |
-| `defaultPage`           | `number`                                       | `0`           | Default page to display (0-based) |
-| `defaultSize`           | `number`                                       | `10`          | Default page size to display |
-| `defaultSort`           | `string`                                       |                       | Default page sort. One can specify only field name like `name` or field name and direction like `name,ASC` / `name,DESC`. |
-| `footerElements`        | `(() => JSX.Element)[][][]`                    |                       | Elements to be rendered by `DefaultFooter` before page at the left (0), center (1), and right side (2). By default it's actions toolbar on the first line, visible fields settings button and page index at the left and page size at the right of the second line.
-| `footerRenderer`        | `( props: HeaderFooterPropsType )`             | `DefaultFooter`       | Component (function) used to render table footer with pagination and page size selector |
-| `headerElements`        | `(() => JSX.Element)[][][]`                    |                       | Elements to be rendered by `DefaultHeader` before page at the left (0), center (1), and right side (2). By default it's visible fields settings button and page index at the left and page size at the right.
-| `headerRenderer`        | `( props: HeaderFooterPropsType )`             | `DefaultHeader`       | Component (function) used to render table header with pagination and page size selector |
-| `itemFieldCellRenderer` | `( props: ItemFieldCellRendererProps ) => JSX.Element` | `DefaultItemFieldCellRenderer` | Allows to override default item cell renderer (including selection checkbox cell). |
-| `noContentRow`          | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
-| `rowsRenderer`          | `( props: RowsRendererProps ) => JSX.Element`  | `DefaultRowsRenderer` | Allows to override default rows renderer. |
-| `rowProps`              | `( item: T ) => React.ComponentProps<'tr'>`   | `() => ({})`  | Additional properties for inner `<tr>` element |
-| `size`                  | `undefined` \| `'lg'` \| `'sm'`                | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
-| `tableProps`            | [props of react bootstrap `<Table>` component](https://react-bootstrap.github.io/components/table/#table-props) | `{}` | Additional properties for inner `<Table>` component |
-| `urlParamsPrefix`       | `string`                                       | `""`          | What is the prefix of `page`, `size`, `sort` and other URL arguments that `PageTable` should interact with. Only with [react-router](https://reactrouter.com/) integration enabled.  |
+| Property                 | Data type                                      | Default value | Description |
+| ------------------------ | ---------------------------------------------- | ------------- | ----------- |
+| **`fetch`**              | `( fetchArgs: FetchArgs ) => Promise<Page<T>>` | **required**  | See below   |
+| **`itemModel`**          | `ItemModel<T>`                                 | **required**  | See below   |
+| `actions`                | `Action[]`                                     | `0`           | Allows to display buttons at the bottom of page table and use them to execute actions over single or multiple elements from single page of the table. |
+| `defaultPage`            | `number`                                       | `0`           | Default page to display (0-based) |
+| `defaultSize`            | `number`                                       | `10`          | Default page size to display |
+| `defaultSort`            | `string`                                       |                       | Default page sort. One can specify only field name like `name` or field name and direction like `name,ASC` / `name,DESC`. |
+| `footerElements`         | `(() => JSX.Element)[][][]`                    |                       | Elements to be rendered by `DefaultFooter` before page at the left (0), center (1), and right side (2). By default it's actions toolbar on the first line, visible fields settings button and page index at the left and page size at the right of the second line.
+| `footerRenderer`         | `( props: HeaderFooterPropsType )`             | `DefaultFooter`       | Component (function) used to render table footer with pagination and page size selector |
+| `headerElements`         | `(() => JSX.Element)[][][]`                    |                       | Elements to be rendered by `DefaultHeader` before page at the left (0), center (1), and right side (2). By default it's visible fields settings button and page index at the left and page size at the right.
+| `headerRenderer`         | `( props: HeaderFooterPropsType )`             | `DefaultHeader`       | Component (function) used to render table header with pagination and page size selector |
+| `itemFieldCellHyperlink` | `(item: T, field: FieldModel<T, unknown>) => string` | `() => null` | Allow to wrap cell content in hyperlink element (`<a>`). Will not be used when pageTable has at least single selected element. |
+| `itemFieldCellRenderer`  | `( props: ItemFieldCellRendererProps ) => JSX.Element` | `DefaultItemFieldCellRenderer` | Allows to override default item cell renderer (including selection checkbox cell). |
+| `noContentRow`           | `( tableColumnsCount: number ) => ReactNode`   | "_no content on this page, select another page to display_" | What to display instead of row when no data present on the fetched page |
+| `rowsRenderer`           | `( props: RowsRendererProps ) => JSX.Element`  | `DefaultRowsRenderer` | Allows to override default rows renderer. |
+| `rowProps`               | `( item: T ) => React.ComponentProps<'tr'>`   | `() => ({})`  | Additional properties for inner `<tr>` element |
+| `size`                   | `undefined` \| `'lg'` \| `'sm'`                | `undefined`   | Will be passed to react bootstrap `Table` component as well as to `Button`, `Form.Control` and other inner components to change their visible size. |
+| `tableProps`             | [props of react bootstrap `<Table>` component](https://react-bootstrap.github.io/components/table/#table-props) | `{}` | Additional properties for inner `<Table>` component |
+| `urlParamsPrefix`        | `string`                                       | `""`          | What is the prefix of `page`, `size`, `sort` and other URL arguments that `PageTable` should interact with. Only with [react-router](https://reactrouter.com/) integration enabled.  |
 
 ### Item model
 So far itemModel (`itemModel: ItemModel`) defines 2 properties:

@@ -9,6 +9,7 @@ import ControlledPropsType from './ControlledPropsType';
 import DefaultColumnHeaderCell from './DefaultColumnHeaderCell';
 import DefaultColumnHeaderRow from './DefaultColumnHeaderRow';
 import {DefaultFooter, DefaultHeader} from './DefaultHeaderFooter';
+import defaultItemFieldCellHyperlink from './defaultItemFieldCellHyperlink';
 import DefaultItemFieldCellRenderer from './DefaultItemFieldCellRenderer';
 import DefaultNoContentRow from './DefaultNoContentRow';
 import DefaultRowsRenderer from './DefaultRowsRenderer';
@@ -28,6 +29,7 @@ export default function ControlledBase<T> ({
   headerElements,
   headerRenderer = DefaultHeader,
   idPrefix,
+  itemFieldCellHyperlink = defaultItemFieldCellHyperlink,
   itemFieldCellRenderer = DefaultItemFieldCellRenderer,
   itemModel,
   loading = false,
@@ -67,6 +69,7 @@ export default function ControlledBase<T> ({
     headerElements,
     headerRenderer,
     idPrefix,
+    itemFieldCellHyperlink,
     itemFieldCellRenderer,
     itemModel,
     loading,
