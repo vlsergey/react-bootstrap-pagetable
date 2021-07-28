@@ -53,7 +53,7 @@ export default class CustomRowRendererDemo extends PureComponent<unknown, StateT
   private readonly handleFetchArgsChange = (fetchArgs: FetchArgs) =>
   { this.setState({fetchArgs}); };
 
-  private readonly handleRetry = (): unknown =>
+  private readonly handleRetry = () =>
   { this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1})); };
 
   override render (): ReactNode {

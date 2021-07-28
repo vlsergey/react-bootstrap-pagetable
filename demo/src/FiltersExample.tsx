@@ -10,8 +10,6 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
-type DataType = Record<string, unknown>;
-
 interface StateType {
   data: string;
   fetchArgs: FetchArgs;
@@ -79,7 +77,7 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
   };
 
   private readonly handleDataChange =
-    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): void =>
+    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
     { this.setState({data: value}); };
 
   private readonly handleFetchArgsChange = (fetchArgs: FetchArgs) =>
@@ -89,7 +87,7 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
     ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
     { this.setState({fetchArgs: JSON.parse(value) as FetchArgs}); };
 
-  private readonly handleRetry = (): unknown =>
+  private readonly handleRetry = () =>
   { this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1})); };
 
   override render (): ReactNode {
@@ -130,9 +128,9 @@ export default class FiltersExample extends PureComponent<unknown, StateType> {
   private renderResult (): ReactNode {
     const {data, fetchArgs} = this.state;
 
-    let parsedData: DataType[];
+    let parsedData: TestType[];
     try {
-      parsedData = JSON.parse(data) as DataType[];
+      parsedData = JSON.parse(data) as TestType[];
     } catch (err) {
       const error = err as {message?: string};
       return <Alert variant="danger">

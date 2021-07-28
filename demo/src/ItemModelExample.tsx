@@ -52,10 +52,10 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
   };
 
   private readonly handleDataChange =
-    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): void =>
+    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
     { this.setState({data: value}); };
 
-  private readonly handleFetchArgsChange = (fetchArgs: FetchArgs): void =>
+  private readonly handleFetchArgsChange = (fetchArgs: FetchArgs) =>
   { this.setState({fetchArgs}); };
 
   private readonly handleFetchArgsTextChange =
@@ -63,10 +63,10 @@ export default class ItemModelExample extends PureComponent<unknown, StateType> 
     { this.setState({fetchArgs: JSON.parse(value) as FetchArgs}); };
 
   private readonly handleItemModelChange =
-    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): unknown =>
+    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
     { this.setState({itemModel: value}); };
 
-  private readonly handleRetry = (): unknown =>
+  private readonly handleRetry = () =>
   { this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1})); };
 
   override render (): ReactNode {

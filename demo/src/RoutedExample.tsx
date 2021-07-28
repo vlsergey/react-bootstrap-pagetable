@@ -30,7 +30,7 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
   };
 
   private readonly handleDataChange =
-    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>): void =>
+    ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
     { this.setState({data: value}); };
 
   private readonly handleFetchArgsChange = (fetchArgs: FetchArgs) =>
@@ -40,7 +40,7 @@ export default class RoutedExample extends PureComponent<unknown, StateType> {
     ({currentTarget: {value}}: React.ChangeEvent<HTMLInputElement>) =>
     { this.setState({fetchArgs: JSON.parse(value) as FetchArgs}); };
 
-  private readonly handleRetry = (): unknown =>
+  private readonly handleRetry = () =>
   { this.setState(({retryCounter}) => ({retryCounter: retryCounter + 1})); };
 
   override render (): ReactNode {
