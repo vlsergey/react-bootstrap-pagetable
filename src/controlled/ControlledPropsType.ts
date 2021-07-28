@@ -5,6 +5,7 @@ import FieldModel from '../FieldModel';
 import ItemModel from '../ItemModel';
 import Page from '../Page';
 import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
+import ItemFieldCellLinkWrapperProps from './ItemFieldCellLinkWrapperProps';
 import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 
 interface ControlledPropsType<T> {
@@ -18,6 +19,7 @@ interface ControlledPropsType<T> {
   idPrefix?: string;
   itemModel: ItemModel<T>;
   itemFieldCellHyperlink?: (item: T, field: FieldModel<T, unknown>) => string;
+  itemFieldCellLinkWrapper?: (props: ItemFieldCellLinkWrapperProps<T, unknown>) => JSX.Element;
   itemFieldCellRenderer?: (props: ItemFieldCellRendererPropsType<T, unknown>) => JSX.Element;
   hasError?: boolean;
   headerElements?: ((props: unknown) => JSX.Element)[][][];

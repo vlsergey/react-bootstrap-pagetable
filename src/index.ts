@@ -6,10 +6,12 @@ import ControlledBase from './controlled';
 import ControlledContext, {ControlledContextType, useControlledContext}
   from './controlled/ControlledContext';
 import {DefaultFooter, DefaultHeader} from './controlled/DefaultHeaderFooter';
+import DefaultItemFieldCellLinkWrapper from './controlled/DefaultItemFieldCellLinkWrapper';
 import DefaultItemFieldCellRenderer,
 {PropsType as DefaultItemFieldCellRendererPropsType}
   from './controlled/DefaultItemFieldCellRenderer';
 import DefaultRowsRenderer from './controlled/DefaultRowsRenderer';
+import ItemFieldCellLinkWrapperProps from './controlled/ItemFieldCellLinkWrapperProps';
 import ItemFieldCellRendererPropsType
   from './controlled/ItemFieldCellRendererPropsType';
 import PageIndexSelector from './controlled/PageIndexSelector';
@@ -26,6 +28,7 @@ import withFilterable from './filterable/withFilterable';
 import ItemFieldValue from './ItemFieldValue';
 import ItemModel from './ItemModel';
 import Page, {emptyPage, singlePage} from './Page';
+import ReactRouterItemFieldCellLinkWrapper from './reactRouter/ReactRouterItemFieldCellLinkWrapper';
 import withReactRouter from './reactRouter/withReactRouter';
 import withSelectable from './selectable/withSelectable';
 import withSortable from './sortable';
@@ -71,6 +74,7 @@ export {
   // customization
   ControlledContext, ControlledContextType, useControlledContext, useVisibleFields,
   ItemFieldCellRendererPropsType, DefaultItemFieldCellRenderer, DefaultItemFieldCellRendererPropsType,
+  ItemFieldCellLinkWrapperProps, DefaultItemFieldCellLinkWrapper, ReactRouterItemFieldCellLinkWrapper,
   DefaultRowsRenderer,
 
   // header-footer customization

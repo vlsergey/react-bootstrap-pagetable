@@ -7,6 +7,7 @@ import FetchArgs from '../FetchArgs';
 import ItemModel from '../ItemModel';
 import strToSort from '../sortable/strToSort';
 import fetchArgsToUrlParams from './fetchArgsToUrlParams';
+import ReactRouterItemFieldCellLinkWrapper from './ReactRouterItemFieldCellLinkWrapper';
 import urlParamsToFetchArgs from './urlParamsToFetchArgs';
 
 export type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>, 'fetchArgs' | 'itemModel' | 'onFetchArgsChange'>;
@@ -31,6 +32,7 @@ const withReactRouterImpl =
     ...Child.defaultProps,
     defaultPage: 0,
     defaultSize: 10,
+    itemFieldCellLinkWrapper: ReactRouterItemFieldCellLinkWrapper,
   } as unknown as Partial<InnerComponentProps<T, P>>;
 
   getDefaultFetchArgs = memoizeOne(

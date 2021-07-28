@@ -3,6 +3,7 @@ import React, {useContext} from 'react';
 import FieldModel from '../FieldModel';
 import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
 import ControlledPropsType from './ControlledPropsType';
+import ItemFieldCellLinkWrapperProps from './ItemFieldCellLinkWrapperProps';
 import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 
 // TODO: split
@@ -15,6 +16,7 @@ export interface ControlledContextType<T>
   footerElements: ((props: unknown) => JSX.Element)[][][];
   headerElements: ((props: unknown) => JSX.Element)[][][];
   itemFieldCellHyperlink: (item: T, field: FieldModel<T, unknown>) => string;
+  itemFieldCellLinkWrapper: (props: ItemFieldCellLinkWrapperProps<T, unknown>) => JSX.Element;
   itemFieldCellRenderer: (props: ItemFieldCellRendererPropsType<T, unknown>) => JSX.Element;
   noContentRow: (props: unknown) => JSX.Element;
 
