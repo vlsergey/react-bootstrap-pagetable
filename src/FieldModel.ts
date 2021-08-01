@@ -12,8 +12,8 @@ export interface FilterCellRendererProps<ItemType, ValueType, FilterValueType> {
 }
 
 export interface FilterValueConverter<F> {
-  fromString: (str: string) => F;
-  toString: (filterBy: F) => string;
+  fromStrings: (str: string[]) => F;
+  toStrings: (filterBy: F) => string[];
 }
 
 export interface ValueRendererProps<ItemType, ValueType> {
@@ -44,8 +44,8 @@ export const defaultGetter =
 
 export function defaultFilterValueConverter (): FilterValueConverter<unknown> {
   return {
-    fromString: JSON.parse,
-    toString: JSON.stringify,
+    fromStrings: (src: string[]) => (src?.length ? JSON.parse(src[0]) : undefined) as unknown,
+    toStrings: (value: unknown) => [JSON.stringify(value)],
   };
 }
 

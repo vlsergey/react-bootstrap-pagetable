@@ -11,7 +11,7 @@ export default function urlParamsToFetchArgs (
 ): FetchArgs {
   const prefix: string = urlParamsPrefix || '';
 
-  const ifHave = (paramName: string, consumer: (paramValue: string) => unknown) => {
+  const ifHaveSingle = (paramName: string, consumer: (paramValue: string) => unknown) => {
     const fullParamName: string = prefix + paramName;
     if (params.has(fullParamName)) {
       consumer(params.get(fullParamName));
@@ -23,12 +23,18 @@ export default function urlParamsToFetchArgs (
     size: defaultFetchArgs.size,
     sort: defaultFetchArgs.sort,
   } as FetchArgs;
-  ifHave('page', page => result.page = Number(page) - 1);
-  ifHave('size', size => result.size = Number(size));
+  ifHaveSingle('page', page => result.page = Number(page) - 1);
+  ifHaveSingle('size', size => result.size = Number(size));
 
-  if (params.has(prefix + 'sort')) {
-    const resultSort = [];
-    for (const sortValue of params.getAll(prefix + 'sort')) {
+  const ifHaveAll = (paramName: string, consumer: (paramValue: string[]) => unknown) => {
+    const fullParamName: string = prefix + paramName;
+    if (params.has(fullParamName)) {
+      consumer(params.getAll(fullParamName));
+    }
+  };
+
+  ifHaveAll('sort', sortParamValues => {
+    result.sort = sortParamValues.map(sortValue => {
       let field: string = sortValue;
       let direction: Direction = 'ASC';
 
@@ -38,20 +44,19 @@ export default function urlParamsToFetchArgs (
         direction = sortValue.substring(commaIndex).toUpperCase() === ',DESC' ? 'DESC' : 'ASC';
       }
 
-      resultSort.push({field, direction});
-    }
-    result.sort = resultSort;
-  }
+      return {field, direction};
+    });
+  });
 
   const defConverter: FilterValueConverter<unknown> = defaultFilterValueConverter();
   itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown, unknown>) =>
-  { ifHave(key, filterStringValue => {
+  { ifHaveAll(key, (values: string[]) => {
     if (!result.filter) {
       result.filter = {};
     }
     const converter: FilterValueConverter<unknown> = filterValueConverter || defConverter;
-    result.filter[key] = converter.fromString(filterStringValue);
-  }); }
-  );
+    result.filter[key] = converter.fromStrings(values);
+  }); });
+
   return result;
 }
