@@ -21,8 +21,8 @@ const FilterCell = ({filterBy, onFilterByChange}: FilterCellRendererProps<Exampl
   </td>;
 
 const filterValueConverter: FilterValueConverter<string> = {
-  fromString: (str: string) => str,
-  toString: (str: string) => str,
+  fromStrings: (src: string[]) => src?.length > 0 ? src[0] : undefined,
+  toStrings: (str: string) => str ? [str] : [],
 };
 
 export const ExampleItemModel: ItemModel<ExampleItemType> = {

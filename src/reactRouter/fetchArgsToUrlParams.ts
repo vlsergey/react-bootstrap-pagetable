@@ -24,12 +24,13 @@ export default function fetchArgsToUrlParams (
   }
 
   itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown, unknown>) => {
+    params.delete(prefix + key);
+
     const filterValue = (fetchArgs.filter || {})[key];
     if (filterValue !== undefined) {
       const converter: FilterValueConverter<unknown> = filterValueConverter || defaultFilterValueConverter();
-      params.set(prefix + key, converter.toString(filterValue));
-    } else {
-      params.delete(prefix + key);
+      for (const value of converter.toStrings(filterValue))
+        params.append(prefix + key, value);
     }
   });
   return params;
