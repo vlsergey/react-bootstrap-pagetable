@@ -1,16 +1,13 @@
 import React from 'react';
 
-import ControlledPropsType from '../controlled/ControlledPropsType';
-import DefaultColumnHeaderRow from '../controlled/DefaultColumnHeaderRow';
+import {useControlledContext} from '../controlled/ControlledContext';
 import useVisibleFields from '../controlled/visibleFields/useVisibleFields';
 import FieldModel from '../FieldModel';
 import FieldFilterCell from './FieldFilterCell';
 
-const ColumnHeaderRowWithFilterImpl = (
-  {columnHeaderRow}: Pick<ControlledPropsType<unknown>, 'columnHeaderRow'>
-): JSX.Element => {
-  const visibleFields: FieldModel<unknown, unknown>[] = useVisibleFields();
-  const ColumnHeaderRow = columnHeaderRow || DefaultColumnHeaderRow;
+function ColumnHeaderRowWithFilter<T> (): JSX.Element {
+  const ColumnHeaderRow = useControlledContext<T>().columnHeaderRow;
+  const visibleFields: FieldModel<T, unknown>[] = useVisibleFields();
 
   return <>
     <ColumnHeaderRow />
@@ -20,6 +17,6 @@ const ColumnHeaderRowWithFilterImpl = (
       )}
     </tr>
   </>;
-};
+}
 
-export default React.memo(ColumnHeaderRowWithFilterImpl);
+export default React.memo(ColumnHeaderRowWithFilter);
