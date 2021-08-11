@@ -1,19 +1,19 @@
 import {useMemo} from 'react';
 
+import {notEmpty} from '../../arrayUtils';
 import FieldModel from '../../FieldModel';
 import {useControlledContext} from '../ControlledContext';
 
 export default function useVisibleFields<T> (): FieldModel<T, unknown>[] {
-  const {visibleFields, itemModel} = useControlledContext();
+  const {visibleFields, itemModel} = useControlledContext<T>();
 
-  const allFields: FieldModel<T, unknown>[] = itemModel.fields;
+  const allFields = itemModel.fields;
   const fieldsMap = useMemo(() =>
-    new Map(allFields.map((field: FieldModel<unknown, unknown>) => [field.key, field]))
+    new Map(allFields.map(field => [field.key, field]))
   , [allFields]);
 
-  const result: FieldModel<T, unknown>[] = useMemo(() => visibleFields
-    .map((fieldKey: string) => fieldsMap.get(fieldKey))
-    .filter((field: FieldModel<unknown, unknown>) => !!field)
+  const result = useMemo(() =>
+    visibleFields.map(fieldKey => fieldsMap.get(fieldKey)).filter(notEmpty)
   , [fieldsMap, visibleFields]);
 
   return result;

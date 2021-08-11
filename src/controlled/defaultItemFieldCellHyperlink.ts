@@ -1,3 +1,3 @@
-export default function defaultItemFieldCellHyperlink (): string {
+export default function defaultItemFieldCellHyperlink (): null {
   return null;
 }

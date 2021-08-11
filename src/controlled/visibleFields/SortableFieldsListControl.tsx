@@ -29,7 +29,9 @@ const SortableFieldsListControl = ({
   const handleUp = useCallback(() => {
     const newResult = options.map(({key}) => key);
     for (let i = 1; i < newResult.length; i++) {
+      // @ts-expect-error TS2345
       if (selected.includes(newResult[i])) {
+        // @ts-expect-error TS2345
         [newResult[i - 1], newResult[i]] = [newResult[i], newResult[i - 1]];
       }
     }
@@ -39,7 +41,9 @@ const SortableFieldsListControl = ({
   const handleDown = useCallback(() => {
     const newResult = options.map(({key}) => key);
     for (let i = newResult.length - 2; i >= 0; i--) {
+      // @ts-expect-error TS2345
       if (selected.includes(newResult[i])) {
+        // @ts-expect-error TS2345
         [newResult[i], newResult[i + 1]] = [newResult[i + 1], newResult[i]];
       }
     }

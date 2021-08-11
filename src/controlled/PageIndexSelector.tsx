@@ -3,7 +3,7 @@ import React, {useCallback} from 'react';
 
 import {useControlledContext} from './ControlledContext';
 
-const PageIndexSelector = () => {
+const PageIndexSelector = (): JSX.Element => {
   const {fetchArgs, onFetchArgsChange, page, size} = useControlledContext();
 
   const handlePageChange = useCallback(({target: {value}}: {target: {value: number}}) =>

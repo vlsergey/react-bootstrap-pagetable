@@ -12,7 +12,7 @@ export interface FilterCellRendererProps<ItemType, ValueType, FilterValueType> {
 }
 
 export interface FilterValueConverter<F> {
-  fromStrings: (str: string[]) => F;
+  fromStrings: (str: string[]) => F | undefined;
   toStrings: (filterBy: F) => string[];
 }
 
@@ -28,12 +28,12 @@ interface FieldModel<ItemType, ValueType> {
   hiddenByDefault?: boolean;
 
   sortable?: boolean;
-  renderFilterCell?: (props: FilterCellRendererProps<ItemType, ValueType, unknown>) => ReactNode;
+  renderFilterCell?: React.ComponentType<FilterCellRendererProps<ItemType, ValueType, unknown>>;
   filterValueConverter?: FilterValueConverter<unknown>;
 
   getter?: ValueGetter<ItemType, ValueType>;
-  render?: (props: ValueRendererProps<ItemType, ValueType>) => ReactNode;
-  headerCellContent?: (props: {field: FieldModel<ItemType, ValueType>}) => JSX.Element;
+  render?: React.ComponentType<ValueRendererProps<ItemType, ValueType>>;
+  headerCellContent?: React.ComponentType<{field: FieldModel<ItemType, ValueType>}>;
   headerCellProps?: React.ComponentProps<'th'>;
   valueCellProps?: (value: ValueType, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>) => Record<string, unknown>;
 }
@@ -42,10 +42,14 @@ export const defaultGetter =
   <I, V>(item: I, fieldModel: FieldModel<I, V>): V =>
     (item as Record<string, unknown>)[fieldModel.key] as V;
 
-export function defaultFilterValueConverter (): FilterValueConverter<unknown> {
+export function defaultFilterValueConverter<F> (): FilterValueConverter<F> {
   return {
-    fromStrings: (src: string[]) => (src?.length ? JSON.parse(src[0]) : undefined) as unknown,
-    toStrings: (value: unknown) => [JSON.stringify(value)],
+    fromStrings: (src: string[]) => {
+      const firstValue = src?.[0];
+      if (!firstValue) return undefined;
+      return JSON.parse(firstValue) as F;
+    },
+    toStrings: (value: F) => [JSON.stringify(value)],
   };
 }
 

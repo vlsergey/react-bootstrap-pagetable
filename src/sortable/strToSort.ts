@@ -1,21 +1,21 @@
 import {SortBy} from '../FetchArgs';
 
-export default function strToSort (str: (string | string[])): SortBy[] {
-  if (!str) return null;
+export default function strToSort (str?: (string | string[])): undefined | SortBy[] {
+  if (!str) return undefined;
 
   if (typeof str === 'string') {
-    const sortBy: SortBy = strToSortBy(str);
-    if (!sortBy) return null;
+    const sortBy = strToSortBy(str);
+    if (!sortBy) return undefined;
     return [sortBy];
   }
 
   const strAsArray = str;
-  const resultArray: SortBy[] = strAsArray.map(strToSortBy).filter(x => !!x);
-  return !resultArray ? null : resultArray;
+  const resultArray = strAsArray.map(strToSortBy).filter(x => !!x) as SortBy[];
+  return !resultArray ? undefined : resultArray;
 }
 
-function strToSortBy (str: string): SortBy {
-  if (!str) return null;
+function strToSortBy (str?: string): SortBy | undefined {
+  if (!str) return undefined;
 
   const commaIndex: number = str.indexOf(',');
   if (commaIndex === -1) {

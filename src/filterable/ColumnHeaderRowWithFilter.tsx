@@ -12,7 +12,7 @@ function ColumnHeaderRowWithFilter<T> (): JSX.Element {
   return <>
     <ColumnHeaderRow />
     <tr>
-      {visibleFields.map((field: FieldModel<unknown, unknown>) =>
+      {visibleFields.map(field =>
         <FieldFilterCell field={field} key={field.key} />
       )}
     </tr>

@@ -23,7 +23,12 @@ export default function localSort<T> (
   return result;
 }
 
-function inplaceSort<T, V> (itemModel: ItemModel<T>, src: T[], fieldModel: FieldModel<T, V>, direction: Direction): void {
+function inplaceSort<T, V> (
+    itemModel: ItemModel<T>,
+    src: T[],
+    fieldModel: FieldModel<T, V>,
+    direction: Direction = 'ASC'
+): void {
   const getter: ValueGetter<T, V> = fieldModel.getter || defaultGetter;
 
   const ascComparator: ((a: T, b: T) => number) = (a: T, b: T) => {

@@ -9,7 +9,7 @@ interface PropsType<ItemType, ValueType> {
 
 const FieldFilterCell =
   <ItemType, ValueType, FilterValueType>({field}: PropsType<ItemType, ValueType>): JSX.Element => {
-    const {fetchArgs, onFetchArgsChange} = useControlledContext();
+    const {fetchArgs, onFetchArgsChange} = useControlledContext<ItemType>();
     const onFilterByChange: ((filterBy: FilterValueType) => unknown) =
       useCallback((newFilterBy: FilterValueType) => onFetchArgsChange({
         ...fetchArgs,
@@ -33,4 +33,4 @@ const FieldFilterCell =
     });
   };
 
-export default React.memo(FieldFilterCell);
+export default React.memo(FieldFilterCell) as typeof FieldFilterCell;

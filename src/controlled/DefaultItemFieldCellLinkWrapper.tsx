@@ -4,10 +4,10 @@ import React from 'react';
 
 import ItemFieldCellLinkWrapperProps from './ItemFieldCellLinkWrapperProps';
 
-function DefaultItemFieldCellLinkWrapper ({
+function DefaultItemFieldCellLinkWrapper<T, V> ({
   children,
   hyperlink,
-}: ItemFieldCellLinkWrapperProps<unknown, unknown>): JSX.Element {
+}: ItemFieldCellLinkWrapperProps<T, V>): JSX.Element {
   return <a css={css(`
 & {
 display: block;
@@ -26,4 +26,4 @@ height: calc(100% + 2 * 0.3rem);
 `)} href={hyperlink}>{children}</a>;
 }
 
-export default React.memo(DefaultItemFieldCellLinkWrapper);
+export default React.memo(DefaultItemFieldCellLinkWrapper) as typeof DefaultItemFieldCellLinkWrapper;

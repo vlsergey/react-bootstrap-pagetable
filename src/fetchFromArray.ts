@@ -1,5 +1,5 @@
 import FetchArgs from './FetchArgs';
-import FieldModel, {defaultGetter} from './FieldModel';
+import {defaultGetter} from './FieldModel';
 import ItemModel from './ItemModel';
 import Page from './Page';
 import localSort from './sortable/localSort';
@@ -17,7 +17,7 @@ export default function fetchFromArray<T> (
       const filterBy: unknown = filter[fieldKey];
       if (typeof filterBy !== 'string') return false;
 
-      const field: FieldModel<T, unknown> = itemModel.fields.find(({key}) => key == fieldKey);
+      const field = itemModel.fields.find(({key}) => key == fieldKey);
       if (!field) return false;
 
       const itemValue: unknown = (field.getter || defaultGetter)(item, field, itemModel);

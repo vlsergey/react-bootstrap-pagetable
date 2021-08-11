@@ -7,7 +7,7 @@ import {useControlledContext} from './ControlledContext';
 import useVisibleFields from './visibleFields/useVisibleFields';
 
 function DefaultRowsRenderer<T> (): JSX.Element {
-  const {itemFieldCellRenderer, itemModel, page, rowProps} = useControlledContext();
+  const {itemFieldCellRenderer, itemModel, page, rowProps} = useControlledContext<T>();
   const visibleFields: FieldModel<T, unknown>[] = useVisibleFields<T>();
 
   type IdFunction<T> = (item: T) => string;

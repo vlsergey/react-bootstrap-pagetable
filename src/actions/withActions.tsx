@@ -4,7 +4,7 @@ import {DEFAULT_FOOTER_HEADER_ELEMENTS} from '../controlled/';
 import ControlledPropsType from '../controlled/ControlledPropsType';
 import {NewComponentProps as SelectablePropsType} from '../selectable/withSelectable';
 import Action from './Action';
-import ActionsContext from './ActionsContext';
+import ActionsContext, {ActionsContextType} from './ActionsContext';
 import ActionsToolbar from './ActionsToolbar';
 
 export type RequiredChildComponentProps<T> =
@@ -50,7 +50,7 @@ const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.C
       onAfterAction,
       onRefreshRequired,
       selectedIds,
-    }}>
+    } as unknown as ActionsContextType<unknown>}>
       <Child
         {...etcProps as unknown as P}
         footerElements={footerElements}

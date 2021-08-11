@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 
 import {useControlledContext} from '../controlled/ControlledContext';
 import ItemModel from '../ItemModel';
@@ -16,10 +16,10 @@ function filterItemsByIdsImpl<T> (
 }
 
 function ActionsToolbar<T> (): JSX.Element {
-  const {actions, onAfterAction, onRefreshRequired, selectedIds} = useActionsContext();
-  const {itemModel, page, size} = useControlledContext();
+  const {actions, onAfterAction, onRefreshRequired, selectedIds} = useActionsContext<T>();
+  const {itemModel, page, size} = useControlledContext<T>();
 
-  const handleAfterAction = useMemo(() => async (action: Action<T>, items: T[]) => {
+  const handleAfterAction = useCallback(async (action: Action<T>, items: T[]): Promise<void> => {
     if (onAfterAction) {
       await onAfterAction(action, items);
     }
@@ -29,14 +29,18 @@ function ActionsToolbar<T> (): JSX.Element {
     }
   }, [onAfterAction, onRefreshRequired]);
 
+  const selectedItems: T[] = useMemo(() =>
+    filterItemsByIdsImpl<T>(itemModel, page.content, selectedIds)
+  , [itemModel, page.content, selectedIds]);
+
   if (!actions) {
-    return null;
+    return null as unknown as JSX.Element;
   }
 
-  return <Toolbar
+  return <Toolbar<T>
     actions={actions}
     onAfterAction={handleAfterAction}
-    selectedItems={filterItemsByIdsImpl(itemModel, page.content, selectedIds)}
+    selectedItems={selectedItems}
     size={size} />;
 }
 
