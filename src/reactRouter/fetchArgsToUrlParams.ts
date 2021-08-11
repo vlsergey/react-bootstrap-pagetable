@@ -3,9 +3,9 @@ import FieldModel, {defaultFilterValueConverter, FilterValueConverter}
   from '../FieldModel';
 import ItemModel from '../ItemModel';
 
-export default function fetchArgsToUrlParams (
-    itemModel: ItemModel<unknown>,
-    urlParamsPrefix: string,
+export default function fetchArgsToUrlParams<T> (
+    itemModel: ItemModel<T>,
+    urlParamsPrefix: string | undefined,
     currentSearch: ConstructorParameters<typeof URLSearchParams>[0],
     fetchArgs: FetchArgs
 ): URLSearchParams {
@@ -23,7 +23,7 @@ export default function fetchArgsToUrlParams (
     params.delete(`${prefix}sort`);
   }
 
-  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown, unknown>) => {
+  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<T, unknown>) => {
     params.delete(prefix + key);
 
     const filterValue = (fetchArgs.filter || {})[key];

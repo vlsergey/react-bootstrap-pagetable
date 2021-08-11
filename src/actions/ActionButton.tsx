@@ -34,4 +34,4 @@ function ActionButton<T> ({
   </ActionButtonComponent>;
 }
 
-export default React.memo(ActionButton);
+export default React.memo(ActionButton) as typeof ActionButton;

@@ -16,14 +16,15 @@ function DefaultItemFieldCellRenderer<ItemType, ValueType> (
   const {itemModel, itemFieldCellHyperlink, itemFieldCellLinkWrapper} =
     useControlledContext<ItemType>();
 
-  const hyperlink: string = useMemo(() =>
+  const hyperlink = useMemo(() =>
     itemFieldCellHyperlink(item, field)
   , [itemFieldCellHyperlink, item, field]);
 
   let children = <ItemFieldValue field={field} item={item} itemModel={itemModel} />;
 
   if (hyperlink) {
-    children = React.createElement(itemFieldCellLinkWrapper, {
+    children = React.createElement(itemFieldCellLinkWrapper as
+        (props: ItemFieldCellRendererPropsType<ItemType, ValueType>) => JSX.Element, {
       field, hyperlink, item
     }, children);
   }
@@ -33,4 +34,4 @@ function DefaultItemFieldCellRenderer<ItemType, ValueType> (
   </td>;
 }
 
-export default React.memo(DefaultItemFieldCellRenderer);
+export default React.memo(DefaultItemFieldCellRenderer) as typeof DefaultItemFieldCellRenderer;

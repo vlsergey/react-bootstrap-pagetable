@@ -5,7 +5,7 @@ import {useControlledContext} from './ControlledContext';
 
 export type PropsType = Omit<React.ComponentProps<'select'>, 'onChange' | 'ref' | 'size' | 'value'>;
 
-const PageSizeSelector = ({name = 'size', ...etc}: PropsType) => {
+const PageSizeSelector = ({name = 'size', ...etc}: PropsType): JSX.Element => {
   const {fetchArgs, onFetchArgsChange, size} = useControlledContext();
 
   const handleChange = useCallback(({currentTarget}: React.ChangeEvent<HTMLSelectElement>) =>

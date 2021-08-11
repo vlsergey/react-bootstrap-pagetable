@@ -15,8 +15,9 @@ export interface NewComponentProps {
   selectedIds: string[];
 }
 
-const renderCheckboxField = ({value}: ValueRendererProps<unknown, boolean>) =>
-  <Form.Check checked={value} readOnly type="checkbox" />;
+function renderCheckboxField<T> ({value}: ValueRendererProps<T, boolean>) {
+  return <Form.Check checked={value} readOnly type="checkbox" />;
+}
 
 export default <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>) =>
   function WithSelectable ({
@@ -68,13 +69,13 @@ export default <T, P extends RequiredChildComponentProps<T>>(Child: React.Compon
           ...selectAllProps,
         } as FieldModel<T, boolean>,
         ...itemModel.fields,
-      ]
+      ] as FieldModel<T, unknown>[],
     }), [selectAllProps, itemModel, selectableFieldGetter]);
 
     const hasSelectedIds = selectedIds.length > 0;
     const newItemFieldCellHyperlink = useMemo(() => {
       if (!itemFieldCellHyperlink) return itemFieldCellHyperlink;
-      return (item: T, field: FieldModel<T, unknown>): string => {
+      return (item: T, field: FieldModel<T, unknown>) => {
         if (field.key === '$selectable' || hasSelectedIds) {
           return null;
         }

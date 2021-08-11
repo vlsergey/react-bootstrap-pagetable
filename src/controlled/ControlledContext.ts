@@ -12,20 +12,22 @@ export interface ControlledContextType<T>
   extends ControlledPropsType<T> {
 
   // mark all props as required
-  columnHeaderCell: (props: ColumnHeaderCellPropsType) => JSX.Element;
-  footerElements: ((props: unknown) => JSX.Element)[][][];
-  headerElements: ((props: unknown) => JSX.Element)[][][];
-  itemFieldCellHyperlink: (item: T, field: FieldModel<T, unknown>) => string;
-  itemFieldCellLinkWrapper: (props: ItemFieldCellLinkWrapperProps<T, unknown>) => JSX.Element;
-  itemFieldCellRenderer: (props: ItemFieldCellRendererPropsType<T, unknown>) => JSX.Element;
-  noContentRow: (props: unknown) => JSX.Element;
+  columnHeaderCell: React.ComponentType<ColumnHeaderCellPropsType<T, unknown>>;
+  columnHeaderRow: React.ComponentType<unknown>;
+  footerElements: (React.ComponentType<unknown>)[][][];
+  headerElements: (React.ComponentType<unknown>)[][][];
+  itemFieldCellHyperlink: <V>(item: T, field: FieldModel<T, V>) => null | string | undefined;
+  itemFieldCellLinkWrapper: React.ComponentType<ItemFieldCellLinkWrapperProps<T, unknown>>;
+  itemFieldCellRenderer: React.ComponentType<ItemFieldCellRendererPropsType<T, unknown>>;
+  noContentRow: React.ComponentType<unknown>;
 
   // additional context props
   onVisibleFieldsChange: (newVisibleFields: string[]) => unknown;
   visibleFields: string[];
 }
 
-const ControlledContext = React.createContext<ControlledContextType<unknown>>(null);
+const ControlledContext = React.createContext<ControlledContextType<unknown>>(
+  null as unknown as ControlledContextType<unknown>);
 export default ControlledContext;
 
 export function useControlledContext<T> (): ControlledContextType<T> {

@@ -6,7 +6,7 @@ import {useControlledContext} from './ControlledContext';
 import DivHideIfEmpty from './DivHideIfEmpty';
 
 interface PropsType {
-  elements: ((props: unknown) => JSX.Element)[][][];
+  elements: React.ComponentType<unknown>[][][];
 }
 
 const DefaultHeaderFooter = ({elements}: PropsType): JSX.Element =>

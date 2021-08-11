@@ -32,8 +32,8 @@ type PropsType<T, P extends RequiredChildComponentProps<T>> =
 const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>): React.ComponentType<PropsType<T, P>> =>
   class WithPageInState extends PureComponent<PropsType<T, P>, StateType<T>> {
 
-  prevFetchArgs: FetchArgs = null;
-  prevAbortController: AbortController = null;
+  prevFetchArgs?: FetchArgs = undefined;
+  prevAbortController?: AbortController = undefined;
 
   override state: StateType<T> = {
     error: null,
@@ -69,25 +69,25 @@ const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: Rea
 
       this.setState({loading: true});
 
-      if (this.prevAbortController != null) {
+      if (this.prevAbortController != undefined) {
         this.prevAbortController.abort();
-        this.prevAbortController = null;
+        this.prevAbortController = undefined;
       }
 
       // do not use fetch result from outdated query
 
       // remember query here...
       this.prevFetchArgs = fetchArgs;
-      const newAbortController = this.prevAbortController = window.AbortController ? new AbortController() : null;
+      const newAbortController = this.prevAbortController = window.AbortController ? new AbortController() : undefined;
 
-      const fetchOptions: FetchOptions = newAbortController != null ? {signal: newAbortController.signal} : {};
+      const fetchOptions: FetchOptions = newAbortController != undefined ? {signal: newAbortController.signal} : {};
       const page: Page<T> = await fetch(fetchArgs, fetchOptions, fetchReason);
 
       // ...to compare query here
       if (this.prevFetchArgs === fetchArgs) {
-        this.setState({error: null, loading: false, hasError: false, page});
-        this.prevFetchArgs = null;
-        this.prevAbortController = null;
+        this.setState({error: undefined, loading: false, hasError: false, page});
+        this.prevFetchArgs = undefined;
+        this.prevAbortController = undefined;
       }
 
     } catch (error: unknown) {

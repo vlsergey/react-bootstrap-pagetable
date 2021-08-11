@@ -3,18 +3,19 @@ import FieldModel, {defaultFilterValueConverter, FilterValueConverter}
   from '../FieldModel';
 import ItemModel from '../ItemModel';
 
-export default function urlParamsToFetchArgs (
+export default function urlParamsToFetchArgs<T> (
     defaultFetchArgs: FetchArgs,
-    itemModel: ItemModel<unknown>,
-    urlParamsPrefix: string,
+    itemModel: ItemModel<T>,
+    urlParamsPrefix: string | undefined,
     params: URLSearchParams
 ): FetchArgs {
   const prefix: string = urlParamsPrefix || '';
 
   const ifHaveSingle = (paramName: string, consumer: (paramValue: string) => unknown) => {
     const fullParamName: string = prefix + paramName;
-    if (params.has(fullParamName)) {
-      consumer(params.get(fullParamName));
+    const paramValue = params.get(fullParamName);
+    if (paramValue != null) {
+      consumer(paramValue);
     }
   };
 
@@ -49,7 +50,7 @@ export default function urlParamsToFetchArgs (
   });
 
   const defConverter: FilterValueConverter<unknown> = defaultFilterValueConverter();
-  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<unknown, unknown>) =>
+  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<T, unknown>) =>
   { ifHaveAll(key, (values: string[]) => {
     if (!result.filter) {
       result.filter = {};

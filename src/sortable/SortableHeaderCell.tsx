@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import {css, jsx} from '@emotion/react';
-import React, {useCallback, useContext} from 'react';
+import React, {useCallback} from 'react';
 
-import ControlledContext from '../controlled/ControlledContext';
+import {useControlledContext} from '../controlled/ControlledContext';
 import DefaultColumnHeaderCell from '../controlled/DefaultColumnHeaderCell';
 import {Direction, SortBy} from '../FetchArgs';
 import FieldModel from '../FieldModel';
@@ -12,11 +12,11 @@ export interface PropsType<I, V> {
 }
 
 function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
-  const {fetchArgs, onFetchArgsChange} = useContext(ControlledContext);
+  const {fetchArgs, onFetchArgsChange} = useControlledContext<I>();
 
   const handleClick = useCallback(() => {
-    const oldDirection: Direction = ((fetchArgs.sort || [] as SortBy[])
-      .find((sortBy: SortBy) => sortBy.field === field.key) || {direction: null})
+    const oldDirection: Direction | undefined = ((fetchArgs.sort || [] as SortBy[])
+      .find((sortBy: SortBy) => sortBy.field === field.key) || {direction: undefined})
       .direction;
 
     const newDirection = oldDirection === 'ASC' ? 'DESC' : 'ASC';
@@ -28,10 +28,10 @@ function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
   }, [fetchArgs, field.key, onFetchArgsChange]);
 
   if (!field.sortable) {
-    return <DefaultColumnHeaderCell field={field} />;
+    return <DefaultColumnHeaderCell<I, V> field={field} />;
   }
 
-  const fieldSort: SortBy = (fetchArgs.sort || [])
+  const fieldSort = (fetchArgs.sort || [])
     .find((sortBy: SortBy) => sortBy.field === field.key);
 
   let iconClassName = 'fas fa-sort';

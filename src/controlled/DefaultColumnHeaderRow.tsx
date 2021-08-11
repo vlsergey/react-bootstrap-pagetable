@@ -1,15 +1,14 @@
 import React from 'react';
 
-import FieldModel from '../FieldModel';
 import {useControlledContext} from './ControlledContext';
 import useVisibleFields from './visibleFields/useVisibleFields';
 
 function DefaultColumnHeaderRow<T> (): JSX.Element {
-  const {columnHeaderCell} = useControlledContext();
-  const visibleFields: FieldModel<T, unknown>[] = useVisibleFields();
+  const {columnHeaderCell} = useControlledContext<T>();
+  const visibleFields = useVisibleFields<T>();
 
   const ColumnHeaderCell = columnHeaderCell;
-  return <tr>{visibleFields.map((field: FieldModel<unknown, unknown>) =>
+  return <tr>{visibleFields.map(field =>
     <ColumnHeaderCell field={field} key={field.key} />
   )}</tr>;
 }

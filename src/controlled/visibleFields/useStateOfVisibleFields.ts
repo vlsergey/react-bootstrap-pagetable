@@ -10,7 +10,7 @@ type ResultType = [
 ];
 
 function useLocalStorage (
-    idPrefix: string,
+    idPrefix: string | undefined,
     key: string,
     defaultValues: string[]
 ): ResultType {
@@ -49,17 +49,17 @@ function useLocalStorage (
 }
 
 
-export default function useStateOfVisibleFields (
+export default function useStateOfVisibleFields<T> (
     disableVisibleFieldsChange: boolean,
-    idPrefix: string,
-    itemModel: ItemModel<unknown>
+    idPrefix: string | undefined,
+    itemModel: ItemModel<T>
 ): ResultType {
   const allAllowedKeys: string[] = useMemo(() =>
     itemModel.fields.map(({key}) => key), [itemModel.fields]);
   const defaultKeysOrder: string[] = useMemo(() => itemModel
     .fields
-    .filter(({hiddenByDefault}: FieldModel<unknown, unknown>) => !hiddenByDefault)
-    .map(({key}: FieldModel<unknown, unknown>) => key), [itemModel.fields]);
+    .filter(({hiddenByDefault}: FieldModel<T, unknown>) => !hiddenByDefault)
+    .map(({key}: FieldModel<T, unknown>) => key), [itemModel.fields]);
 
   const defaultHidden = [] as string[];
 
@@ -78,8 +78,8 @@ export default function useStateOfVisibleFields (
 
   const mockVisibleFields = useMemo<string[]>(() => itemModel
     .fields
-    .filter(({hiddenByDefault}: FieldModel<unknown, unknown>) => !hiddenByDefault)
-    .map(({key}: FieldModel<unknown, unknown>) => key), [itemModel]);
+    .filter(({hiddenByDefault}: FieldModel<T, unknown>) => !hiddenByDefault)
+    .map(({key}: FieldModel<T, unknown>) => key), [itemModel]);
   const setMockVisibleFields = useCallback(() => {
     throw new Error('Visible fields changing feature is disabled');
   }, []);

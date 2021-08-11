@@ -20,7 +20,8 @@ import useStateOfVisibleFields from './visibleFields/useStateOfVisibleFields';
 import useVisibleFields from './visibleFields/useVisibleFields';
 import VisibleFieldsButton from './visibleFields/VisibleFieldsButton';
 
-export const DEFAULT_FOOTER_HEADER_ELEMENTS = [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]];
+export const DEFAULT_FOOTER_HEADER_ELEMENTS: React.ComponentType<unknown>[][][]
+  = [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]];
 
 export default function ControlledBase<T> ({
   columnHeaderCell = DefaultColumnHeaderCell,
@@ -91,7 +92,7 @@ export default function ControlledBase<T> ({
     ...etcProps
   };
 
-  return <ControlledContext.Provider value={contextValue}>
+  return <ControlledContext.Provider value={contextValue as unknown as ControlledContextType<unknown>}>
     {React.createElement(headerRenderer)}
     <Table {...actualTableProps}>
       <TableHead />
@@ -119,7 +120,7 @@ const TableHead = () => {
       <td colSpan={visibleFields.length}>
         <Alert style={{margin: 0}} variant="danger">
           {'Error occured while loading'}
-          { !!error && `: ${error.message || JSON.stringify(error)}`}
+          { !!error && `: ${(error as {message?: string}).message || JSON.stringify(error)}`}
         </Alert>
       </td>
     </tr> }

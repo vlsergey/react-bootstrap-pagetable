@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 
+import {notEmpty} from '../../arrayUtils';
 import FieldModel from '../../FieldModel';
 import {useControlledContext} from '../ControlledContext';
 import FieldsListControl from './FieldsListControl';
@@ -32,7 +33,7 @@ const VisibleFieldsModal = ({onHide, show}: PropsType): JSX.Element => {
     itemModel.fields.filter(({key}) => !visibleFieldsSet.has(key)), [itemModel, visibleFieldsSet]);
 
   const visible = useMemo(() =>
-    visibleFields.map(fieldKey => fieldsMap.get(fieldKey)).filter(field => !!field),
+    visibleFields.map(fieldKey => fieldsMap.get(fieldKey)).filter(notEmpty),
   [visibleFields, fieldsMap]);
 
   const [availableSelected, setAvailableSelected] = useState<string[]>([]);
@@ -67,7 +68,7 @@ const VisibleFieldsModal = ({onHide, show}: PropsType): JSX.Element => {
   }, [itemModel, onVisibleFieldsChange, setAvailableSelected, setVisibleSelected]);
 
   if (disableVisibleFieldsChange) {
-    return null;
+    return null as unknown as JSX.Element;
   }
 
   return <Modal onHide={onHide} show={show}>
