@@ -32,7 +32,7 @@ interface FieldModel<ItemType, ValueType> {
   filterValueConverter?: FilterValueConverter<unknown>;
 
   getter?: ValueGetter<ItemType, ValueType>;
-  render?: React.ComponentType<ValueRendererProps<ItemType, ValueType>>;
+  render?: (props: ValueRendererProps<ItemType, ValueType>) => ReactNode;
   headerCellContent?: React.ComponentType<{field: FieldModel<ItemType, ValueType>}>;
   headerCellProps?: React.ComponentProps<'th'>;
   valueCellProps?: (value: ValueType, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>) => Record<string, unknown>;

@@ -1,4 +1,4 @@
-import {Action, FetchArgs, fetchFromArray, ItemModel, Page,
+import {Action, FetchArgs, fetchFromArray, FieldModel, ItemModel, Page,
   UncontrolledPageTable as PageTable} from '@vlsergey/react-bootstrap-pagetable';
 import React, {PureComponent, ReactNode} from 'react';
 import Container from 'react-bootstrap/Container';
@@ -26,8 +26,8 @@ const itemModel: ItemModel<TestType> = {
       key: 'id',
       render: ({value}) => value,
       title: 'ID',
-    },
-  ],
+    } as FieldModel<TestType, string>,
+  ] as FieldModel<TestType, unknown>[],
 };
 
 const sourceDataArray: TestType[] =
@@ -73,9 +73,9 @@ export default class UncontrolledDemo extends PureComponent<unknown, StateType> 
     const actions = addAction ? [
       {
         key: 'alert',
-        title: 'Alert',
+        title: 'Alert item ID',
         enabled: (items: TestType[]) => items.length == 1,
-        onAction: (items: TestType[]) => { alert(items[0].id); },
+        onAction: (items: TestType[]) => items.map(item => { alert(item.id); }),
       } as Action<TestType>,
     ] as Action<TestType>[] : [];
 

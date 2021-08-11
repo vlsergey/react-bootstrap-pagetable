@@ -40,13 +40,13 @@ export const ExampleItemModel: ItemModel<ExampleItemType> = {
       title: 'Birth Date',
       render: ({value}: {value: string}) => new Date(Date.parse(value)).toLocaleDateString(),
       sortable: true,
-    },
+    } as FieldModel<ExampleItemType, string>,
     {
       key: 'birthyear',
       title: 'Birth Year',
       getter: ({birthday}: ExampleItemType) => new Date(Date.parse(birthday)).getFullYear(),
       sortable: true,
-    },
+    } as FieldModel<ExampleItemType, number>,
     {
       key: 'age',
       title: 'Age',
@@ -54,8 +54,8 @@ export const ExampleItemModel: ItemModel<ExampleItemType> = {
       getter: ({birthday}: ExampleItemType) =>
         Math.floor((Date.now() - Date.parse(birthday)) / (365.25 * 24 * 3600 * 1000)),
       sortable: true,
-    },
-  ]
+    } as FieldModel<ExampleItemType, number>,
+  ] as FieldModel<ExampleItemType, unknown>[]
 };
 
 export const ExampleData: ExampleItemType[] = [

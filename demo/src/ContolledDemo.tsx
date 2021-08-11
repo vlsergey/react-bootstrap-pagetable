@@ -1,4 +1,4 @@
-import {Action, ControlledPageTable, Page, singlePage}
+import {Action, ControlledPageTable as PageTable, Page, singlePage}
   from '@vlsergey/react-bootstrap-pagetable';
 import React from 'react';
 import Container from 'react-bootstrap/Container';
@@ -31,7 +31,7 @@ export default function ContolledDemo (): JSX.Element {
     } as Action<ExampleItemType>,
   ] as Action<ExampleItemType>[] : [];
 
-  const pageTable = <ControlledPageTable
+  const pageTable = <PageTable
     actions={actions}
     disableVisibleFieldsChange={disableVisibleFieldsChange}
     error={null}

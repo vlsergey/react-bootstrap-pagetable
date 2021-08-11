@@ -1,7 +1,7 @@
 import Button from '@vlsergey/react-bootstrap-button-with-spinner';
 import ErrorBoundary from '@vlsergey/react-bootstrap-error-boundary';
-import {ControlledPageTable as PageTable, FetchArgs, fetchFromArray, FieldModel, FilterCellRendererProps,
-  ItemModel}
+import {ControlledPageTable as PageTable, FetchArgs, fetchFromArray, FieldModel,
+  FilterCellRendererProps, ItemModel}
   from '@vlsergey/react-bootstrap-pagetable';
 import React, {PureComponent, ReactNode, useCallback} from 'react';
 import Alert from 'react-bootstrap/Alert';
@@ -41,7 +41,7 @@ const ITEM_MODEL: ItemModel<TestType> = {
       title: 'Name',
       sortable: true,
       renderFilterCell: FilterCell
-    },
+    } as FieldModel<TestType, string>,
     {
       key: 'birthday',
       title: 'Birth Date',
@@ -54,7 +54,7 @@ const ITEM_MODEL: ItemModel<TestType> = {
       getter: ({birthday}: TestType) => new Date(Date.parse(birthday)).getFullYear(),
       sortable: true,
     },
-  ]
+  ] as FieldModel<TestType, unknown>[]
 };
 
 export default class FiltersExample extends PureComponent<unknown, StateType> {

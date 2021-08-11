@@ -1,7 +1,7 @@
 import Button from '@vlsergey/react-bootstrap-button-with-spinner';
 import ErrorBoundary from '@vlsergey/react-bootstrap-error-boundary';
-import {ControlledWithReactRouter as PageTable, FetchArgs, fetchFromArray, FieldModel, ItemFieldValue,
-  useControlledContext, useVisibleFields}
+import {ControlledWithReactRouter as PageTable, FetchArgs, fetchFromArray,
+  ItemFieldValue, useControlledContext, useVisibleFields}
   from '@vlsergey/react-bootstrap-pagetable';
 import React, {PureComponent, ReactNode} from 'react';
 import Card from 'react-bootstrap/Card';
@@ -16,8 +16,8 @@ interface StateType {
 }
 
 function CustomRowsRenderer (): JSX.Element {
-  const {itemModel, page: {content}} = useControlledContext();
-  const visibleFields = useVisibleFields();
+  const {itemModel, page: {content}} = useControlledContext<ExampleItemType>();
+  const visibleFields = useVisibleFields<ExampleItemType>();
 
   return <tr><td colSpan={visibleFields.length}><CardDeck>
     { content.map((item: ExampleItemType) => <Card key={itemModel.idF(item)} style={{width: 250, minWidth: 250, maxWidth: 250}}>
@@ -25,7 +25,7 @@ function CustomRowsRenderer (): JSX.Element {
       <Card.Body>
         <Card.Title>{item.name}</Card.Title>
         <ul>
-          { visibleFields.map((field: FieldModel<ExampleItemType, unknown>) =>
+          { visibleFields.map(field =>
             <li key={field.key}>
               <b>{field.title}</b>{': '}
               <ItemFieldValue field={field} item={item} itemModel={itemModel} />

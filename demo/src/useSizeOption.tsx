@@ -1,13 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import Form from 'react-bootstrap/Form';
 
-type ReturnType = [ 'lg' | 'sm', JSX.Element ];
+type SizeType = 'lg' | 'sm' | undefined;
+
+type ReturnType = [ SizeType, JSX.Element ];
 
 export default function useSizeOption (): ReturnType {
-  const [size, setSize] = useState<'lg' | 'sm'>(null);
+  const [size, setSize] = useState<SizeType>(undefined);
 
   const handleChange = useCallback(({currentTarget: {value}}: React.ChangeEvent<HTMLSelectElement>) =>
-  { setSize((value || null) as ('lg' | 'sm')); }
+  { setSize((value || undefined) as SizeType); }
   , [setSize]);
 
   const element = <Form.Group className="form-inline" controlId="size">
