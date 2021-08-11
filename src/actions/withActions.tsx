@@ -19,45 +19,44 @@ export interface NewComponentProps<T> {
   onSelectedIdsChange?: SelectablePropsType['onSelectedIdsChange'];
 }
 
-const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>):
-React.ComponentType<NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>> =>
-    function WithActions ({
+const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>) =>
+  function WithActions ({
+    actions,
+    buttonProps,
+    footerElements = [
+      ...Child.defaultProps.footerElements,
+      [[ActionsToolbar]],
+    ],
+    onAfterAction,
+    onRefreshRequired,
+    onSelectedIdsChange,
+    selectable,
+    ...etcProps
+  }: NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>): JSX.Element {
+
+    const [selectedIds, setSelectedIds] = useState([] as string[]);
+
+    const handleSelectedIdsChange = useCallback((selectedIds: string[]) => {
+      setSelectedIds(selectedIds);
+      if (onSelectedIdsChange) {
+        onSelectedIdsChange(selectedIds);
+      }
+    }, [onSelectedIdsChange, setSelectedIds]);
+
+    return <ActionsContext.Provider value={{
       actions,
       buttonProps,
-      footerElements = [
-        ...Child.defaultProps.footerElements,
-        [[ActionsToolbar]],
-      ],
       onAfterAction,
       onRefreshRequired,
-      onSelectedIdsChange,
-      selectable,
-      ...etcProps
-    }: NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>): JSX.Element {
-
-      const [selectedIds, setSelectedIds] = useState([] as string[]);
-
-      const handleSelectedIdsChange = useCallback((selectedIds: string[]) => {
-        setSelectedIds(selectedIds);
-        if (onSelectedIdsChange) {
-          onSelectedIdsChange(selectedIds);
-        }
-      }, [onSelectedIdsChange, setSelectedIds]);
-
-      return <ActionsContext.Provider value={{
-        actions,
-        buttonProps,
-        onAfterAction,
-        onRefreshRequired,
-        selectedIds,
-      }}>
-        <Child
-          {...etcProps as unknown as P}
-          footerElements={footerElements}
-          onSelectedIdsChange={handleSelectedIdsChange}
-          selectable={selectable || !!actions}
-          selectedIds={selectedIds} />
-      </ActionsContext.Provider>;
-    };
+      selectedIds,
+    }}>
+      <Child
+        {...etcProps as unknown as P}
+        footerElements={footerElements}
+        onSelectedIdsChange={handleSelectedIdsChange}
+        selectable={selectable || !!actions}
+        selectedIds={selectedIds} />
+    </ActionsContext.Provider>;
+  };
 
 export default withActions;

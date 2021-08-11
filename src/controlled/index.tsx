@@ -24,10 +24,10 @@ export default function ControlledBase<T> ({
   columnHeaderCell = DefaultColumnHeaderCell,
   columnHeaderRow = DefaultColumnHeaderRow,
   disableVisibleFieldsChange = false,
-  footerElements,
+  footerElements = [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]],
   footerRenderer = DefaultFooter,
   hasError = false,
-  headerElements,
+  headerElements = [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]],
   headerRenderer = DefaultHeader,
   idPrefix,
   itemFieldCellHyperlink = defaultItemFieldCellHyperlink,
@@ -122,9 +122,4 @@ const TableHead = () => {
       </td>
     </tr> }
   </thead>;
-};
-
-ControlledBase.defaultProps = {
-  footerElements: [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]],
-  headerElements: [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]],
 };

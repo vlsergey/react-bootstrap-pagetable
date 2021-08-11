@@ -23,50 +23,48 @@ export interface NewComponentProps<T> {
 type InnerComponentProps<T, P extends RequiredChildComponentProps<T>>
   = NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>;
 
-const withReactRouter =
-  <T, P extends RequiredChildComponentProps<T>>(Child: ComponentType<P>): ComponentType<InnerComponentProps<T, P>> =>
+const withReactRouter = <T, P extends RequiredChildComponentProps<T>>(Child: ComponentType<P>) =>
+  function RoutedPageTable ({
+    defaultPage = 0,
+    defaultSize = 10,
+    defaultSort,
+    itemFieldCellLinkWrapper = ReactRouterItemFieldCellLinkWrapper,
+    itemModel,
+    onFetchArgsChange,
+    urlParamsPrefix,
+    ...etcProps
+  }: InnerComponentProps<T, P>): JSX.Element {
+    const history = useHistory();
+    const location = useLocation();
 
-    function RoutedPageTable ({
-      defaultPage = 0,
-      defaultSize = 10,
-      defaultSort,
-      itemFieldCellLinkWrapper = ReactRouterItemFieldCellLinkWrapper,
-      itemModel,
-      onFetchArgsChange,
-      urlParamsPrefix,
-      ...etcProps
-    }: InnerComponentProps<T, P>) {
-      const history = useHistory();
-      const location = useLocation();
+    const defaultFetchArgs = useMemo(() =>
+      ({page: defaultPage, size: defaultSize, sort: strToSort(defaultSort)})
+    , [defaultPage, defaultSize, defaultSort]);
 
-      const defaultFetchArgs = useMemo(() =>
-        ({page: defaultPage, size: defaultSize, sort: strToSort(defaultSort)})
-      , [defaultPage, defaultSize, defaultSort]);
+    const toFetchArgs = useMemo(() => (search: string): FetchArgs =>
+      urlParamsToFetchArgs(defaultFetchArgs, itemModel, urlParamsPrefix, new URLSearchParams(search))
+    , [defaultFetchArgs, itemModel, urlParamsPrefix]);
 
-      const toFetchArgs = useMemo(() => (search: string): FetchArgs =>
-        urlParamsToFetchArgs(defaultFetchArgs, itemModel, urlParamsPrefix, new URLSearchParams(search))
-      , [defaultFetchArgs, itemModel, urlParamsPrefix]);
+    const handleFetchArgsChange = useCallback((fetchArgs: FetchArgs): void => {
+      const updated: URLSearchParams = fetchArgsToUrlParams(itemModel,
+        urlParamsPrefix, location.search, fetchArgs);
+      const newSearch: string = updated.toString();
 
-      const handleFetchArgsChange = useCallback((fetchArgs: FetchArgs): void => {
-        const updated: URLSearchParams = fetchArgsToUrlParams(itemModel,
-          urlParamsPrefix, location.search, fetchArgs);
-        const newSearch: string = updated.toString();
+      if (onFetchArgsChange) {
+        const newFetchArgs: FetchArgs = toFetchArgs(newSearch);
+        onFetchArgsChange(newFetchArgs);
+      }
 
-        if (onFetchArgsChange) {
-          const newFetchArgs: FetchArgs = toFetchArgs(newSearch);
-          onFetchArgsChange(newFetchArgs);
-        }
+      history.replace(`${location.pathname}?${newSearch}`);
+    }, [history, itemModel, location.pathname, location.search, onFetchArgsChange, toFetchArgs, urlParamsPrefix]);
 
-        history.replace(`${location.pathname}?${newSearch}`);
-      }, [history, itemModel, location.pathname, location.search, onFetchArgsChange, toFetchArgs, urlParamsPrefix]);
-
-      const fetchArgs: FetchArgs = toFetchArgs(location.search);
-      return <Child
-        {...etcProps as unknown as P}
-        fetchArgs={fetchArgs}
-        itemFieldCellLinkWrapper={itemFieldCellLinkWrapper}
-        itemModel={itemModel}
-        onFetchArgsChange={handleFetchArgsChange} />;
-    };
+    const fetchArgs: FetchArgs = toFetchArgs(location.search);
+    return <Child
+      {...etcProps as unknown as P}
+      fetchArgs={fetchArgs}
+      itemFieldCellLinkWrapper={itemFieldCellLinkWrapper}
+      itemModel={itemModel}
+      onFetchArgsChange={handleFetchArgsChange} />;
+  };
 
 export default withReactRouter;
