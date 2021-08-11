@@ -1,5 +1,3 @@
-import {useMemo} from 'react';
-
 import withActions, {PropsType as WithActionsPropsType} from '../actions/withActions';
 import ControlledBase from '../controlled';
 import ControlledPropsType from '../controlled/ControlledPropsType';
@@ -15,14 +13,5 @@ type PlusActionsProps<T> = WithActionsPropsType<T, PlusSortableProps<T>>;
 
 export type PropsType<T> = PlusActionsProps<T>;
 
-export default function ControlledMixin<T> (props: PropsType<T>): JSX.Element {
-  const mixin = useMemo(() => (props: PropsType<T>) =>
-    withActions<T, PlusSortableProps<T>>(
-      withSortable<T, PlusFilterableProps<T>>(
-        withFilterable<T, PlusSelectableProps<T>>(
-          withSelectable<T, PlusControlledBaseProps<T>>(
-            ControlledBase
-          ))))(props), []);
-
-  return mixin(props);
-}
+export default withActions(withSortable(withFilterable(withSelectable(ControlledBase)))) as
+  unknown as (<T>(props: PropsType<T>) => JSX.Element);
