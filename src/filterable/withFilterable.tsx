@@ -4,34 +4,31 @@ import ControlledPropsType from '../controlled/ControlledPropsType';
 import ColumnHeaderRowWithFilter from './ColumnHeaderRowWithFilter';
 
 type RequiredChildComponentProps<T> =
-  Pick<ControlledPropsType<T>, 'columnHeaderCell' | 'columnHeaderRow' | 'fetchArgs' | 'itemModel' | 'onFetchArgsChange'>;
+  Pick<ControlledPropsType<T>, 'columnHeaderRow' | 'itemModel' >;
 
 const withFilterable = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>) =>
   function WithFilterable ({
-    fetchArgs,
+    columnHeaderRow,
     itemModel,
-    onFetchArgsChange,
     ...etcProps
   }: P): JSX.Element {
+    console.log("WithFilterable: render()")
 
     const tableFilterable = useMemo(() =>
       itemModel.fields.some(({renderFilterCell}) => !!renderFilterCell)
     , [itemModel]);
 
-    if (!tableFilterable) {
+    if (!tableFilterable || !!columnHeaderRow) {
       return <Child
         {...etcProps as P}
-        fetchArgs={fetchArgs}
-        itemModel={itemModel}
-        onFetchArgsChange={onFetchArgsChange} />;
+        columnHeaderRow={columnHeaderRow}
+        itemModel={itemModel} />;
     }
 
     return <Child
       {...etcProps as P}
       columnHeaderRow={ColumnHeaderRowWithFilter}
-      fetchArgs={fetchArgs}
-      itemModel={itemModel}
-      onFetchArgsChange={onFetchArgsChange} />;
+      itemModel={itemModel} />;
   };
 
 export default withFilterable;
