@@ -20,14 +20,16 @@ import useStateOfVisibleFields from './visibleFields/useStateOfVisibleFields';
 import useVisibleFields from './visibleFields/useVisibleFields';
 import VisibleFieldsButton from './visibleFields/VisibleFieldsButton';
 
+export const DEFAULT_FOOTER_HEADER_ELEMENTS = [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]];
+
 export default function ControlledBase<T> ({
   columnHeaderCell = DefaultColumnHeaderCell,
   columnHeaderRow = DefaultColumnHeaderRow,
   disableVisibleFieldsChange = false,
-  footerElements = [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]],
+  footerElements = DEFAULT_FOOTER_HEADER_ELEMENTS,
   footerRenderer = DefaultFooter,
   hasError = false,
-  headerElements = [[[VisibleFieldsButton, PageIndexSelector], [PageSizeSelector]]],
+  headerElements = DEFAULT_FOOTER_HEADER_ELEMENTS,
   headerRenderer = DefaultHeader,
   idPrefix,
   itemFieldCellHyperlink = defaultItemFieldCellHyperlink,

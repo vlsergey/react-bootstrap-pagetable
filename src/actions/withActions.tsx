@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from 'react';
 
+import {DEFAULT_FOOTER_HEADER_ELEMENTS} from '../controlled/';
 import ControlledPropsType from '../controlled/ControlledPropsType';
 import {NewComponentProps as SelectablePropsType} from '../selectable/withSelectable';
 import Action from './Action';
@@ -24,7 +25,7 @@ const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.C
     actions,
     buttonProps,
     footerElements = [
-      ...Child.defaultProps.footerElements,
+      ...DEFAULT_FOOTER_HEADER_ELEMENTS,
       [[ActionsToolbar]],
     ],
     onAfterAction,

@@ -8,7 +8,7 @@
     "clean": "rimraf lib/",
     "build": "cross-env NODE_ENV=production tsc -p ./src/tsconfig-cjs.json && cross-env NODE_ENV=production tsc -p ./src/tsconfig-esm.json",
     "build:watch": "cross-env NODE_ENV=development tsc -w --preserveWatchOutput -p ./src/tsconfig-esm.json",
-    "eslint:check": "eslint --ignore-pattern \"!.eslintrc.js\" *.js src/**/*.ts src/**/*.tsx test/**/*.js test/**/*.tsx demo/*.js demo/src/**/*.tsx",
+    "eslint:check": "eslint --ignore-pattern \"!.eslintrc.js\" *.js src/**/*.ts src/**/*.tsx test/**/*.js test/**/*.ts* demo/*.js demo/src/**/*.tsx",
     "eslint:fix": "eslint --ignore-pattern \"!.eslintrc.js\" --fix *.js src/**/*.ts* test/**/*.js test/**/*.ts* demo/*.js demo/src/**/*.tsx",
     "eslint:watch": "esw --color --watch --ext .js --ext .jsx --ext .ts --ext .tsx --ignore-pattern \"!.eslintrc.js\" --fix *.js src/**/*.ts* test/**/*.ts* demo/*.js demo/src/**/*.tsx",
     "git:commitDocs": "git add docs/* && git diff-index --quiet HEAD || git commit -m \"Automatically rebuild docs by package.json script\"",

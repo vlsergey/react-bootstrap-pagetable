@@ -5,6 +5,7 @@ import {findRenderedDOMComponentWithTag, renderIntoDocument, Simulate}
 
 import {ControlledBase, emptyPage, ItemModel, withActions, withSelectable}
   from '../../src';
+import TestWrapper from '../TestWrapper';
 
 const NOOP = () => { /* NOOP */ };
 const sleep = async (ms: number): Promise< unknown > => new Promise(resolve => setTimeout(resolve, ms));
@@ -50,7 +51,7 @@ describe('actions/withActions', () => {
 
     let onAfterActionCounter = 0;
 
-    const rendered = renderIntoDocument(<PageTable
+    const rendered = renderIntoDocument(<TestWrapper><PageTable
       actions={[action]}
       disableVisibleFieldsChange
       fetchArgs={{page: 0, size: 10}}
@@ -60,7 +61,7 @@ describe('actions/withActions', () => {
       onAfterAction={() => { onAfterActionCounter++; }}
       onFetchArgsChange={NOOP}
       page={emptyPage()}
-      selectable />) as unknown as typeof PageTable;
+      selectable /></TestWrapper>) as unknown as typeof TestWrapper;
     assert.equal(0, onAfterActionCounter);
 
     const button: HTMLButtonElement = findRenderedDOMComponentWithTag(
