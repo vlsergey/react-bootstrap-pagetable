@@ -20,7 +20,7 @@ export interface NewComponentProps<T> {
   urlParamsPrefix?: string;
 }
 
-type InnerComponentProps<T, P extends RequiredChildComponentProps<T>>
+export type PropsType<T, P extends RequiredChildComponentProps<T>>
   = NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>;
 
 const withReactRouter = <T, P extends RequiredChildComponentProps<T>>(Child: ComponentType<P>) =>
@@ -33,7 +33,7 @@ const withReactRouter = <T, P extends RequiredChildComponentProps<T>>(Child: Com
     onFetchArgsChange,
     urlParamsPrefix,
     ...etcProps
-  }: InnerComponentProps<T, P>): JSX.Element {
+  }: PropsType<T, P>): JSX.Element {
     const history = useHistory();
     const location = useLocation();
 

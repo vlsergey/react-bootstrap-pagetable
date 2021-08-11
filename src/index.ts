@@ -7,8 +7,7 @@ import ControlledContext, {ControlledContextType, useControlledContext}
   from './controlled/ControlledContext';
 import {DefaultFooter, DefaultHeader} from './controlled/DefaultHeaderFooter';
 import DefaultItemFieldCellLinkWrapper from './controlled/DefaultItemFieldCellLinkWrapper';
-import DefaultItemFieldCellRenderer,
-{PropsType as DefaultItemFieldCellRendererPropsType}
+import DefaultItemFieldCellRenderer, {PropsType as DefaultItemFieldCellRendererPropsType}
   from './controlled/DefaultItemFieldCellRenderer';
 import DefaultRowsRenderer from './controlled/DefaultRowsRenderer';
 import ItemFieldCellLinkWrapperProps from './controlled/ItemFieldCellLinkWrapperProps';
@@ -27,6 +26,10 @@ import FieldFilterCell from './filterable/FieldFilterCell';
 import withFilterable from './filterable/withFilterable';
 import ItemFieldValue from './ItemFieldValue';
 import ItemModel from './ItemModel';
+import ControlledMixin from './mixins/ControlledMixin';
+import ControlledWithReactRouterMixin from './mixins/ControlledWithReactRouterMixin';
+import UncontrolledMixin from './mixins/UncontrolledMixin';
+import UncontrolledWithReactRouterMixin from './mixins/UncontrolledWithReactRouterMixin';
 import Page, {emptyPage, singlePage} from './Page';
 import ReactRouterItemFieldCellLinkWrapper from './reactRouter/ReactRouterItemFieldCellLinkWrapper';
 import withReactRouter from './reactRouter/withReactRouter';
@@ -83,9 +86,9 @@ export {
 };
 
 // Main mixins (what user is advised to use)
-export const ControlledPageTable = withActions(withSortable(withFilterable(withSelectable(ControlledBase))));
-export const UncontrolledPageTable = withFetchArgsInState(withPageInState(ControlledPageTable));
-export const ControlledWithReactRouter = withReactRouter(ControlledPageTable);
-export const UncontrolledWithReactRouter = withReactRouter(withPageInState(ControlledPageTable));
+export {ControlledMixin as ControlledPageTable};
+export {UncontrolledMixin as UncontrolledPageTable};
+export {ControlledWithReactRouterMixin as ControlledWithReactRouter};
+export {UncontrolledWithReactRouterMixin as UncontrolledWithReactRouter};
 
-export default UncontrolledPageTable;
+export default UncontrolledMixin;

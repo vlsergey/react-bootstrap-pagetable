@@ -15,6 +15,9 @@ export interface NewComponentProps {
   selectedIds: string[];
 }
 
+export type PropsType<T, P extends RequiredChildComponentProps<T>> =
+  NewComponentProps & P;
+
 function renderCheckboxField<T> ({value}: ValueRendererProps<T, boolean>) {
   return <Form.Check checked={value} readOnly type="checkbox" />;
 }
@@ -28,7 +31,7 @@ export default <T, P extends RequiredChildComponentProps<T>>(Child: React.Compon
     onSelectedIdsChange,
     selectedIds,
     ...etcProps
-  }: NewComponentProps & P): JSX.Element {
+  }: PropsType<T, P>): JSX.Element {
     const idF = useMemo(() => itemModel.idF, [itemModel]);
     const selectedIdsSet = useMemo(() => new Set(selectedIds), [selectedIds]);
 

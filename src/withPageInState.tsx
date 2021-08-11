@@ -26,7 +26,7 @@ export enum FetchReason {
 type StateType<T> = Pick<ControlledPropsType<T>,
   'error' | 'hasError' | 'loading' | 'page' >;
 
-type PropsType<T, P extends RequiredChildComponentProps<T>> =
+export type PropsType<T, P extends RequiredChildComponentProps<T>> =
   Omit<P, 'error' | 'hasError' | 'loading' | 'onRefreshRequired' | 'page'> & NewComponentProps<T>;
 
 const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>): React.ComponentType<PropsType<T, P>> =>

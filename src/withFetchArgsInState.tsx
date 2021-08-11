@@ -15,7 +15,7 @@ export interface NewComponentProps<T> {
   onFetchArgsChange?: ControlledPropsType<T>['onFetchArgsChange'];
 }
 
-type PropsType<T, P extends RequiredChildComponentProps<T>> =
+export type PropsType<T, P extends RequiredChildComponentProps<T>> =
   NewComponentProps<T> & Omit<P, 'fetchArgs' | 'onFetchArgsChange'>;
 
 const withFetchArgsInState =

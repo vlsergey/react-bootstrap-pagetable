@@ -20,6 +20,9 @@ export interface NewComponentProps<T> {
   onSelectedIdsChange?: SelectablePropsType['onSelectedIdsChange'];
 }
 
+export type PropsType<T, P extends RequiredChildComponentProps<T>> =
+  NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>;
+
 const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.ComponentType<P>) =>
   function WithActions ({
     actions,
@@ -33,7 +36,7 @@ const withActions = <T, P extends RequiredChildComponentProps<T>>(Child: React.C
     onSelectedIdsChange,
     selectable,
     ...etcProps
-  }: NewComponentProps<T> & Omit<P, 'onSelectedIdsChange' | 'selectedIds'>): JSX.Element {
+  }: PropsType<T, P>): JSX.Element {
 
     const [selectedIds, setSelectedIds] = useState([] as string[]);
 
