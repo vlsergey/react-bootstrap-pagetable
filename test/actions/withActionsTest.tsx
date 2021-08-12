@@ -3,15 +3,21 @@ import React, {Component} from 'react';
 import {findRenderedDOMComponentWithTag, renderIntoDocument, Simulate}
   from 'react-dom/test-utils';
 
-import {ControlledBase, emptyPage, ItemModel, withActions, withSelectable}
-  from '../../src';
+import {ControlledBase, emptyPage, ItemModel} from '../../src';
+import withActions, {PropsType as WithActionsPropsType} from '../../src/actions/withActions';
+import ControlledPropsType from '../../src/controlled/ControlledPropsType';
+import withSelectable, {PropsType as WithSelectablePropsType} from '../../src/selectable/withSelectable';
 import TestWrapper from '../TestWrapper';
 
 const NOOP = () => { /* NOOP */ };
 const sleep = async (ms: number): Promise< unknown > => new Promise(resolve => setTimeout(resolve, ms));
 
+type PageTableProps<T> = WithActionsPropsType<T, WithSelectablePropsType<T, ControlledPropsType<T>>>;
+// type PageTableProps<T> = WithSelectablePropsType<T, ControlledPropsType<T>>;
+
 describe('actions/withActions', () => {
-  const PageTable = withActions(withSelectable(ControlledBase));
+  const PageTable = withActions(withSelectable(ControlledBase)) as
+    unknown as (<T>(props: PageTableProps<T>) => JSX.Element);
 
   interface TestItem {id: string}
   const testItemModel = {
@@ -27,12 +33,12 @@ describe('actions/withActions', () => {
       loading={false}
       onFetchArgsChange={NOOP}
       onRefreshRequired={NOOP}
-      page={emptyPage()} />);
+      page={emptyPage<TestItem>()} />);
   });
 
   it('refreshed page after and only after action', async () => {
-    let promiseResolve: (arg: unknown) => unknown = undefined;
-    let promiseReject: (arg: unknown) => unknown = undefined;
+    let promiseResolve: undefined | ((arg: unknown) => unknown) = undefined;
+    let promiseReject: undefined | ((arg: unknown) => unknown) = undefined;
 
     const action = {
       enabled: () => true,
@@ -60,7 +66,7 @@ describe('actions/withActions', () => {
       loading={false}
       onAfterAction={() => { onAfterActionCounter++; }}
       onFetchArgsChange={NOOP}
-      page={emptyPage()}
+      page={emptyPage<TestItem>()}
       selectable /></TestWrapper>) as unknown as typeof TestWrapper;
     assert.equal(0, onAfterActionCounter);
 
@@ -75,7 +81,7 @@ describe('actions/withActions', () => {
     await sleep(0);
     assert.equal(0, onAfterActionCounter);
 
-    promiseResolve(null);
+    promiseResolve!(null);
     await sleep(0);
     assert.equal(1, onAfterActionCounter);
   });
