@@ -31,11 +31,17 @@ interface FieldModel<ItemType, ValueType> {
   renderFilterCell?: React.ComponentType<FilterCellRendererProps<ItemType, ValueType, unknown>>;
   filterValueConverter?: FilterValueConverter<unknown>;
 
-  getter?: ValueGetter<ItemType, ValueType>;
-  render?: (props: ValueRendererProps<ItemType, ValueType>) => ReactNode;
-  headerCellContent?: React.ComponentType<{field: FieldModel<ItemType, ValueType>}>;
+  // we need method signature style here to allow assigning FieldModel<,string> to FieldModel<,unknown>
+
+  // eslint-disable-next-line @typescript-eslint/method-signature-style
+  getter?(this: void, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>, itemType: ItemModel<ItemType>): ValueType;
+  // eslint-disable-next-line @typescript-eslint/method-signature-style
+  render?(this: void, props: ValueRendererProps<ItemType, ValueType>): ReactNode;
+  // eslint-disable-next-line @typescript-eslint/method-signature-style
+  headerCellContent?(this: void, props: {field: FieldModel<ItemType, ValueType>}): ReactNode;
   headerCellProps?: React.ComponentProps<'th'>;
-  valueCellProps?: (value: ValueType, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>) => Record<string, unknown>;
+  // eslint-disable-next-line @typescript-eslint/method-signature-style
+  valueCellProps?(this: void, value: ValueType, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>): Record<string, unknown>;
 }
 
 export const defaultGetter =

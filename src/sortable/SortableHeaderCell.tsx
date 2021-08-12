@@ -41,6 +41,8 @@ function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
       : 'fas fa-sort-down';
   }
 
+  const headerCellContent = field.headerCellContent as (undefined | React.FC<PropsType<I, V>>);
+
   return <th
     {...field.headerCellProps}
     css={css(`
@@ -54,8 +56,8 @@ function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
         justify-content: space-between;
       `)}>
       <div>{
-        field.headerCellContent
-          ? React.createElement(field.headerCellContent, {field})
+        headerCellContent
+          ? React.createElement(headerCellContent, {field})
           : field.title
       }</div>
       <i className={iconClassName} css={css(`

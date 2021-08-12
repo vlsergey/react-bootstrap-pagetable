@@ -1,7 +1,7 @@
 import React from 'react';
 
+import DefaultColumnHeaderRow from '../controlled/DefaultColumnHeaderRow';
 import useVisibleFields from '../controlled/visibleFields/useVisibleFields';
-import DefaultColumnHeaderRow from "../controlled/DefaultColumnHeaderRow";
 import FieldModel from '../FieldModel';
 import FieldFilterCell from './FieldFilterCell';
 

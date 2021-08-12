@@ -12,7 +12,7 @@ const withFilterable = <T, P extends RequiredChildComponentProps<T>>(Child: Reac
     itemModel,
     ...etcProps
   }: P): JSX.Element {
-    console.log("WithFilterable: render()")
+    console.log('WithFilterable: render()');
 
     const tableFilterable = useMemo(() =>
       itemModel.fields.some(({renderFilterCell}) => !!renderFilterCell)
