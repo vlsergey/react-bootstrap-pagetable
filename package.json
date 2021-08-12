@@ -1,6 +1,6 @@
 {
   "name": "@vlsergey/react-bootstrap-pagetable",
-  "version": "0.30.1",
+  "version": "0.31.0",
   "description": "Complex solution to work with pageable data, including sorting, filtering, actions, changing displayed columns, etc.",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
