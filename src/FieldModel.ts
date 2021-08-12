@@ -2,11 +2,11 @@ import {ReactNode} from 'react';
 
 import ItemModel from './ItemModel';
 
-export type ValueGetter<ItemType, ValueType> =
-  ((item: ItemType, fieldModel: FieldModel<ItemType, ValueType>, itemType: ItemModel<ItemType>) => ValueType);
+export type ValueGetter<I, V, F> =
+  ((item: I, fieldModel: FieldModel<I, V, F>, itemType: ItemModel<I>) => V);
 
 export interface FilterCellRendererProps<ItemType, ValueType, FilterValueType> {
-  field: FieldModel<ItemType, ValueType>;
+  field: FieldModel<ItemType, ValueType, FilterValueType>;
   filterBy: FilterValueType;
   onFilterByChange: (filterBy: FilterValueType) => unknown;
 }
@@ -21,31 +21,26 @@ export interface ValueRendererProps<ItemType, ValueType> {
   item: ItemType;
 }
 
-interface FieldModel<ItemType, ValueType> {
+interface FieldModel<ItemType, ValueType, FilterValueType> {
   key: string;
   title: string;
   description?: ReactNode;
   hiddenByDefault?: boolean;
 
   sortable?: boolean;
-  renderFilterCell?: React.ComponentType<FilterCellRendererProps<ItemType, ValueType, unknown>>;
-  filterValueConverter?: FilterValueConverter<unknown>;
+  renderFilterCell?: React.ComponentType<FilterCellRendererProps<ItemType, ValueType, FilterValueType>>;
+  filterValueConverter?: FilterValueConverter<FilterValueType>;
 
-  // we need method signature style here to allow assigning FieldModel<,string> to FieldModel<,unknown>
+  getter?: ValueGetter<ItemType, ValueType, FilterValueType>;
+  render?: React.ComponentType<ValueRendererProps<ItemType, ValueType>>;
 
-  // eslint-disable-next-line @typescript-eslint/method-signature-style
-  getter?(this: void, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>, itemType: ItemModel<ItemType>): ValueType;
-  // eslint-disable-next-line @typescript-eslint/method-signature-style
-  render?(this: void, props: ValueRendererProps<ItemType, ValueType>): ReactNode;
-  // eslint-disable-next-line @typescript-eslint/method-signature-style
-  headerCellContent?(this: void, props: {field: FieldModel<ItemType, ValueType>}): ReactNode;
+  headerCellContent?: React.ComponentType<{field: FieldModel<ItemType, ValueType, FilterValueType>}>;
   headerCellProps?: React.ComponentProps<'th'>;
-  // eslint-disable-next-line @typescript-eslint/method-signature-style
-  valueCellProps?(this: void, value: ValueType, item: ItemType, fieldModel: FieldModel<ItemType, ValueType>): Record<string, unknown>;
+  valueCellProps?: (value: ValueType, item: ItemType, fieldModel: FieldModel<ItemType, ValueType, FilterValueType>) => Record<string, unknown>;
 }
 
 export const defaultGetter =
-  <I, V>(item: I, fieldModel: FieldModel<I, V>): V =>
+  <I, V, F>(item: I, fieldModel: FieldModel<I, V, F>): V =>
     (item as Record<string, unknown>)[fieldModel.key] as V;
 
 export function defaultFilterValueConverter<F> (): FilterValueConverter<F> {
@@ -61,11 +56,11 @@ export function defaultFilterValueConverter<F> (): FilterValueConverter<F> {
 
 const EMPTY_PROPS = Object.freeze({}) as Record<string, unknown>;
 
-export function defaultHeaderCellProps<I, V> (): ((fieldModel: FieldModel<I, V>) => Record<string, unknown>) {
+export function defaultHeaderCellProps<I, V, F> (): ((fieldModel: FieldModel<I, V, F>) => Record<string, unknown>) {
   return () => EMPTY_PROPS;
 }
 
-export function defaultValueCellProps<I, V> (): ((value: V, item: I, fieldModel: FieldModel<I, V>) => Record<string, unknown>) {
+export function defaultValueCellProps<I, V, F> (): ((value: V, item: I, fieldModel: FieldModel<I, V, F>) => Record<string, unknown>) {
   return () => EMPTY_PROPS;
 }
 

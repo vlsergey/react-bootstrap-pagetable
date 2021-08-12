@@ -34,19 +34,19 @@ export const ExampleItemModel: ItemModel<ExampleItemType> = {
       sortable: true,
       filterValueConverter,
       renderFilterCell: FilterCell
-    } as FieldModel<ExampleItemType, string>,
+    } as FieldModel<ExampleItemType, string, string>,
     {
       key: 'birthday',
       title: 'Birth Date',
-      render: ({value}: {value: string}) => new Date(Date.parse(value)).toLocaleDateString(),
+      render: ({value}: {value: string}) => new Date(Date.parse(value)).toLocaleDateString() as unknown as JSX.Element,
       sortable: true,
-    } as FieldModel<ExampleItemType, string>,
+    } as FieldModel<ExampleItemType, string, never>,
     {
       key: 'birthyear',
       title: 'Birth Year',
       getter: ({birthday}: ExampleItemType) => new Date(Date.parse(birthday)).getFullYear(),
       sortable: true,
-    } as FieldModel<ExampleItemType, number>,
+    } as FieldModel<ExampleItemType, number, never>,
     {
       key: 'age',
       title: 'Age',
@@ -54,8 +54,8 @@ export const ExampleItemModel: ItemModel<ExampleItemType> = {
       getter: ({birthday}: ExampleItemType) =>
         Math.floor((Date.now() - Date.parse(birthday)) / (365.25 * 24 * 3600 * 1000)),
       sortable: true,
-    } as FieldModel<ExampleItemType, number>,
-  ] as FieldModel<ExampleItemType, unknown>[]
+    } as FieldModel<ExampleItemType, number, never>,
+  ] as FieldModel<ExampleItemType, unknown, unknown>[]
 };
 
 export const ExampleData: ExampleItemType[] = [

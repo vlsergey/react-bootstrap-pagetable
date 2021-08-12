@@ -50,7 +50,7 @@ export default function urlParamsToFetchArgs<T> (
   });
 
   const defConverter: FilterValueConverter<unknown> = defaultFilterValueConverter();
-  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<T, unknown>) =>
+  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<T, unknown, unknown>) =>
   { ifHaveAll(key, (values: string[]) => {
     if (!result.filter) {
       result.filter = {};

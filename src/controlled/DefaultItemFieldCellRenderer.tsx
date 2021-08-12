@@ -6,15 +6,15 @@ import ItemFieldValue from '../ItemFieldValue';
 import {useControlledContext} from './ControlledContext';
 import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 
-export type PropsType<ItemType, ValueType> =
-  ItemFieldCellRendererPropsType<ItemType, ValueType> &
+export type PropsType<I, V, F> =
+  ItemFieldCellRendererPropsType<I, V, F> &
   React.ComponentProps<'td'>;
 
-function DefaultItemFieldCellRenderer<ItemType, ValueType> (
-    {field, item, ...etc}: PropsType<ItemType, ValueType>
+function DefaultItemFieldCellRenderer<I, V, F> (
+    {field, item, ...etc}: PropsType<I, V, F>
 ): JSX.Element {
   const {itemModel, itemFieldCellHyperlink, itemFieldCellLinkWrapper} =
-    useControlledContext<ItemType>();
+    useControlledContext<I>();
 
   const hyperlink = useMemo(() =>
     itemFieldCellHyperlink(item, field)
@@ -24,7 +24,7 @@ function DefaultItemFieldCellRenderer<ItemType, ValueType> (
 
   if (hyperlink) {
     children = React.createElement(itemFieldCellLinkWrapper as
-        (props: ItemFieldCellRendererPropsType<ItemType, ValueType>) => JSX.Element, {
+        (props: ItemFieldCellRendererPropsType<I, V, F>) => JSX.Element, {
       field, hyperlink, item
     }, children);
   }

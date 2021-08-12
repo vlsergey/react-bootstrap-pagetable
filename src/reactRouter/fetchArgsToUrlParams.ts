@@ -23,7 +23,7 @@ export default function fetchArgsToUrlParams<T> (
     params.delete(`${prefix}sort`);
   }
 
-  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<T, unknown>) => {
+  itemModel.fields.forEach(({filterValueConverter, key}: FieldModel<T, unknown, unknown>) => {
     params.delete(prefix + key);
 
     const filterValue = (fetchArgs.filter || {})[key];

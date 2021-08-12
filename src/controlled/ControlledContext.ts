@@ -12,13 +12,13 @@ export interface ControlledContextType<T>
   extends ControlledPropsType<T> {
 
   // mark all props as required
-  columnHeaderCell: React.ComponentType<ColumnHeaderCellPropsType<T, unknown>>;
+  columnHeaderCell: React.ComponentType<ColumnHeaderCellPropsType<T, unknown, unknown>>;
   columnHeaderRow: React.ComponentType<unknown>;
   footerElements: (React.ComponentType<unknown>)[][][];
   headerElements: (React.ComponentType<unknown>)[][][];
-  itemFieldCellHyperlink: <V>(item: T, field: FieldModel<T, V>) => null | string | undefined;
-  itemFieldCellLinkWrapper: React.ComponentType<ItemFieldCellLinkWrapperProps<T, unknown>>;
-  itemFieldCellRenderer: React.ComponentType<ItemFieldCellRendererPropsType<T, unknown>>;
+  itemFieldCellHyperlink: <V, F>(item: T, field: FieldModel<T, V, F>) => null | string | undefined;
+  itemFieldCellLinkWrapper: React.ComponentType<ItemFieldCellLinkWrapperProps<T, unknown, unknown>>;
+  itemFieldCellRenderer: React.ComponentType<ItemFieldCellRendererPropsType<T, unknown, unknown>>;
   noContentRow: React.ComponentType<unknown>;
 
   // additional context props

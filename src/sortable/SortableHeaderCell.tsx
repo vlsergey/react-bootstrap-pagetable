@@ -7,11 +7,11 @@ import DefaultColumnHeaderCell from '../controlled/DefaultColumnHeaderCell';
 import {Direction, SortBy} from '../FetchArgs';
 import FieldModel from '../FieldModel';
 
-export interface PropsType<I, V> {
-  field: FieldModel<I, V>;
+export interface PropsType<I, V, F> {
+  field: FieldModel<I, V, F>;
 }
 
-function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
+function SortableHeaderCell<I, V, F> ({field}: PropsType<I, V, F>): JSX.Element {
   const {fetchArgs, onFetchArgsChange} = useControlledContext<I>();
 
   const handleClick = useCallback(() => {
@@ -28,7 +28,7 @@ function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
   }, [fetchArgs, field.key, onFetchArgsChange]);
 
   if (!field.sortable) {
-    return <DefaultColumnHeaderCell<I, V> field={field} />;
+    return <DefaultColumnHeaderCell<I, V, F> field={field} />;
   }
 
   const fieldSort = (fetchArgs.sort || [])
@@ -41,7 +41,7 @@ function SortableHeaderCell<I, V> ({field}: PropsType<I, V>): JSX.Element {
       : 'fas fa-sort-down';
   }
 
-  const headerCellContent = field.headerCellContent as (undefined | React.FC<PropsType<I, V>>);
+  const headerCellContent = field.headerCellContent as (undefined | React.FC<PropsType<I, V, F>>);
 
   return <th
     {...field.headerCellProps}

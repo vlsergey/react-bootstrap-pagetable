@@ -1,8 +1,8 @@
 import FieldModel from '../FieldModel';
 
-interface ItemFieldCellRendererPropsType<ItemType, ValueType> {
-  field: FieldModel<ItemType, ValueType>;
-  item: ItemType;
+interface ItemFieldCellRendererPropsType<I, V, F> {
+  field: FieldModel<I, V, F>;
+  item: I;
 }
 
 export default ItemFieldCellRendererPropsType;

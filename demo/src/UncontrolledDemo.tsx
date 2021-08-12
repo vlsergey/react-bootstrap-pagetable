@@ -24,10 +24,10 @@ const itemModel: ItemModel<TestType> = {
   fields: [
     {
       key: 'id',
-      render: ({value}) => value,
+      render: ({value}) => value as unknown as JSX.Element,
       title: 'ID',
-    } as FieldModel<TestType, string>,
-  ] as FieldModel<TestType, unknown>[],
+    } as FieldModel<TestType, string, unknown>,
+  ] as FieldModel<TestType, unknown, unknown>[],
 };
 
 const sourceDataArray: TestType[] =

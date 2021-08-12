@@ -4,7 +4,7 @@ import {notEmpty} from '../../arrayUtils';
 import FieldModel from '../../FieldModel';
 import {useControlledContext} from '../ControlledContext';
 
-export default function useVisibleFields<T> (): FieldModel<T, unknown>[] {
+export default function useVisibleFields<T> (): FieldModel<T, unknown, unknown>[] {
   const {visibleFields, itemModel} = useControlledContext<T>();
 
   const allFields = itemModel.fields;

@@ -2,10 +2,10 @@ import React from 'react';
 
 import ColumnHeaderCellPropsType from './ColumnHeaderCellPropsType';
 
-function DefaultColumnHeaderCell<T, V> ({
+function DefaultColumnHeaderCell<T, V, F> ({
   field
-}: ColumnHeaderCellPropsType<T, V>): JSX.Element {
-  const headerCellContent = field.headerCellContent as (undefined | React.FC<ColumnHeaderCellPropsType<T, V>>);
+}: ColumnHeaderCellPropsType<T, V, F>): JSX.Element {
+  const headerCellContent = field.headerCellContent as (undefined | React.FC<ColumnHeaderCellPropsType<T, V, F>>);
 
   return <th {...field.headerCellProps}>
     {

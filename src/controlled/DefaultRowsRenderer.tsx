@@ -8,14 +8,14 @@ import useVisibleFields from './visibleFields/useVisibleFields';
 
 function DefaultRowsRenderer<T> (): JSX.Element {
   const {itemFieldCellRenderer, itemModel, page, rowProps} = useControlledContext<T>();
-  const visibleFields: FieldModel<T, unknown>[] = useVisibleFields<T>();
+  const visibleFields: FieldModel<T, unknown, unknown>[] = useVisibleFields<T>();
 
   type IdFunction<T> = (item: T) => string;
   const item2id: IdFunction<T> = itemModel.idF;
   const ItemFieldCellRenderer = itemFieldCellRenderer;
 
   return page.content.map((item: T) => <tr css={css('height: 1px;')} key={item2id(item)} {...(rowProps ? rowProps(item) : {})}>
-    { visibleFields.map((field: FieldModel<T, unknown>) =>
+    { visibleFields.map((field: FieldModel<T, unknown, unknown>) =>
       <ItemFieldCellRenderer field={field} item={item} key={field.key} />
     ) }
   </tr>) as unknown as JSX.Element;

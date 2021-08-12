@@ -58,8 +58,8 @@ export default function useStateOfVisibleFields<T> (
     itemModel.fields.map(({key}) => key), [itemModel.fields]);
   const defaultKeysOrder: string[] = useMemo(() => itemModel
     .fields
-    .filter(({hiddenByDefault}: FieldModel<T, unknown>) => !hiddenByDefault)
-    .map(({key}: FieldModel<T, unknown>) => key), [itemModel.fields]);
+    .filter(({hiddenByDefault}: FieldModel<T, unknown, unknown>) => !hiddenByDefault)
+    .map(({key}: FieldModel<T, unknown, unknown>) => key), [itemModel.fields]);
 
   const defaultHidden = [] as string[];
 
@@ -78,8 +78,8 @@ export default function useStateOfVisibleFields<T> (
 
   const mockVisibleFields = useMemo<string[]>(() => itemModel
     .fields
-    .filter(({hiddenByDefault}: FieldModel<T, unknown>) => !hiddenByDefault)
-    .map(({key}: FieldModel<T, unknown>) => key), [itemModel]);
+    .filter(({hiddenByDefault}: FieldModel<T, unknown, unknown>) => !hiddenByDefault)
+    .map(({key}: FieldModel<T, unknown, unknown>) => key), [itemModel]);
   const setMockVisibleFields = useCallback(() => {
     throw new Error('Visible fields changing feature is disabled');
   }, []);

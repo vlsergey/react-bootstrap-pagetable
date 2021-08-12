@@ -3,19 +3,19 @@ import Form from 'react-bootstrap/Form';
 
 import FieldModel from '../../FieldModel';
 
-interface PropsType {
-  options: FieldModel<unknown, unknown>[];
+interface PropsType<I> {
+  options: FieldModel<I, unknown, unknown>[];
   placeholder: string;
   selected: string[];
   onSelectedChange: (selected: string[]) => unknown;
 }
 
-const FieldsListControl = ({
+function FieldsListControl<I> ({
   onSelectedChange,
   options,
   placeholder,
   selected,
-}: PropsType) => {
+}: PropsType<I>) {
 
   const handleSelectChange = useCallback(({currentTarget}: React.ChangeEvent<HTMLSelectElement>) =>
     onSelectedChange([...(currentTarget.options as unknown as [])]
@@ -39,6 +39,6 @@ const FieldsListControl = ({
       </option>
     )}
   </Form.Control>;
-};
+}
 
-export default React.memo(FieldsListControl);
+export default React.memo(FieldsListControl) as typeof FieldsListControl;

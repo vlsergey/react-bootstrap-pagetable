@@ -4,10 +4,10 @@ import React from 'react';
 
 import ItemFieldCellLinkWrapperProps from './ItemFieldCellLinkWrapperProps';
 
-function DefaultItemFieldCellLinkWrapper<T, V> ({
+function DefaultItemFieldCellLinkWrapper<T, V, F> ({
   children,
   hyperlink,
-}: ItemFieldCellLinkWrapperProps<T, V>): JSX.Element {
+}: ItemFieldCellLinkWrapperProps<T, V, F>): JSX.Element {
   return <a css={css(`
 & {
 display: block;

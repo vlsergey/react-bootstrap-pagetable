@@ -23,7 +23,7 @@ const VisibleFieldsModal = ({onHide, show}: PropsType): JSX.Element => {
     onVisibleFieldsChange,
     visibleFields} = useControlledContext();
 
-  const fieldsMap: Map<string, FieldModel<unknown, unknown>> = useMemo(() =>
+  const fieldsMap: Map<string, FieldModel<unknown, unknown, unknown>> = useMemo(() =>
     new Map(itemModel.fields.map(field => [field.key, field])), [itemModel.fields]);
 
   const visibleFieldsSet: Set<string> = useMemo(() => new Set(visibleFields),

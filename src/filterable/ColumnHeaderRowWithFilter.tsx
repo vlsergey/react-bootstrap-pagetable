@@ -6,7 +6,7 @@ import FieldModel from '../FieldModel';
 import FieldFilterCell from './FieldFilterCell';
 
 function ColumnHeaderRowWithFilter<T> (): JSX.Element {
-  const visibleFields: FieldModel<T, unknown>[] = useVisibleFields();
+  const visibleFields: FieldModel<T, unknown, unknown>[] = useVisibleFields();
 
   return <>
     <DefaultColumnHeaderRow />

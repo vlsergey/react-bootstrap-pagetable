@@ -6,21 +6,21 @@ import Col from 'react-bootstrap/Col';
 import FieldModel from '../../FieldModel';
 import FieldsListControl from './FieldsListControl';
 
-interface PropsType {
-  options: FieldModel<unknown, unknown>[];
+interface PropsType<I> {
+  options: FieldModel<I, unknown, unknown>[];
   onOptionsChange: (options: string[]) => unknown;
   placeholder: string;
   selected: string[];
   onSelectedChange: (selected: string[]) => unknown;
 }
 
-const SortableFieldsListControl = ({
+function SortableFieldsListControl<I> ({
   onSelectedChange,
   options,
   onOptionsChange,
   placeholder,
   selected,
-}: PropsType) => {
+}: PropsType<I>) {
 
   const handleTop = useCallback(() =>
     onOptionsChange([...selected, ...options.map(({key}) => key).filter(key => !selected.includes(key))]),
@@ -77,6 +77,6 @@ const SortableFieldsListControl = ({
       </Button>
     </Col>
   </>;
-};
+}
 
-export default React.memo(SortableFieldsListControl);
+export default React.memo(SortableFieldsListControl) as typeof SortableFieldsListControl;

@@ -9,7 +9,7 @@ import ItemFieldCellLinkWrapperProps from './ItemFieldCellLinkWrapperProps';
 import ItemFieldCellRendererPropsType from './ItemFieldCellRendererPropsType';
 
 interface ControlledPropsType<T> {
-  columnHeaderCell?: React.ComponentType<ColumnHeaderCellPropsType<T, unknown>>;
+  columnHeaderCell?: React.ComponentType<ColumnHeaderCellPropsType<T, unknown, unknown>>;
   columnHeaderRow?: React.ComponentType<unknown>;
   disableVisibleFieldsChange?: boolean;
   error?: unknown;
@@ -18,9 +18,9 @@ interface ControlledPropsType<T> {
   footerRenderer?: React.ComponentType<unknown>;
   idPrefix?: string;
   itemModel: ItemModel<T>;
-  itemFieldCellHyperlink?: <V>(item: T, field: FieldModel<T, V>) => string | null | undefined;
-  itemFieldCellLinkWrapper?: React.ComponentType<ItemFieldCellLinkWrapperProps<T, unknown>>;
-  itemFieldCellRenderer?: React.ComponentType<ItemFieldCellRendererPropsType<T, unknown>>;
+  itemFieldCellHyperlink?: <V, F>(item: T, field: FieldModel<T, V, F>) => string | null | undefined;
+  itemFieldCellLinkWrapper?: React.ComponentType<ItemFieldCellLinkWrapperProps<T, unknown, unknown>>;
+  itemFieldCellRenderer?: React.ComponentType<ItemFieldCellRendererPropsType<T, unknown, unknown>>;
   hasError?: boolean;
   headerElements?: React.ComponentType<unknown>[][][];
   headerRenderer?: React.ComponentType<unknown>;

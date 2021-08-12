@@ -9,7 +9,7 @@ export default function useSelectAllCheckbox<T> (
     idF: ItemModel<T>['idF'],
     onSelectedIdsChange: (selectedIds: string[]) => unknown,
     selectedIdsSet: Set<string>
-): Pick<FieldModel<T, unknown>, 'headerCellContent' | 'headerCellProps'> {
+): Pick<FieldModel<T, unknown, unknown>, 'headerCellContent' | 'headerCellProps'> {
   const allPageIds: string[] = useMemo(() => content.map(idF), [idF, content]);
 
   const allChecked = useMemo(() => allPageIds.every(id => selectedIdsSet.has(id)),

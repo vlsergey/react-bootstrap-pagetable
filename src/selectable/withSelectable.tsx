@@ -70,15 +70,15 @@ export default <T, P extends RequiredChildComponentProps<T>>(Child: React.Compon
           render: renderCheckboxField,
           title: '[item checkbox]',
           ...selectAllProps,
-        } as FieldModel<T, boolean>,
+        } as FieldModel<T, boolean, never>,
         ...itemModel.fields,
-      ] as FieldModel<T, unknown>[],
+      ] as FieldModel<T, unknown, unknown>[],
     }), [selectAllProps, itemModel, selectableFieldGetter]);
 
     const hasSelectedIds = selectedIds.length > 0;
     const newItemFieldCellHyperlink = useMemo(() => {
       if (!itemFieldCellHyperlink) return itemFieldCellHyperlink;
-      return (item: T, field: FieldModel<T, unknown>) => {
+      return (item: T, field: FieldModel<T, unknown, unknown>) => {
         if (field.key === '$selectable' || hasSelectedIds) {
           return null;
         }

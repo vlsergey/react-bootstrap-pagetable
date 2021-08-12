@@ -3,17 +3,17 @@ import React from 'react';
 import FieldModel, {defaultGetter, defaultRender, ValueRendererProps} from './FieldModel';
 import ItemModel from './ItemModel';
 
-interface PropsType<ItemType, ValueType> {
-  itemModel: ItemModel<ItemType>;
-  item: ItemType;
-  field: FieldModel<ItemType, ValueType>;
+interface PropsType<I, V, F> {
+  itemModel: ItemModel<I>;
+  item: I;
+  field: FieldModel<I, V, F>;
 }
 
 const ItemFieldValue =
-  <ItemType, ValueType>({itemModel, item, field}: PropsType<ItemType, ValueType>): JSX.Element => {
-    const value: ValueType = (field.getter || defaultGetter)(item, field, itemModel);
+  <I, V, F>({itemModel, item, field}: PropsType<I, V, F>): JSX.Element => {
+    const value: V = (field.getter || defaultGetter)(item, field, itemModel);
     const Renderer = (field.render || defaultRender) as unknown as
-    React.FunctionComponent<ValueRendererProps<ItemType, ValueType>>;
+    React.FunctionComponent<ValueRendererProps<I, V>>;
     return React.createElement(Renderer, {item, value});
   };
 

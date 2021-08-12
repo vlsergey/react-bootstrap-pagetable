@@ -8,10 +8,10 @@ import ItemFieldCellLinkWrapperProps from '../controlled/ItemFieldCellLinkWrappe
 const FAKE_HOST = 'somenonexistentfakehost.temp';
 const FAKE_URL_BASE = `https://${FAKE_HOST}/`;
 
-function ReactRouterItemFieldCellLinkWrapper<T, V> ({
+function ReactRouterItemFieldCellLinkWrapper<T, V, F> ({
   children,
   hyperlink,
-}: ItemFieldCellLinkWrapperProps<T, V>): JSX.Element {
+}: ItemFieldCellLinkWrapperProps<T, V, F>): JSX.Element {
   const url = new URL(hyperlink, FAKE_URL_BASE);
   if (url.host !== FAKE_HOST) {
     return <a css={css(`

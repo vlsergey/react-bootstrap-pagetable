@@ -41,20 +41,20 @@ const ITEM_MODEL: ItemModel<TestType> = {
       title: 'Name',
       sortable: true,
       renderFilterCell: FilterCell
-    } as FieldModel<TestType, string>,
+    } as FieldModel<TestType, string, string>,
     {
       key: 'birthday',
       title: 'Birth Date',
       render: ({value}: {value: string}) => new Date(Date.parse(value)).toLocaleDateString(),
       sortable: true,
-    } as FieldModel<TestType, string>,
+    },
     {
       key: 'birthyear',
       title: 'Birth Year',
       getter: ({birthday}: TestType) => new Date(Date.parse(birthday)).getFullYear(),
       sortable: true,
     },
-  ] as FieldModel<TestType, unknown>[]
+  ] as FieldModel<TestType, unknown, unknown>[],
 };
 
 export default class FiltersExample extends PureComponent<unknown, StateType> {
