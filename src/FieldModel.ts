@@ -5,10 +5,10 @@ import ItemModel from './ItemModel';
 export type ValueGetter<I, V, F> =
   ((item: I, fieldModel: FieldModel<I, V, F>, itemType: ItemModel<I>) => V);
 
-export interface FilterCellRendererProps<ItemType, ValueType, FilterValueType> {
-  field: FieldModel<ItemType, ValueType, FilterValueType>;
-  filterBy: FilterValueType;
-  onFilterByChange: (filterBy: FilterValueType) => unknown;
+export interface FilterCellRendererProps<I, V, F> {
+  field: FieldModel<I, V, F>;
+  filterBy: F | undefined;
+  onFilterByChange: (filterBy: F | undefined) => unknown;
 }
 
 export interface FilterValueConverter<F> {

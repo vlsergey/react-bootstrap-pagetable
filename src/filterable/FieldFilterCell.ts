@@ -9,14 +9,13 @@ interface PropsType<I, V, F> {
 
 const FieldFilterCell = <I, V, F>({field}: PropsType<I, V, F>): JSX.Element => {
   const {fetchArgs, onFetchArgsChange} = useControlledContext<I>();
-  const onFilterByChange: ((filterBy: F) => unknown) =
-    useCallback((newFilterBy: F) => onFetchArgsChange({
-      ...fetchArgs,
-      filter: {
-        ...fetchArgs.filter,
-        [field.key]: newFilterBy,
-      }
-    }), [field, fetchArgs, onFetchArgsChange]);
+  const onFilterByChange = useCallback((newFilterBy: undefined | F) => onFetchArgsChange({
+    ...fetchArgs,
+    filter: {
+      ...fetchArgs.filter,
+      [field.key]: newFilterBy,
+    }
+  }), [field, fetchArgs, onFetchArgsChange]);
 
   if (!field.renderFilterCell) {
     return React.createElement('td');
