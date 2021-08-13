@@ -1,7 +1,8 @@
 import FieldModel from './FieldModel';
 
 interface ItemModel<T> {
-  fields: FieldModel<T, unknown, unknown>[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fields: FieldModel<T, any, any>[];
   idF: (item: T) => string;
 }
 
