@@ -41,7 +41,7 @@
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@vlsergey/react-bootstrap-button-with-spinner": "^2.0.0",
-    "@vlsergey/react-bootstrap-pagination": "^3.0.0",
+    "@vlsergey/react-bootstrap-pagination": "^3.0.1",
     "memoize-one": "^5.2.1",
     "tslib": "^2.2.0"
   },
