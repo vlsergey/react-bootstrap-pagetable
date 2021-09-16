@@ -225,10 +225,10 @@ async function fetchFromArray<T>(
 ```TypeScript
 import { fetchFromSpringDataRest } from '@vlsergey/react-bootstrap-pagetable';
 
-async function fetchFromSpringDataRest<T>(
+async function fetchFromSpringDataRest<K extends string, T>(
   url: string,
   fetchArgs: FetchArgs,
-  responseCollectionKey: string ): Promise<Page<T>>
+  responseCollectionKey: K ): Promise<Page<T>>
 ```
 
 Fetches data from Spring Data REST API. Provided URL can be absolute or relative.
@@ -242,18 +242,20 @@ Convert "virtual" fields to server ones before providing `fetchArgs` to function
 ```TypeScript
 import { springDataRestResponseToPage } from '@vlsergey/react-bootstrap-pagetable';
 
-type SpringDataApiResponseType<T> = {
-  _embedded: Record<string, T[]>,
+interface SpringDataApiResponseType<K extends string, T> {
+  _embedded: {
+    [P in K]: T[];
+  };
   page: {
-    size: number,
-    totalElements: number,
-    totalPages: number,
-    number: number,
-  }
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
+  };
 }
 
-function springDataRestResponseToPage<T>(
-    key: string, response: SpringDataApiResponseType<T>
+function springDataRestResponseToPage<K extends string, T>(
+    key: K, response: SpringDataApiResponseType<K, T>
 ): Page<T>
 ```
 
