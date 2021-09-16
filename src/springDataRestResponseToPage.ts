@@ -1,7 +1,9 @@
 import Page from './Page';
 
-interface SpringDataApiResponseType<T> {
-  _embedded: Record<string, T[]>;
+interface SpringDataApiResponseType<K extends string, T> {
+  _embedded: {
+    [P in K]: T[];
+  };
   page: {
     size: number;
     totalElements: number;
@@ -10,14 +12,14 @@ interface SpringDataApiResponseType<T> {
   };
 }
 
-export default function springDataRestResponseToPage<T> (
-    key: string, response: SpringDataApiResponseType<T>
+export default function springDataRestResponseToPage<K extends string, T> (
+    key: K, response: SpringDataApiResponseType<K, T>
 ): Page<T> {
-  const _embedded = response._embedded as Record<string, unknown>;
+  const _embedded = response._embedded;
   if (!_embedded) {
     throw new Error('Missing property \'_embedded\' in response object');
   }
-  const content = _embedded[key] as T[];
+  const content = _embedded[key];
   if (content === null || content === undefined) {
     throw new Error(`Missing property '${key}' in response '_embedded' object property`);
   }

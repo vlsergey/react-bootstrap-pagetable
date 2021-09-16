@@ -9,10 +9,10 @@ const FETCH_PARAMS = {
   },
 };
 
-export default async function fetchFromSpringDataRest<T> (
+export default async function fetchFromSpringDataRest<K extends string, T> (
     url: string,
     {page, size, filter, sort}: FetchArgs,
-    responseCollectionKey: string): Promise<Page<T>> {
+    responseCollectionKey: K): Promise<Page<T>> {
 
   const args: URLSearchParams = new URLSearchParams();
   args.append('page', String(page));
@@ -43,7 +43,7 @@ export default async function fetchFromSpringDataRest<T> (
 
   const json: unknown = await response.json();
 
-  const result: Page<T> = springDataRestResponseToPage<T>(responseCollectionKey,
+  const result: Page<T> = springDataRestResponseToPage<K, T>(responseCollectionKey,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     json as any);
   return result;
