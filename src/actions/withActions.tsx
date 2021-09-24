@@ -8,7 +8,7 @@ import ActionsContext, {ActionsContextType} from './ActionsContext';
 import ActionsToolbar from './ActionsToolbar';
 
 export type RequiredChildComponentProps<T> =
-  Pick<SelectablePropsType, 'onSelectedIdsChange' | 'selectable' | 'selectedIds'> &
+  Pick<SelectablePropsType<T>, 'onSelectedIdsChange' | 'selectable' | 'selectedIds'> &
   Pick<ControlledPropsType<T>, 'footerElements' | 'headerElements' | 'itemModel' | 'page' | 'size'>;
 
 export interface NewComponentProps<T> {
@@ -17,7 +17,7 @@ export interface NewComponentProps<T> {
   toolbarProps?: Record<string, unknown>;
   onAfterAction?: (action: Action<T>, items: T[]) => unknown;
   onRefreshRequired?: () => unknown;
-  onSelectedIdsChange?: SelectablePropsType['onSelectedIdsChange'];
+  onSelectedIdsChange?: SelectablePropsType<T>['onSelectedIdsChange'];
 }
 
 export type PropsType<T, P extends RequiredChildComponentProps<T>> =

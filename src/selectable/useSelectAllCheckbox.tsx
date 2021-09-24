@@ -8,6 +8,7 @@ export default function useSelectAllCheckbox<T> (
     content: T[],
     idF: ItemModel<T>['idF'],
     onSelectedIdsChange: (selectedIds: string[]) => unknown,
+    onSelectedItemsChange: undefined | ((selectedItems: (T | undefined)[]) => unknown),
     selectedIdsSet: Set<string>
 ): Pick<FieldModel<T, unknown, unknown>, 'headerCellContent' | 'headerCellProps'> {
   const allPageIds: string[] = useMemo(() => content.map(idF), [idF, content]);
@@ -27,7 +28,10 @@ export default function useSelectAllCheckbox<T> (
 
   const handleTriggerAll = useCallback(({currentTarget: {checked}}: React.ChangeEvent<HTMLInputElement>) => {
     onSelectedIdsChange(checked ? allPageIds : []);
-  }, [allPageIds, onSelectedIdsChange]);
+    if (onSelectedItemsChange) {
+      onSelectedItemsChange(checked ? content : []);
+    }
+  }, [allPageIds, content, onSelectedIdsChange, onSelectedItemsChange]);
 
   const handleCheckboxClick = useCallback((e: React.MouseEvent<HTMLInputElement>) => {
     e.stopPropagation();

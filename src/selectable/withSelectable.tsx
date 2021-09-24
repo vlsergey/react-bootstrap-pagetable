@@ -9,14 +9,15 @@ import useSelectAllCheckbox from './useSelectAllCheckbox';
 type RequiredChildComponentProps<T> = Pick<ControlledPropsType<T>,
   'itemFieldCellHyperlink' | 'itemModel' | 'page' | 'rowProps'>;
 
-export interface NewComponentProps {
+export interface NewComponentProps<T> {
   selectable?: boolean;
   onSelectedIdsChange: (selectedIds: string[]) => unknown;
+  onSelectedItemsChange?: (selectedItems: (T | undefined)[]) => unknown;
   selectedIds: string[];
 }
 
 export type PropsType<T, P extends RequiredChildComponentProps<T>> =
-  NewComponentProps & P;
+  NewComponentProps<T> & P;
 
 function renderCheckboxField<T> ({value}: ValueRendererProps<T, boolean>) {
   return <Form.Check checked={value} readOnly type="checkbox" />;
@@ -29,11 +30,16 @@ export default <T, P extends RequiredChildComponentProps<T>>(Child: React.Compon
     page,
     selectable,
     onSelectedIdsChange,
+    onSelectedItemsChange,
     selectedIds,
     ...etcProps
   }: PropsType<T, P>): JSX.Element {
     const idF = useMemo(() => itemModel.idF, [itemModel]);
     const selectedIdsSet = useMemo(() => new Set(selectedIds), [selectedIds]);
+
+    const itemsMap: Map<string, T> = useMemo(() =>
+      new Map(page.content.map(item => [itemModel.idF(item), item]))
+    , [page, itemModel]);
 
     const handleTrigger = useCallback((item: T): unknown => {
       const itemKey: string = idF(item);
@@ -41,13 +47,19 @@ export default <T, P extends RequiredChildComponentProps<T>>(Child: React.Compon
       const index = selectedIds.indexOf(itemKey);
       if (index === -1) {
         const newSelectedIds: string[] = [...selectedIds, itemKey];
+        if (onSelectedItemsChange) {
+          onSelectedItemsChange(newSelectedIds.map(id => itemsMap.get(id)));
+        }
         return onSelectedIdsChange(newSelectedIds);
       }
 
       const spliced = [...selectedIds];
       spliced.splice(index, 1);
+      if (onSelectedItemsChange) {
+        onSelectedItemsChange(spliced.map(id => itemsMap.get(id)));
+      }
       return onSelectedIdsChange(spliced);
-    }, [idF, onSelectedIdsChange, selectedIds]);
+    }, [idF, itemsMap, onSelectedIdsChange, onSelectedItemsChange, selectedIds]);
 
     const rowProps = useCallback((item: T): Record<string, unknown> => ({
       onClick: () => handleTrigger(item),
@@ -59,7 +71,7 @@ export default <T, P extends RequiredChildComponentProps<T>>(Child: React.Compon
     [idF, selectedIdsSet]);
 
     const selectAllProps = useSelectAllCheckbox(page.content, idF,
-      onSelectedIdsChange, selectedIdsSet);
+      onSelectedIdsChange, onSelectedItemsChange, selectedIdsSet);
 
     const newItemModel: ItemModel<T> = useMemo(() => ({
       ...itemModel,
