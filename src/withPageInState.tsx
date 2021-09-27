@@ -86,7 +86,6 @@ const withPageInState = <T, P extends RequiredChildComponentProps<T>>(Child: Rea
       // ...to compare query here
       if (this.prevFetchArgs === fetchArgs) {
         this.setState({error: undefined, loading: false, hasError: false, page});
-        this.prevFetchArgs = undefined;
         this.prevAbortController = undefined;
       }
 
