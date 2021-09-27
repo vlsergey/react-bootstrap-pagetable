@@ -58,7 +58,9 @@ const withReactRouter = <T, P extends RequiredChildComponentProps<T>>(Child: Com
       history.replace(`${location.pathname}?${newSearch}`);
     }, [history, itemModel, location.pathname, location.search, onFetchArgsChange, toFetchArgs, urlParamsPrefix]);
 
-    const fetchArgs: FetchArgs = toFetchArgs(location.search);
+    const fetchArgs: FetchArgs = useMemo(() => toFetchArgs(location.search),
+      [location.search, toFetchArgs]);
+
     return <Child
       {...etcProps as unknown as P}
       fetchArgs={fetchArgs}
