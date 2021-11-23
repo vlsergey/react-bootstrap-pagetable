@@ -9,7 +9,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 
 import {ExampleData, ExampleItemModel, ExampleItemType} from './ExampleData';
 
-const DropdownActionButton = ({children, onClick, variant, ...etcProps}: ActionButtonPropsType): JSX.Element => {
+const DropdownActionButton = ({children, onClick, variant, ...etcProps}: ActionButtonPropsType<ExampleItemType>): JSX.Element => {
 
   const handleClick0 = React.useCallback(() => onClick(0), [onClick]);
   const handleClick2 = React.useCallback(() => onClick(2), [onClick]);

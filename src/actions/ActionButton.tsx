@@ -8,6 +8,7 @@ export interface PropsType<T> {
   action: Action<T>;
   disabled: boolean;
   onAction: (action: Action<T>, ...etc: unknown[]) => unknown;
+  selectedItems: T[];
   size: ButtonProps['size'];
 }
 
@@ -15,15 +16,27 @@ function ActionButton<T> ({
   action,
   disabled,
   onAction,
+  selectedItems,
   size,
   ...etcProps
 }: PropsType<T>) {
 
   const handleClick = useCallback((...etc: unknown[]) => onAction(action, ...etc), [action, onAction]);
 
-  const ActionButtonComponent = action.buttonComponent || Button;
+  if (action.buttonComponent) {
+    const ActionButtonComponent = action.buttonComponent;
+    return <ActionButtonComponent
+      disabled={disabled}
+      onClick={handleClick}
+      selectedItems={selectedItems}
+      size={size}
+      variant={action.variant}
+      {...etcProps}>
+      {action.title}
+    </ActionButtonComponent>;
+  }
 
-  return <ActionButtonComponent
+  return <Button
     className={'mr-2'}
     disabled={disabled}
     onClick={handleClick}
@@ -31,7 +44,7 @@ function ActionButton<T> ({
     variant={action.variant}
     {...etcProps}>
     {action.title}
-  </ActionButtonComponent>;
+  </Button>;
 }
 
 export default React.memo(ActionButton) as typeof ActionButton;

@@ -11,7 +11,7 @@ interface Action<T> {
   /** Shall we refresh page table content after action completed? */
   refreshAfterAction?: boolean;
   /** Component that will be drawn instead of Button */
-  buttonComponent?: (props: ActionButtonPropsType) => JSX.Element;
+  buttonComponent?: (props: ActionButtonPropsType<T>) => JSX.Element;
   /** Title for button under the pagetable */
   title: ReactNode;
   /** What shall be variant for button under the pagetable */

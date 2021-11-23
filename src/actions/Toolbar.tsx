@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {ButtonProps} from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 
@@ -36,15 +36,18 @@ function Toolbar<T> ({
     }
   }, [onAfterAction, selectedItems]);
 
-  const buttons = actions
+  const buttons = useMemo(() => actions
     .filter(({visible}: Action<T>) => !visible || visible(selectedItems))
     .map((action: Action<T>) => <ActionButton<T>
       action={action}
       disabled={action.enabled && !action.enabled(selectedItems)}
       key={action.key}
       onAction={handleAction}
+      selectedItems={selectedItems}
       size={size}
-      {...(buttonProps ? buttonProps(action, selectedItems) : {})} />);
+      {...(buttonProps ? buttonProps(action, selectedItems) : {})} />),
+  [actions, buttonProps, handleAction, selectedItems, size]);
+
   if (!buttons.length) {
     return null;
   }
